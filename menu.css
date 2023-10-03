@@ -48,12 +48,10 @@ h1 {
 }
 
 .menu-buttons button:hover {
-	background: linear-gradient(45deg, transparent 5%, #00b33c 5%);
+	background: linear-gradient(45deg, transparent 5%, #50775d 5%);
 
 
 }
-
-
 
 .switch-holder {
     display: flex;

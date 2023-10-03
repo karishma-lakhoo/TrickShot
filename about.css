@@ -1,0 +1,39 @@
+.popup-container {
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    text-align: center; /* Center the text inside the popup */
+}
+
+/* Styles for the back button */
+#back-button {
+    position: fixed;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150px;
+	height: 70px;
+	font-size: 20px;
+	font-family: 'Bebas Neue', sans-serif;
+	background: linear-gradient(45deg, transparent 5%, gray 5%);
+	border: 0;
+	color: #fff;
+	letter-spacing: 3px;
+	box-shadow: 6px 0px 0px wheat;
+	padding: 0%;
+	margin: 25px;
+	cursor: pointer;
+}
+
+
+#back-button:hover {
+	background: linear-gradient(45deg, transparent 5%, #50775d 5%);
+
+
+}
