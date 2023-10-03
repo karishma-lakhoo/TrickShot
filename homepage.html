@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <!-- Add your homepage styles here if needed -->
+</head>
+<body>
+    <h1>Welcome to the Game</h1>
+    <div>
+        <button id="play-button">Play Game</button>
+        <button id="controls-button">Controls</button>
+        <button id="about-button">About</button>
+    </div>
+    <script>
+        // Add event listeners for the buttons to navigate to different sections
+        document.getElementById('play-button').addEventListener('click', function () {
+            window.location.href = 'game.html';
+        });
+
+        document.getElementById('controls-button').addEventListener('click', function () {
+            // Add code to show controls or navigate to the controls page
+            alert('Controls: WASD to move, SPACE to jump, MOUSE to look around.');
+        });
+
+        document.getElementById('about-button').addEventListener('click', function () {
+            // Add code to show game information or navigate to the about page
+            alert('About the Game: This is a three.js demo with basic collisions.');
+        });
+    </script>
+</body>
+</html>
