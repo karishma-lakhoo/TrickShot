@@ -3,14 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="menu.css">
     <title>Menu</title>
 </head>
 <body>
-    <h1>Welcome to the Game</h1>
-    <div>
-        <button id="play-button">Play Game</button>
-        <button id="controls-button">Controls</button>
-        <button id="about-button">About</button>
+    <div class="menu-container">
+        <h1>Welcome to the Game</h1>
+        <div class="menu-buttons">
+            <button id="play-button">Play Game</button>
+            <button id="controls-button">Controls</button>
+            <button id="about-button">About</button>
+        </div>
+    </div>
+
+    <div class="switch-holder">
+        <div class="switch-label">
+            <span>Music</span>
+        </div>
+        <div class="switch-toggle">
+            <input type="checkbox" id="music">
+            <label for="music"></label>
+        </div>
     </div>
     <script src="menu.js"></script>
 </body>
