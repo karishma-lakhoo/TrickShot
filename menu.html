@@ -4,15 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" rel="stylesheet" href="menu.css">
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/play-button-o.css' rel='stylesheet'>
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/keyboard.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://unpkg.com/css.gg@2.0.0/icons/css/info.css' rel='stylesheet'>
     <title>Menu</title>
 </head>
 <body>
     <div class="menu-container">
         <h1>Welcome to the Game</h1>
         <div class="menu-buttons">
-            <button id="play-button">Play Game</button>
-            <button id="controls-button">Controls</button>
-            <button id="about-button">About</button>
+            <button id="play-button" class="icon-button">
+                <i class="gg-play-button-o"></i>
+                <span>Start</span>
+            </button>
+            <button id="controls-button" class="icon-button">
+                <i class="gg-keyboard"></i>
+                <span>Controls</span>
+            </button>
+            <button id="settings-button" class="icon-button">
+                <i class="fa fa-gear"></i>
+                <span>Settings</span>
+            </button>
+            <button id="about-button" class="icon-button">
+                <i class="gg-info"></i>
+                <span>About</span>
+            </button>
         </div>
     </div>
 
