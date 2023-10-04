@@ -5,6 +5,7 @@ import { Octree } from 'three/addons/math/Octree.js';
 import { OctreeHelper } from 'three/addons/helpers/OctreeHelper.js';
 import { Capsule } from 'three/addons/math/Capsule.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+// import Target from './Target';
 
 const clock = new THREE.Clock();
 
@@ -260,6 +261,52 @@ function playerSphereCollision( sphere ) {
 
 }
 
+// function sphereGlbCollision(spheres, glbModel) {
+//     const octree = new Octree();
+//     octree.fromGraphNode(glbModel.scene);
+//
+//     for (const sphere of spheres) {
+//         const result = octree.sphereIntersect(sphere.collider);
+//
+//         if (result) {
+//             sphere.velocity.addScaledVector(result.normal, -result.normal.dot(sphere.velocity) * 1.5);
+//             sphere.collider.center.add(result.normal.multiplyScalar(result.depth));
+//         }
+//     }
+// }
+
+const targetLoader = new GLTFLoader().setPath('./models/gltf/');
+let target;
+
+targetLoader.load('manyTargs.glb', (gltf) => {
+    scene.add( gltf.scene );
+
+    worldOctree.fromGraphNode( gltf.scene );
+
+    gltf.scene.traverse( child => {
+
+        if ( child.isMesh ) {
+
+            child.castShadow = true;
+            child.receiveShadow = true;
+
+            if ( child.material.map ) {
+
+                child.material.map.anisotropy = 4;
+
+            }
+
+        }
+
+    } );
+
+    const helper = new OctreeHelper( worldOctree );
+    helper.visible = false;
+    scene.add( helper );
+});
+
+
+
 function spheresCollisions() {
 
     for ( let i = 0, length = spheres.length; i < length; i ++ ) {
@@ -296,6 +343,10 @@ function spheresCollisions() {
 
 }
 
+
+
+// const customTarget = new Target(scene, new THREE.Vector3(10, 2, -5), new THREE.Euler(0, Math.PI / 4, 0), new THREE.Vector3(2, 2, 2));
+
 function updateSpheres( deltaTime ) {
 
     spheres.forEach( sphere => {
@@ -320,13 +371,16 @@ function updateSpheres( deltaTime ) {
 
         playerSphereCollision( sphere );
 
+        // if (customTarget.boolcheckCollision(sphere.collider)){
+        //     sphere.velocity.negate();
+        // }
     } );
 
     spheresCollisions();
-
     for ( const sphere of spheres ) {
 
         sphere.mesh.position.copy( sphere.collider.center );
+        // customTarget.checkCollision(sphere.collider);
 
     }
 
@@ -403,7 +457,7 @@ return new THREE.Mesh(spikeGeometry, spikeMaterial);
 
 const loader = new GLTFLoader().setPath( './models/gltf/' );
 
-loader.load( 'test.glb', ( gltf ) => {
+loader.load( 'collision-world.glb', ( gltf ) => {
 
     scene.add( gltf.scene );
 
@@ -447,6 +501,7 @@ loader.load( 'test.glb', ( gltf ) => {
 
 } );
 
+
 function teleportPlayerIfOob() {
 
     if ( camera.position.y <= - 25 ) {
@@ -475,11 +530,20 @@ function animate() {
 
         updatePlayer( deltaTime );
 
+        if (target) {
+            sphereGlbCollision(spheres, target);
+        }
+
         updateSpheres( deltaTime );
 
         teleportPlayerIfOob();
 
     }
+
+
+
+
+
 
     renderer.render( scene, camera );
 
