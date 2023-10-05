@@ -51,7 +51,7 @@ container.appendChild( stats.domElement );
 
 const GRAVITY = 9.8;
 
-const NUM_SPHERES = 100;
+const NUM_SPHERES = 20;
 const SPHERE_RADIUS = 0.2;
 
 const STEPS_PER_FRAME = 5;
@@ -297,17 +297,15 @@ function updateSpheres( deltaTime ) {
             sphere.velocity.addScaledVector( result.normal, - result.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( result.normal.multiplyScalar( result.depth ) );
 
-        } else {
+        } else if ( fanResult ) {
 
-            sphere.velocity.y -= GRAVITY * deltaTime;
+            //Complete the bounce off the fan
+            sphere.velocity.addScaledVector( fanResult.normal, - fanResult.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
+
+            
 
         }
-
-        if ( fanResult ) {
-                
-                sphere.velocity.addScaledVector( fanResult.normal, 0.5 );
-                sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
-            }
             else {
 
                 sphere.velocity.y -= GRAVITY * deltaTime;
@@ -485,7 +483,7 @@ function teleportPlayerIfOob() {
     }
 
 }
-const ballsHitFan = [];
+let fanRotation = 0;
 function animate() {
 
     const deltaTime = Math.min( 0.05, clock.getDelta() ) / STEPS_PER_FRAME;
@@ -502,39 +500,17 @@ function animate() {
 
         teleportPlayerIfOob();
 
+
     }
 
-    // Rotate the windmill blades
     if (blades) {
-        blades.rotation.z += 0.003; // You can adjust the rotation speed as needed
-    }
-
-     // Check for collisions with the fan and log "hit fan" only once per ball
-     for (let i = 0; i < spheres.length; i++) {
-        const sphere = spheres[i];
-
-        // Check if this ball has already hit the fan
-        if (ballsHitFan.includes(sphere)) {
-            continue; // Skip this ball if it has already hit the fan
-        }
-
-        const fanResult = fanOctree.sphereIntersect(sphere.collider);
-
-        if (fanResult) {
-            sphere.velocity.addScaledVector(fanResult.normal, 0.5);
-            sphere.collider.center.add(fanResult.normal.multiplyScalar(fanResult.depth));
-            console.log("hit fan");
-            ballsHitFan.push(sphere); // Add this ball to the list of balls that hit the fan
-        } else {
-            sphere.velocity.y -= GRAVITY * deltaTime;
-        }
+        fanRotation += 0.003; // Adjust the rotation speed as needed
+        blades.rotation.z = fanRotation;
     }
 
     renderer.render( scene, camera );
 
     stats.update();
-
-    
 
     requestAnimationFrame( animate );
 
