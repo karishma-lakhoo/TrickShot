@@ -79,6 +79,7 @@ for ( let i = 0; i < NUM_SPHERES; i ++ ) {
 }
 
 const worldOctree = new Octree();
+const fanOctree = new Octree();
 
 const playerCollider = new Capsule( new THREE.Vector3( 0, 0.35, 0 ), new THREE.Vector3( 0, 1, 0 ), 0.35 );
 
@@ -165,20 +166,6 @@ ballsLeft--;
 document.getElementById('balls-left').innerText = `Balls left: ${ballsLeft}`;
 }
 
-}
-function checkBallSpikeCollisions(ball, spike) {
-// Calculate the distance between the ball and the spike
-const distance = ball.collider.center.distanceTo(spike.position);
-
-// Define the minimum distance for collision
-const minDistance = ball.collider.radius + 0.1; // Adjust the 0.1 value as needed
-
-if (distance < minDistance) {
-// Perform collision response here
-// You can modify the ball's velocity or position based on the collision
-// For example, you can reverse the ball's velocity to simulate a rebound:
-ball.velocity.negate(); // Reverse the velocity
-}
 }
 
 function playerCollisions() {
@@ -303,6 +290,7 @@ function updateSpheres( deltaTime ) {
         sphere.collider.center.addScaledVector( sphere.velocity, deltaTime );
 
         const result = worldOctree.sphereIntersect( sphere.collider );
+        const fanResult = fanOctree.sphereIntersect( sphere.collider );
 
         if ( result ) {
 
@@ -314,6 +302,16 @@ function updateSpheres( deltaTime ) {
             sphere.velocity.y -= GRAVITY * deltaTime;
 
         }
+
+        if ( fanResult ) {
+                
+                sphere.velocity.addScaledVector( fanResult.normal, 0.5 );
+                sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
+            }
+            else {
+
+                sphere.velocity.y -= GRAVITY * deltaTime;
+            }
 
         const damping = Math.exp( - 1.5 * deltaTime ) - 1;
         sphere.velocity.addScaledVector( sphere.velocity, damping );
@@ -394,17 +392,57 @@ function controls( deltaTime ) {
 
 }
 
-function createSpikeGeometry() {
-const spikeGeometry = new THREE.ConeGeometry(0.1, 0.5, 4);
-const spikeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 }); // Red color for spikes
-return new THREE.Mesh(spikeGeometry, spikeMaterial);
-}
+let blades;
+
+const fanloader = new GLTFLoader().setPath( './models/gltf/' );
+
+fanloader.load( 'fan.glb', ( gltf ) => {
+    blades = gltf.scene.getObjectByName('blades');
+
+    const assets = {
+        blades
+    };
+    scene.add( gltf.scene );
+
+    fanOctree.fromGraphNode( gltf.scene );
+
+    gltf.scene.traverse( child => {
+
+        if ( child.isMesh ) {
+
+            child.castShadow = true;
+            child.receiveShadow = true;
+
+            if ( child.material.map ) {
+
+                child.material.map.anisotropy = 4;
+
+            }
+
+        }
+
+    } );
+
+    const helper = new OctreeHelper( fanOctree );
+    helper.visible = false;
+    scene.add( helper );
+
+    animate();
+
+} );
+
 
 
 const loader = new GLTFLoader().setPath( './models/gltf/' );
 
 loader.load( 'test.glb', ( gltf ) => {
+    // blades = gltf.scene.getObjectByName('blades');
+    // Cube = gltf.scene.getObjectByName('Cube');
 
+    // const assets = {
+    //     blades,
+    //     Cube
+    // };
     scene.add( gltf.scene );
 
     worldOctree.fromGraphNode( gltf.scene );
@@ -430,19 +468,6 @@ loader.load( 'test.glb', ( gltf ) => {
     helper.visible = false;
     scene.add( helper );
 
-
-    // Create and position spikes
-    const numSpikes = 10; // Adjust the number of spikes as needed
-    const spikeSpacing = 2; // Adjust the spacing between spikes as needed
-
-    for (let i = 0; i < numSpikes; i++) {
-        const spike = createSpikeGeometry();
-        spike.position.set(i * spikeSpacing - numSpikes / 2, 0.25, -5); // Adjust the spike position
-        spike.rotation.set(Math.PI / 2, 0, 0); // Rotate the spike to point upward
-        scene.add(spike);
-    }
-
-
     animate();
 
 } );
@@ -460,12 +485,10 @@ function teleportPlayerIfOob() {
     }
 
 }
-
-
+const ballsHitFan = [];
 function animate() {
 
     const deltaTime = Math.min( 0.05, clock.getDelta() ) / STEPS_PER_FRAME;
-
     // we look for collisions in substeps to mitigate the risk of
     // an object traversing another too quickly for detection.
 
@@ -481,10 +504,40 @@ function animate() {
 
     }
 
+    // Rotate the windmill blades
+    if (blades) {
+        blades.rotation.z += 0.003; // You can adjust the rotation speed as needed
+    }
+
+     // Check for collisions with the fan and log "hit fan" only once per ball
+     for (let i = 0; i < spheres.length; i++) {
+        const sphere = spheres[i];
+
+        // Check if this ball has already hit the fan
+        if (ballsHitFan.includes(sphere)) {
+            continue; // Skip this ball if it has already hit the fan
+        }
+
+        const fanResult = fanOctree.sphereIntersect(sphere.collider);
+
+        if (fanResult) {
+            sphere.velocity.addScaledVector(fanResult.normal, 0.5);
+            sphere.collider.center.add(fanResult.normal.multiplyScalar(fanResult.depth));
+            console.log("hit fan");
+            ballsHitFan.push(sphere); // Add this ball to the list of balls that hit the fan
+        } else {
+            sphere.velocity.y -= GRAVITY * deltaTime;
+        }
+    }
+
     renderer.render( scene, camera );
 
     stats.update();
 
+    
+
     requestAnimationFrame( animate );
 
 }
+
+
