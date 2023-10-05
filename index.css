@@ -4,8 +4,9 @@ body {
     align-items: center;
     height: 100vh; /* Make the body take the full viewport height */
     margin: 0; /* Remove default body margin */
-    background-color: black; /* Set the background color to black */
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.3) 10%, rgba(0, 255, 0, 0.3) 30%, rgba(0, 0, 255, 0.3) 50%);
 }
+
 
 .pl {
     box-shadow: 2em 0 2em rgba(0, 0, 0, 0.2) inset, -2em 0 2em rgba(255, 255, 255, 0.1) inset;
@@ -18,7 +19,9 @@ body {
     transform: rotateX(30deg) rotateZ(45deg);
     width: 14em;
     height: 14em;
-    color: white;
+    color: rgb(0, 0, 0);
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
   }
   
   .pl, .pl__dot {
@@ -61,7 +64,7 @@ body {
     animation-name: pushInOut2724;
     background-color: var(--primary1);
     border-radius: 0.75em;
-    box-shadow: 0.1em 0.3em 0.2em rgba(255, 255, 255, 0.4) inset, 0 -0.4em 0.2em #2e3138 inset, 0 -1em 0.25em rgba(0, 0, 0, 0.3) inset;
+    box-shadow: 0.1em 0.3em 0.2em rgba(0, 0, 0, 0.4) inset, 0 -0.4em 0.2em #2e3138 inset, 0 -1em 0.25em rgba(0, 0, 0, 0.3) inset;
     bottom: 0;
     clip-path: polygon(0 75%, 100% 75%, 100% 100%, 0 100%);
     height: 3em;
