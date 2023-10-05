@@ -298,7 +298,7 @@ function updateSpheres( deltaTime ) {
             sphere.collider.center.add( result.normal.multiplyScalar( result.depth ) );
 
         } else if ( fanResult ) {
-
+            console.log('Sphere hit blades');
             //Complete the bounce off the fan
             sphere.velocity.addScaledVector( fanResult.normal, - fanResult.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
@@ -400,6 +400,7 @@ fanloader.load( 'fan.glb', ( gltf ) => {
     const assets = {
         blades
     };
+    //if (blades) blades.position.y = 5;
     scene.add( gltf.scene );
 
     fanOctree.fromGraphNode( gltf.scene );
@@ -503,10 +504,12 @@ function animate() {
 
     }
 
-    if (blades) {
-        fanRotation += 0.003; // Adjust the rotation speed as needed
-        blades.rotation.z = fanRotation;
-    }
+    // if (blades) {
+    //     fanRotation += 0.003; // Adjust the rotation speed as needed
+    //     blades.rotation.z = fanRotation;
+    // }
+
+    
 
     renderer.render( scene, camera );
 
