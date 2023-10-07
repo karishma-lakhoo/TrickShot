@@ -31,6 +31,13 @@ audioLoader.load('music/ballcollision.mp3', (buffer) => {
   collisionSound.setVolume(0.5); // Adjust the volume as needed
 });
 
+const jumpSound  = new Audio(listener);
+audioLoader.load('music/jump.mp3', (buffer) => {
+    jumpSound.setBuffer(buffer);
+    jumpSound.setLoop(false);
+    jumpSound.setVolume(0.5); // Adjust the volume as needed
+});
+
 const fillLight1 = new THREE.HemisphereLight( 0x8dc1de, 0x00668d, 1.5 );
 fillLight1.position.set( 2, 1, 1 );
 scene.add( fillLight1 );
@@ -400,8 +407,9 @@ function controls( deltaTime ) {
     if ( playerOnFloor ) {
 
         if ( keyStates[ 'Space' ] ) {
-
+            jumpSound.play();
             playerVelocity.y = 5;
+            
 
         }
 
