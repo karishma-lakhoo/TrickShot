@@ -11,8 +11,34 @@
     text-align: center; /* Center the text inside the popup */
 }
 
-/* Styles for the back button */
-#back-button {
+
+
+#back-button 
+ {
+    position: fixed;
+    top: 80%;
+    left: 45%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    padding: 10px 45px; 
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px; 
+    color: white;
+    background: #25e675;
+    transition: 1s;
+    box-shadow: 6px 6px 0 black;
+    transform: skewX(-15deg);
+    align-items: center;
+}
+
+
+
+#back-button:hover {
+    transform: skewX(-15deg) scale(1.2);
+}
+
+/* #back-button {
     position: fixed;
     top: 80%;
     left: 50%;
@@ -29,11 +55,4 @@
 	padding: 0%;
 	margin: 25px;
 	cursor: pointer;
-}
-
-
-#back-button:hover {
-	background: linear-gradient(45deg, transparent 5%, #50775d 5%);
-
-
-}
+} */
