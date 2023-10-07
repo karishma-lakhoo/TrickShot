@@ -12,8 +12,28 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color( 0x88ccee );
 scene.fog = new THREE.Fog( 0x88ccee, 0, 50 );
 
+/* NORMAL CAMERA */
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.rotation.order = 'YXZ';
+
+/* MINIMAP CAMERA */
+// Define the orthographic camera's properties
+// These 4 affect height of camera
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+const left = -width / 150;
+const right = width / 150;
+const top = height / 150;
+const bottom = -height / 150;
+
+const near = 0.1;
+const far = 1000;
+const minicamera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
+// Set the camera's position above the scene
+minicamera.position.set(0, 10, 0); // Adjust the height (10) as needed
+// Rotate the camera to look straight down
+minicamera.rotation.set(-Math.PI/2, 0, 0);
 
 const fillLight1 = new THREE.HemisphereLight( 0x8dc1de, 0x00668d, 1.5 );
 fillLight1.position.set( 2, 1, 1 );
@@ -35,6 +55,9 @@ directionalLight.shadow.bias = - 0.00006;
 scene.add( directionalLight );
 
 const container = document.getElementById( 'fps-container' );
+const minimapContainer = document.getElementById('minimap');
+// In your game.js file
+
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
 renderer.setPixelRatio( window.devicePixelRatio );
@@ -43,6 +66,20 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.VSMShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 container.appendChild( renderer.domElement );
+
+// We need to give the minimap its own renderrer
+/* 
+    Merely doing this for line 69: minimapContainer.appendChild( renderer.domElement ); 
+    ont work as it will choose to render the game in this last container only
+*/
+
+const minimapRenderer = new THREE.WebGLRenderer({ antialias: true });
+minimapRenderer.setPixelRatio(window.devicePixelRatio);
+minimapRenderer.setSize(minimapContainer.clientWidth, minimapContainer.clientHeight); //COPIES GAME SIZE TO THE CONTAINER SIZE FOR FULL DISPLAY
+minimapRenderer.shadowMap.enabled = true;
+minimapRenderer.shadowMap.type = THREE.VSMShadowMap;
+minimapRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+minimapContainer.appendChild(minimapRenderer.domElement);
 
 const stats = new Stats();
 stats.domElement.style.position = 'absolute';
@@ -58,6 +95,9 @@ const STEPS_PER_FRAME = 5;
 
 const sphereGeometry = new THREE.IcosahedronGeometry( SPHERE_RADIUS, 5 );
 const sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xdede8d } );
+
+sphereMaterial.side = THREE.DoubleSide;//piece of code added so that the ball appears in air from top view
+//you can see it slightly
 
 const spheres = [];
 let sphereIdx = 0;
@@ -123,10 +163,15 @@ document.addEventListener( 'mouseup', () => {
 document.body.addEventListener( 'mousemove', ( event ) => {
 
     if (document.pointerLockElement === document.body) {
-// Limit how far down the camera can look (adjust the values as needed)
-camera.rotation.x -= event.movementY / 500;
-camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x)); // Clamp the rotation
-camera.rotation.y -= event.movementX / 500;
+        // Limit how far down the camera can look (adjust the values as needed)
+        // Normal FPS camera
+        camera.rotation.x -= event.movementY / 500;
+        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x)); // Clamp the rotation
+        camera.rotation.y -= event.movementX / 500;
+
+        // Minimap camera rotation 
+        minicamera.rotation.z -= event.movementX / 500; 
+        // Because the camera is set to point down we need to rotate along z axis
 }
 
 } );
@@ -146,24 +191,25 @@ let ballsLeft = 20;
 function throwBall() {
 
     if (ballsLeft > 0) {
-const sphere = spheres[sphereIdx];
+        const sphere = spheres[sphereIdx];
 
-camera.getWorldDirection(playerDirection);
+        camera.getWorldDirection(playerDirection);
 
-sphere.collider.center.copy(playerCollider.end).addScaledVector(playerDirection, playerCollider.radius * 1.5);
 
-// throw the ball with more force if we hold the button longer, and if we move forward
-const impulse = 15 + 30 * (1 - Math.exp((mouseTime - performance.now()) * 0.001));
+        sphere.collider.center.copy(playerCollider.end).addScaledVector(playerDirection, playerCollider.radius * 1.5);
 
-sphere.velocity.copy(playerDirection).multiplyScalar(impulse);
-sphere.velocity.addScaledVector(playerVelocity, 2);
+        // throw the ball with more force if we hold the button longer, and if we move forward
+        const impulse = 15 + 30 * (1 - Math.exp((mouseTime - performance.now()) * 0.001));
 
-sphereIdx = (sphereIdx + 1) % spheres.length;
+        sphere.velocity.copy(playerDirection).multiplyScalar(impulse);
+        sphere.velocity.addScaledVector(playerVelocity, 2);
 
-// Decrease the balls left count and update the display
-ballsLeft--;
-document.getElementById('balls-left').innerText = `Balls left: ${ballsLeft}`;
-}
+        sphereIdx = (sphereIdx + 1) % spheres.length;
+
+        // Decrease the balls left count and update the display
+        ballsLeft--;
+        document.getElementById('balls-left').innerText = `Balls left: ${ballsLeft}`;
+    }
 
 }
 function checkBallSpikeCollisions(ball, spike) {
@@ -174,11 +220,11 @@ const distance = ball.collider.center.distanceTo(spike.position);
 const minDistance = ball.collider.radius + 0.1; // Adjust the 0.1 value as needed
 
 if (distance < minDistance) {
-// Perform collision response here
-// You can modify the ball's velocity or position based on the collision
-// For example, you can reverse the ball's velocity to simulate a rebound:
-ball.velocity.negate(); // Reverse the velocity
-}
+    // Perform collision response here
+    // You can modify the ball's velocity or position based on the collision
+    // For example, you can reverse the ball's velocity to simulate a rebound:
+    ball.velocity.negate(); // Reverse the velocity
+    }
 }
 
 function playerCollisions() {
@@ -223,7 +269,9 @@ function updatePlayer( deltaTime ) {
 
     playerCollisions();
 
-    camera.position.copy( playerCollider.end );
+    camera.position.copy( playerCollider.end );//MOVING CAMERA MAINSCREEN
+
+    minicamera.position.copy( playerCollider.end );//MOVING PLAYER ON MINIMAP
 
 }
 
@@ -482,6 +530,8 @@ function animate() {
     }
 
     renderer.render( scene, camera );
+    
+    minimapRenderer.render(scene, minicamera);//RENDER SAME SCREEN BUT DIFF CAMERA PERSPECTIVE FOR THE MINIMAP
 
     stats.update();
 
