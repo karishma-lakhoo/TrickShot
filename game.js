@@ -6,6 +6,10 @@ import { OctreeHelper } from 'three/addons/helpers/OctreeHelper.js';
 import { Capsule } from 'three/addons/math/Capsule.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
+import { Audio, AudioLoader, AudioListener } from 'three';
+
+// Create an audio listener and add it to the camera
+
 const clock = new THREE.Clock();
 
 const scene = new THREE.Scene();
@@ -14,6 +18,18 @@ scene.fog = new THREE.Fog( 0x88ccee, 0, 50 );
 
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.rotation.order = 'YXZ';
+const listener = new AudioListener();
+camera.add(listener);
+
+// Load an audio file (adjust the path to your audio file)
+const audioLoader = new AudioLoader();
+const collisionSound  = new Audio(listener);
+
+audioLoader.load('music/ballcollision.mp3', (buffer) => {
+  collisionSound.setBuffer(buffer);
+  collisionSound.setLoop(false);
+  collisionSound.setVolume(0.5); // Adjust the volume as needed
+});
 
 const fillLight1 = new THREE.HemisphereLight( 0x8dc1de, 0x00668d, 1.5 );
 fillLight1.position.set( 2, 1, 1 );
@@ -283,6 +299,7 @@ function spheresCollisions() {
 
 }
 
+
 function updateSpheres( deltaTime ) {
 
     spheres.forEach( sphere => {
@@ -298,12 +315,14 @@ function updateSpheres( deltaTime ) {
             sphere.collider.center.add( result.normal.multiplyScalar( result.depth ) );
 
         } else if ( fanResult ) {
+            // Play the collision sound only if it's not already playing
+            collisionSound.play();
             console.log('Sphere hit blades');
             //Complete the bounce off the fan
             sphere.velocity.addScaledVector( fanResult.normal, - fanResult.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
 
-            
+
 
         }
             else {
