@@ -397,19 +397,15 @@ const targetOctree2 = new Octree();
 targetCreate(0, 0, 10, 0, 0, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
         target1 = loadedTarget;
-        console.log("Target 1 loaded:", target1);
     })
     .catch((error) => {
-        console.error("Error loading Target 1:", error);
     });
 
 targetCreate(3, 0, 7, 0, 0, 0, 1, 1, 1, targetOctree2)
     .then((loadedTarget) => {
         target2 = loadedTarget;
-        console.log("Target 2 loaded:", target2);
     })
     .catch((error) => {
-        console.error("Error loading Target 2:", error);
     });
 
 
@@ -420,10 +416,7 @@ function changeModel(target){
     targetHitLoader.load('targetHit.glb', (gltf) => {
 
         targetHit = gltf.scene
-        console.log("In chnage model")
-        console.log(target.position)
-        console.log("position in the function")
-        console.log(target)
+
 
         targetHit.position.copy(target.position);
         targetHit.rotation.copy(target.rotation);
