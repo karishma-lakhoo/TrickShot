@@ -286,67 +286,6 @@ function playerSphereCollision( sphere ) {
 
 }
 
-// Modify the targetCreate function to return a promise that resolves when the model is loaded
-// function targetCreate(posx, posy, posz, rotx, roty, rotz, scalx, scaly, scalz) {
-//     return new Promise((resolve, reject) => {
-//         const targetLoader = new GLTFLoader().setPath('./models/gltf/');
-//         let target;
-//
-//         targetLoader.load('target.glb', (gltf) => {
-//             target = gltf.scene;
-//             target.position.set(posx, posy, posz);
-//             target.rotation.set(rotx, roty, rotz);
-//             target.scale.set(scalx, scaly, scalz);
-//             scene.add(target);
-//             targetOctree.fromGraphNode(target);
-//
-//             target.traverse((child) => {
-//                 if (child.isMesh) {
-//                     child.castShadow = true;
-//                     child.receiveShadow = true;
-//                     if (child.material.map) {
-//                         child.material.map.anisotropy = 4;
-//                     }
-//                 }
-//             });
-//
-//             const helper = new OctreeHelper(targetOctree);
-//             helper.visible = false;
-//             scene.add(helper);
-//
-//             resolve(target); // Resolve the promise with the loaded model
-//         }, undefined, (error) => {
-//             reject(error); // Reject the promise if there's an error during loading
-//         });
-//     });
-// }
-//
-// // Usage of targetCreate with promises
-// let target1, target2;
-//
-// targetCreate(0, 0, 10, 0, 0, 0, 1, 1, 1)
-//     .then((loadedTarget) => {
-//         target1 = loadedTarget;
-//         console.log("Target 1 loaded:", target1);
-//     })
-//     .catch((error) => {
-//         console.error("Error loading Target 1:", error);
-//     });
-//
-// targetCreate(3, 0, 7, 0, 0, 0, 1, 1, 1)
-//     .then((loadedTarget) => {
-//         target2 = loadedTarget;
-//         console.log("Target 2 loaded:", target2);
-//     })
-//     .catch((error) => {
-//         console.error("Error loading Target 2:", error);
-//     });
-
-const targetOctrees = []; // Array to store octrees for each target
-
-// ...
-
-// Modify the targetCreate function to accept an octree as a parameter
 
 function targetCreate(posx, posy, posz, rotx, roty, rotz, scalx, scaly, scalz, octree) {
     return new Promise((resolve, reject) => {
@@ -417,7 +356,6 @@ function changeModel(target){
 
         targetHit = gltf.scene
 
-
         targetHit.position.copy(target.position);
         targetHit.rotation.copy(target.rotation);
         targetHit.scale.copy(target.scale);
@@ -445,8 +383,6 @@ function changeModel(target){
         const helper = new OctreeHelper( targetOctree );
         helper.visible = false;
         scene.add(helper)
-
-        target.modelChanged = true;
 
         target.traverse((child) => {
             if (child.isMesh) {
@@ -501,8 +437,7 @@ function spheresCollisions() {
 }
 
 
-// const customTarget = new Target(scene, new THREE.Vector3(10, 2, -5), new THREE.Euler(0, Math.PI / 4, 0), new THREE.Vector3(2, 2, 2));
-
+let count = 0
 function updateSpheres( deltaTime ) {
 
     spheres.forEach( sphere => {
@@ -520,11 +455,22 @@ function updateSpheres( deltaTime ) {
             sphere.collider.center.add(result.normal.multiplyScalar(result.depth));
         }
         else if ( resultTarget1 ) {
+            if (target1.modelChanged === false){
+                count++
+                target1.modelChanged = true
+                console.log(count)
+            }
             changeModel(target1)
             sphere.velocity.addScaledVector(resultTarget1.normal, -resultTarget1.normal.dot(sphere.velocity) * 1.5);
             sphere.collider.center.add(resultTarget1.normal.multiplyScalar(resultTarget1.depth));
         }
         else if ( resultTarget2 ) {
+            if (target2.modelChanged === false){
+                count++
+                target2.modelChanged = true
+                console.log(count)
+            }
+
             changeModel(target2)
             sphere.velocity.addScaledVector( resultTarget2.normal, - resultTarget2.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( resultTarget2.normal.multiplyScalar( resultTarget2.depth ) );
