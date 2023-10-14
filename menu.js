@@ -20,6 +20,7 @@ document.getElementById('level-button').addEventListener('click', function () {
 
 const backgroundMusic = new Audio('music/menusong.mp3');
 backgroundMusic.loop = true;
+backgroundMusic.volume = 0.1;
 
 
 document.getElementById('music').addEventListener('change', function () {
