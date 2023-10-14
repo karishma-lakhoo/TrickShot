@@ -186,18 +186,19 @@ document.addEventListener( 'mouseup', () => {
     if ( document.pointerLockElement !== null ) throwBall();
 
 } );
+let storedMouseSpeed = localStorage.getItem('MouseSpeed');
 
 document.body.addEventListener( 'mousemove', ( event ) => {
 
     if (document.pointerLockElement === document.body) {
         // Limit how far down the camera can look (adjust the values as needed)
         // Normal FPS camera
-        camera.rotation.x -= event.movementY / 500;
+        camera.rotation.x -= event.movementY / storedMouseSpeed; //mouse speed default is 500
         camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x)); // Clamp the rotation
-        camera.rotation.y -= event.movementX / 500;
+        camera.rotation.y -= event.movementX / storedMouseSpeed; //mouse speed default is 500
 
         // Minimap camera rotation 
-        minicamera.rotation.z -= event.movementX / 500; 
+        minicamera.rotation.z -= event.movementX / storedMouseSpeed; 
         // Because the camera is set to point down we need to rotate along z axis
 }
 

@@ -5,9 +5,14 @@ setTimeout(function() {
 document.addEventListener('DOMContentLoaded', function () {
     let storedSEVolume = localStorage.getItem('SEVolume');
     if (storedSEVolume === null) {
-        // If not set in local storage, set the default value
         storedSEVolume = 0.5;
         localStorage.setItem('SEVolume', storedSEVolume);
+    }
+
+    let storedMouseSpeed = localStorage.getItem('MouseSpeed');
+    if (storedMouseSpeed === null) {
+        storedMouseSpeed = 500;
+        localStorage.setItem('MouseSpeed', storedMouseSpeed);
     }
     
 });
