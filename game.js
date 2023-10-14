@@ -57,6 +57,7 @@ directionalLight.shadow.radius = 4;
 directionalLight.shadow.bias = - 0.00006;
 scene.add( directionalLight );
 
+
 const container = document.getElementById( 'fps-container' );
 
 const renderer = new THREE.WebGLRenderer( { antialias: true } );
