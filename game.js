@@ -25,19 +25,19 @@ camera.add(listener);
 // Load an audio file (adjust the path to your audio file)
 const audioLoader = new AudioLoader();
 const collisionSound  = new Audio(listener);
-let storedVolume = localStorage.getItem('soundVolume');
+let storedSEVolume = localStorage.getItem('SEVolume');
 
 audioLoader.load('music/ballcollision.mp3', (buffer) => {
   collisionSound.setBuffer(buffer);
   collisionSound.setLoop(false);
-  collisionSound.setVolume(storedVolume); // Adjust the volume as needed
+  collisionSound.setVolume(storedSEVolume); // Adjust the volume as needed
 });
 
 const jumpSound  = new Audio(listener);
 audioLoader.load('music/jump.mp3', (buffer) => {
     jumpSound.setBuffer(buffer);
     jumpSound.setLoop(false);
-    jumpSound.setVolume(storedVolume); // Adjust the volume as needed
+    jumpSound.setVolume(storedSEVolume); // Adjust the volume as needed
 });
 
 /* MINIMAP CAMERA */

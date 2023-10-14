@@ -3,11 +3,11 @@ setTimeout(function() {
 }, 5000); //5 seconds
 
 document.addEventListener('DOMContentLoaded', function () {
-    let storedVolume = localStorage.getItem('soundVolume');
-    if (storedVolume === null) {
+    let storedSEVolume = localStorage.getItem('SEVolume');
+    if (storedSEVolume === null) {
         // If not set in local storage, set the default value
-        storedVolume = 0.5;
-        localStorage.setItem('soundVolume', storedVolume);
+        storedSEVolume = 0.5;
+        localStorage.setItem('SEVolume', storedSEVolume);
     }
     
 });
