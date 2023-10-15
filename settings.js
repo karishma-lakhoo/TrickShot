@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const storedMouseSpeed = localStorage.getItem('MouseSpeed') ;
-    MouseSpeedSlider.value = storedMouseSpeed;
-    MouseSpeedValue.textContent = storedMouseSpeed / 10;
+    MouseSpeedSlider.value = 1200-storedMouseSpeed;
+    MouseSpeedValue.textContent = 110-storedMouseSpeed / 10;
     
     const BackgroundVolumeSlider = document.getElementById('BackgroundVolume-slider');
     const BackgroundVolumeValue = document.getElementById('BackgroundVolume-value');
