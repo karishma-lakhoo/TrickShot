@@ -24,6 +24,7 @@ camera.add(listener);
 const audioLoader = new AudioLoader();
 const collisionSound  = new Audio(listener);
 let storedSEVolume = localStorage.getItem('SEVolume');
+let storedBackgroundVolume = localStorage.getItem('BackgroundVolume');
 
 audioLoader.load('music/ballcollision.mp3', (buffer) => {
   collisionSound.setBuffer(buffer);
@@ -46,12 +47,12 @@ audioLoader.load('music/jump.mp3', (buffer) => {
 audioLoader.load('music/targetActivatesfx.mp3', (buffer) => {
     targetActivate.setBuffer(buffer);
     targetActivate.setLoop(false);
-    targetActivate.setVolume(0.5); // Adjust the volume as needed
+    targetActivate.setVolume(storedSEVolume); // Adjust the volume as needed
 });
 audioLoader.load('music/level-win-6416.mp3', (buffer) => {
     levelComplete.setBuffer(buffer);
     levelComplete.setLoop(false);
-    levelComplete.setVolume(0.5); // Adjust the volume as needed
+    levelComplete.setVolume(storedSEVolume); // Adjust the volume as needed
 });
 
 const backgroundMusic = new Audio(listener);
@@ -59,7 +60,7 @@ const backgroundMusic = new Audio(listener);
 audioLoader.load('music/neon-gaming-128925.mp3', (buffer) => {
     backgroundMusic.setBuffer(buffer);
     backgroundMusic.setLoop(true);
-    backgroundMusic.setVolume(0.1); // Adjust the volume as needed
+    backgroundMusic.setVolume(storedBackgroundVolume); // Adjust the volume as needed
     backgroundMusic.play();
 });
 
@@ -611,21 +612,6 @@ function spheresCollisions() {
 
 }
 
-function playTargetActivateSound() {
-    // Check if the audio is currently playing
-    if (targetActivateSource && targetActivateSource.state === 'running') {
-        // If it is, stop the current playback
-        targetActivateSource.stop();
-    }
-
-    // Create a new source node and play the audio
-    targetActivateSource = audioContext.createBufferSource();
-    targetActivateSource.buffer = targetActivate.buffer;
-    targetActivateSource.connect(audioContext.destination);
-    targetActivateSource.start();
-}
-
-
 let count = 0
 
 
@@ -651,7 +637,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget1 ) {
             if (target1.modelChanged === false){
-                playTargetActivateSound()
+                targetActivate.play();
                 count++
                 target1.modelChanged = true
                 targetsLeft--;
@@ -666,7 +652,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget2 ) {
             if (target2.modelChanged === false){
-                playTargetActivateSound()
+                targetActivate.play();
                 count++
                 targetsLeft--;
                 target2.modelChanged = true
@@ -682,7 +668,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget3 ) {
             if (target3.modelChanged === false){
-                playTargetActivateSound()
+                targetActivate.play();
                 count++
                 targetsLeft--;
                 target3.modelChanged = true
@@ -701,7 +687,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget4 ) {
             if (target4.modelChanged === false){
-                playTargetActivateSound()
+                targetActivate.play();
                 count++
                 targetsLeft--;
                 target4.modelChanged = true
@@ -720,7 +706,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget5 ) {
             if (target5.modelChanged === false){
-                playTargetActivateSound()
+                targetActivate.play();
                 count++
                 targetsLeft--;
                 target5.modelChanged = true
@@ -739,7 +725,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget6 ) {
             if (target6.modelChanged === false){
-                playTargetActivateSound()
+                targetActivate.play();
                 count++
                 targetsLeft--;
                 target6.modelChanged = true
@@ -947,7 +933,7 @@ function teleportPlayerIfOob() {
 }
 let fanRotation = 0;
 
-const initialTime = 10; // 5 minutes
+const initialTime = 20; // 5 minutes
 let remainingTime = initialTime;
 let timeIsUp = false;
 

@@ -14,6 +14,12 @@ document.addEventListener('DOMContentLoaded', function () {
         storedMouseSpeed = 500;
         localStorage.setItem('MouseSpeed', storedMouseSpeed);
     }
+
+    let storedBackgroundVolume = localStorage.getItem('BackgroundVolume');
+    if (storedBackgroundVolume === null) {
+        storedBackgroundVolume = 0.1;
+        localStorage.setItem('BackgroundVolume', storedBackgroundVolume);
+    }
     
 });
 

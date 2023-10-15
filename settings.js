@@ -33,5 +33,19 @@ document.addEventListener('DOMContentLoaded', function () {
     MouseSpeedSlider.value = storedMouseSpeed;
     MouseSpeedValue.textContent = storedMouseSpeed / 10;
     
+    const BackgroundVolumeSlider = document.getElementById('BackgroundVolume-slider');
+    const BackgroundVolumeValue = document.getElementById('BackgroundVolume-value');
+
+    BackgroundVolumeSlider.addEventListener('input', function () {
+        const actualBackgroundValue = BackgroundVolumeSlider.value;  
+        const displayedBackgroundValue = parseInt(actualBackgroundValue * 100); 
+        BackgroundVolumeValue.textContent = displayedBackgroundValue;
+
+        localStorage.setItem('BackgroundVolume', actualBackgroundValue);
+    });
+
+    const storedBackgroundVolume = localStorage.getItem('BackgroundVolume') ;
+    BackgroundVolumeSlider.value = storedBackgroundVolume;
+    BackgroundVolumeValue.textContent = parseInt(storedBackgroundVolume * 100);
 });
 
