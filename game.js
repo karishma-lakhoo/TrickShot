@@ -18,10 +18,10 @@ scene.fog = new THREE.Fog( 0x88ccee, 0, 50 );
 
 /* NORMAL CAMERA */
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
+camera.position.set(7.92125, 0,27)
 camera.rotation.order = 'YXZ';
 const listener = new AudioListener();
 camera.add(listener);
-
 // Load an audio file (adjust the path to your audio file)
 const audioLoader = new AudioLoader();
 const collisionSound  = new Audio(listener);
@@ -146,7 +146,7 @@ const worldOctree = new Octree();
 const targetOctree = new Octree();
 const fanOctree = new Octree();
 
-const playerCollider = new Capsule( new THREE.Vector3( 0, 0.35, 0 ), new THREE.Vector3( 0, 1, 0 ), 0.35 );
+const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
 
 const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
@@ -376,12 +376,14 @@ function targetCreate(posx, posy, posz, rotx, roty, rotz, scalx, scaly, scalz, o
 // ...
 
 // Usage of targetCreate with promises
-let target1, target2, target3;
+let target1, target2, target3, target4, target5;
 
 // Create a new octree for each target
 const targetOctree1 = new Octree();
 const targetOctree2 = new Octree();
 const targetOctree3 = new Octree();
+const targetOctree4 = new Octree();
+const targetOctree5 = new Octree();
 
 targetCreate(0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
@@ -402,7 +404,19 @@ targetCreate(8.75, -1.75, 3.5, 0, Math.PI/2, 0, 0.5, 0.5, 0.5, targetOctree3)
     })
     .catch((error) => {
     });
+targetCreate(-0.708183, -0.5, -20.3813, 0, 0, 0, 1, 1, 1, targetOctree4)
+    .then((loadedTarget) => {
+        target4 = loadedTarget;
+    })
+    .catch((error) => {
+    });
 
+targetCreate(-11.2, 3, -34.3, 0, Math.PI/2, 0, 0.75, 0.75, 0.75, targetOctree5)
+    .then((loadedTarget) => {
+        target5 = loadedTarget;
+    })
+    .catch((error) => {
+    });
 
 function changeModel(target){
     const targetHitLoader = new GLTFLoader().setPath('./models/gltf/');
@@ -505,6 +519,8 @@ function updateSpheres( deltaTime ) {
         const resultTarget1 = targetOctree1.sphereIntersect( sphere.collider );
         const resultTarget2 = targetOctree2.sphereIntersect( sphere.collider );
         const resultTarget3 = targetOctree3.sphereIntersect( sphere.collider );
+        const resultTarget4 = targetOctree4.sphereIntersect( sphere.collider );
+        const resultTarget5 = targetOctree5.sphereIntersect( sphere.collider );
 
         if ( result ) {
 
@@ -542,6 +558,28 @@ function updateSpheres( deltaTime ) {
             changeModel(target3)
             sphere.velocity.addScaledVector( resultTarget3.normal, - resultTarget3.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( resultTarget3.normal.multiplyScalar( resultTarget3.depth ) );
+        }
+        else if ( resultTarget4 ) {
+            if (target4.modelChanged === false){
+                count++
+                target4.modelChanged = true
+                console.log(count)
+            }
+
+            changeModel(target4)
+            sphere.velocity.addScaledVector( resultTarget4.normal, - resultTarget4.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget4.normal.multiplyScalar( resultTarget4.depth ) );
+        }
+        else if ( resultTarget5 ) {
+            if (target5.modelChanged === false){
+                count++
+                target5.modelChanged = true
+                console.log(count)
+            }
+
+            changeModel(target5)
+            sphere.velocity.addScaledVector( resultTarget5.normal, - resultTarget5.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget5.normal.multiplyScalar( resultTarget5.depth ) );
         }
         else if ( fanResult ) {
             // Play the collision sound only if it's not already playing
