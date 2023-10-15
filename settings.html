@@ -6,21 +6,33 @@
     <link type="text/css" rel="stylesheet" href="settings.css">
     <title>Settings</title>
 </head>
-<body> 
-    <div class="volume-container">
-    <label for="SEVolume-slider">Sound Effects Volume:</label>
-    <input type="range" id="SEVolume-slider" min="0" max="1" step="0.1">
-    <span id="SEVolume-value">0.5</span>
+<body>
+    <div class="container">
+        <h1>Settings</h1>
 
-    <label for="MouseSpeed-slider">Mouse Speed:</label>
-    <input type="range" id="MouseSpeed-slider" min="100" max="1000" step="100">
-    <span id="MouseSpeed-value">500</span>
+        <div class="volume-container">
+            <div class="setting">
+                <h2>Sound Effects Volume</h2>
+                <input type="range" id="SEVolume-slider" min="0" max="1" step="0.1">
+                <span id="SEVolume-value">5</span>
+            </div>
 
-    <label for="BackgroundVolume-slider">Background Volume:</label>
-    <input type="range" id="BackgroundVolume-slider" min="0" max="0.2" step="0.01">
-    <span id="BackgroundVolume-value">10</span>
-</div>
-    <button id="back-button">Back</button>
+            <div class="setting">
+                <h2>Mouse Speed</h2>
+                <input type="range" id="MouseSpeed-slider" min="100" max="1100" step="100">
+                <span id="MouseSpeed-value">60</span>
+            </div>
+
+            <div class="setting">
+                <h2>Background Volume</h2>
+                <input type="range" id="BackgroundVolume-slider" min="0" max="0.2" step="0.01">
+                <span id="BackgroundVolume-value">10</span>
+            </div>
+        </div>
+        
+        <button id="back-button">Back</button>
+    </div>
+
     <script src="settings.js"></script>
 </body>
 </html>

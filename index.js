@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let storedMouseSpeed = localStorage.getItem('MouseSpeed');
     if (storedMouseSpeed === null) {
-        storedMouseSpeed = 500;
+        storedMouseSpeed = 600;
         localStorage.setItem('MouseSpeed', storedMouseSpeed);
     }
 

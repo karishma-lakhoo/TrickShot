@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const MouseSpeedValue = document.getElementById('MouseSpeed-value');
 
     MouseSpeedSlider.addEventListener('input', function () {
-        const actualMouseSpeedValue = 1100 - MouseSpeedSlider.value;  
-        const displayedMouseSpeedValue = 100 -actualMouseSpeedValue / 10; 
+        const actualMouseSpeedValue = 1200 - MouseSpeedSlider.value;  
+        const displayedMouseSpeedValue = 110 -actualMouseSpeedValue / 10; 
         MouseSpeedValue.textContent = displayedMouseSpeedValue;
 
         localStorage.setItem('MouseSpeed', actualMouseSpeedValue);
