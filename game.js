@@ -31,12 +31,38 @@ audioLoader.load('music/ballcollision.mp3', (buffer) => {
   collisionSound.setVolume(storedSEVolume); // Adjust the volume as needed
 });
 
+const audioContext = new (window.AudioContext)();
 const jumpSound  = new Audio(listener);
+const targetActivate = new Audio(listener);
+const levelComplete = new Audio(listener);
+let targetActivateSource = null;
+
 audioLoader.load('music/jump.mp3', (buffer) => {
     jumpSound.setBuffer(buffer);
     jumpSound.setLoop(false);
     jumpSound.setVolume(storedSEVolume); // Adjust the volume as needed
 });
+
+audioLoader.load('music/targetActivatesfx.mp3', (buffer) => {
+    targetActivate.setBuffer(buffer);
+    targetActivate.setLoop(false);
+    targetActivate.setVolume(0.5); // Adjust the volume as needed
+});
+audioLoader.load('music/level-win-6416.mp3', (buffer) => {
+    levelComplete.setBuffer(buffer);
+    levelComplete.setLoop(false);
+    levelComplete.setVolume(0.5); // Adjust the volume as needed
+});
+
+const backgroundMusic = new Audio(listener);
+
+audioLoader.load('music/neon-gaming-128925.mp3', (buffer) => {
+    backgroundMusic.setBuffer(buffer);
+    backgroundMusic.setLoop(true);
+    backgroundMusic.setVolume(0.1); // Adjust the volume as needed
+    backgroundMusic.play();
+});
+
 
 /* MINIMAP CAMERA */
 // Define the orthographic camera's properties
@@ -110,6 +136,7 @@ stats.domElement.style.top = '0px';
 container.appendChild( stats.domElement );
 
 const GRAVITY = 9.8;
+let allowPlayerMovement = true;
 
 const NUM_SPHERES = 20;
 const SPHERE_RADIUS = 0.2;
@@ -172,6 +199,9 @@ document.addEventListener( 'keyup', ( event ) => {
 } );
 
 container.addEventListener( 'mousedown', () => {
+    if (!allowPlayerMovement) {
+        return; // If player movement is not allowed, exit the function
+    }
 
     document.body.requestPointerLock();
 
@@ -180,6 +210,9 @@ container.addEventListener( 'mousedown', () => {
 } );
 
 document.addEventListener( 'mouseup', () => {
+    if (!allowPlayerMovement) {
+        return; // If player movement is not allowed, exit the function
+    }
 
     if ( document.pointerLockElement !== null ) throwBall();
 
@@ -187,6 +220,10 @@ document.addEventListener( 'mouseup', () => {
 let storedMouseSpeed = localStorage.getItem('MouseSpeed');
 
 document.body.addEventListener( 'mousemove', ( event ) => {
+
+    if (!allowPlayerMovement) {
+        return; // If player movement is not allowed, exit the function
+    }
 
     if (document.pointerLockElement === document.body) {
         // Limit how far down the camera can look (adjust the values as needed)
@@ -202,6 +239,62 @@ document.body.addEventListener( 'mousemove', ( event ) => {
 
 } );
 
+function showLevelFinishScreen() {
+    if (levelCompleted){
+        levelComplete.play();
+    }
+    backgroundMusic.stop()
+    const levelFinishScreen = document.getElementById('level-finish');
+    levelFinishScreen.style.display = 'block';
+    allowPlayerMovement = false;
+    document.exitPointerLock();
+
+    clearInterval(timerInterval);
+
+    const nextLevelButton = document.getElementById('next-level-btn');
+    const endScreenHeading = document.getElementById("endScreen-Heading");
+    // Check if the time has run out
+    if (timeIsUp) {
+        // If the time is up, hide the "Next Level" button
+        nextLevelButton.style.display = 'none';
+        endScreenHeading.textContent = 'You Lost';
+
+    } else {
+        // If the time is not up, show the "Next Level" button
+        nextLevelButton.style.display = 'block';
+    }
+}
+
+let levelCompleted = false;
+
+document.addEventListener('DOMContentLoaded', () => {
+    const restartButton = document.getElementById('restart-btn');
+    const nextLevelButton = document.getElementById('next-level-btn');
+    const exitButton = document.getElementById('exit-btn');
+
+    // Add event listeners to buttons
+    restartButton.addEventListener('click', () => {
+        // Handle restart button click
+        window.location.href = 'game.html';
+        // console.log('Restart button clicked');
+    });
+
+    nextLevelButton.addEventListener('click', () => {
+        // Handle next level button click
+        console.log('Next Level button clicked');
+    });
+
+    exitButton.addEventListener('click', () => {
+        // Handle exit button click
+        window.location.href = 'menu.html';
+    });
+
+    // Call the function to show the level finish screen (you can call it when the level is completed)
+    // showLevelFinishScreen();
+});
+
+
+
 window.addEventListener( 'resize', onWindowResize );
 
 function onWindowResize() {
@@ -213,6 +306,7 @@ function onWindowResize() {
 
 }
 let ballsLeft = 20;
+let targetsLeft = 6;
 
 function throwBall() {
 
@@ -376,11 +470,15 @@ function targetCreate(posx, posy, posz, rotx, roty, rotz, scalx, scaly, scalz, o
 // ...
 
 // Usage of targetCreate with promises
-let target1, target2;
+let target1, target2, target3, target4, target5, target6;
 
 // Create a new octree for each target
 const targetOctree1 = new Octree();
 const targetOctree2 = new Octree();
+const targetOctree3 = new Octree();
+const targetOctree4 = new Octree();
+const targetOctree5 = new Octree();
+const targetOctree6 = new Octree();
 
 targetCreate(0, 0, 10, 0, 0, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
@@ -389,9 +487,37 @@ targetCreate(0, 0, 10, 0, 0, 0, 1, 1, 1, targetOctree1)
     .catch((error) => {
     });
 
-targetCreate(3, 0, 7, 0, 0, 0, 1, 1, 1, targetOctree2)
+targetCreate(3, 0, 7, 0, 30, 0, 1, 1, 1, targetOctree2)
     .then((loadedTarget) => {
         target2 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(3, 5, 7, 0, 0, 0, 1, 1, 1, targetOctree3)
+    .then((loadedTarget) => {
+        target3 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(-8, 0, 5, 0, 0, 0, 1, 1, 1, targetOctree4)
+    .then((loadedTarget) => {
+        target4 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(-3, -0.5, -3, 0, 0, 0, 1, 1, 1, targetOctree5)
+    .then((loadedTarget) => {
+        target5 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(3, 0, -3, 0, 0, 0, 1, 1, 1, targetOctree6)
+    .then((loadedTarget) => {
+        target6 = loadedTarget;
     })
     .catch((error) => {
     });
@@ -485,8 +611,24 @@ function spheresCollisions() {
 
 }
 
+function playTargetActivateSound() {
+    // Check if the audio is currently playing
+    if (targetActivateSource && targetActivateSource.state === 'running') {
+        // If it is, stop the current playback
+        targetActivateSource.stop();
+    }
+
+    // Create a new source node and play the audio
+    targetActivateSource = audioContext.createBufferSource();
+    targetActivateSource.buffer = targetActivate.buffer;
+    targetActivateSource.connect(audioContext.destination);
+    targetActivateSource.start();
+}
+
 
 let count = 0
+
+
 function updateSpheres( deltaTime ) {
 
     spheres.forEach( sphere => {
@@ -497,6 +639,10 @@ function updateSpheres( deltaTime ) {
         const fanResult = fanOctree.sphereIntersect( sphere.collider );
         const resultTarget1 = targetOctree1.sphereIntersect( sphere.collider );
         const resultTarget2 = targetOctree2.sphereIntersect( sphere.collider );
+        const resultTarget3 = targetOctree3.sphereIntersect( sphere.collider );
+        const resultTarget4 = targetOctree4.sphereIntersect( sphere.collider );
+        const resultTarget5 = targetOctree5.sphereIntersect( sphere.collider );
+        const resultTarget6 = targetOctree6.sphereIntersect( sphere.collider );
 
         if ( result ) {
 
@@ -505,9 +651,14 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget1 ) {
             if (target1.modelChanged === false){
+                playTargetActivateSound()
                 count++
                 target1.modelChanged = true
-                console.log(count)
+                targetsLeft--;
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    showLevelFinishScreen();
+                }
             }
             changeModel(target1)
             sphere.velocity.addScaledVector(resultTarget1.normal, -resultTarget1.normal.dot(sphere.velocity) * 1.5);
@@ -515,15 +666,96 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget2 ) {
             if (target2.modelChanged === false){
+                playTargetActivateSound()
                 count++
+                targetsLeft--;
                 target2.modelChanged = true
-                console.log(count)
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    showLevelFinishScreen();
+                }
             }
 
             changeModel(target2)
             sphere.velocity.addScaledVector( resultTarget2.normal, - resultTarget2.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( resultTarget2.normal.multiplyScalar( resultTarget2.depth ) );
-        }        
+        }
+        else if ( resultTarget3 ) {
+            if (target3.modelChanged === false){
+                playTargetActivateSound()
+                count++
+                targetsLeft--;
+                target3.modelChanged = true
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count)
+                console.log(targetsLeft)
+            }
+
+            changeModel(target3)
+            sphere.velocity.addScaledVector( resultTarget3.normal, - resultTarget3.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget3.normal.multiplyScalar( resultTarget3.depth ) );
+        }
+        else if ( resultTarget4 ) {
+            if (target4.modelChanged === false){
+                playTargetActivateSound()
+                count++
+                targetsLeft--;
+                target4.modelChanged = true
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count)
+                console.log(targetsLeft)
+            }
+
+            changeModel(target4)
+            sphere.velocity.addScaledVector( resultTarget4.normal, - resultTarget4.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget4.normal.multiplyScalar( resultTarget4.depth ) );
+        }
+        else if ( resultTarget5 ) {
+            if (target5.modelChanged === false){
+                playTargetActivateSound()
+                count++
+                targetsLeft--;
+                target5.modelChanged = true
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count)
+                console.log(targetsLeft)
+            }
+
+            changeModel(target5)
+            sphere.velocity.addScaledVector( resultTarget5.normal, - resultTarget5.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget5.normal.multiplyScalar( resultTarget5.depth ) );
+        }
+        else if ( resultTarget6 ) {
+            if (target6.modelChanged === false){
+                playTargetActivateSound()
+                count++
+                targetsLeft--;
+                target6.modelChanged = true
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count)
+                console.log(targetsLeft)
+            }
+
+            changeModel(target6)
+            sphere.velocity.addScaledVector( resultTarget6.normal, - resultTarget6.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget6.normal.multiplyScalar( resultTarget6.depth ) );
+        }
         else if ( fanResult ) {
             // Play the collision sound only if it's not already playing
             collisionSound.play();
@@ -579,6 +811,10 @@ function getSideVector() {
 }
 
 function controls( deltaTime ) {
+
+    if (!allowPlayerMovement) {
+        return; // If player movement is not allowed, exit the function
+    }
 
     // gives a bit of air control
     const speedDelta = deltaTime * ( playerOnFloor ? 25 : 4 );
@@ -710,6 +946,42 @@ function teleportPlayerIfOob() {
 
 }
 let fanRotation = 0;
+
+const initialTime = 10; // 5 minutes
+let remainingTime = initialTime;
+let timeIsUp = false;
+
+// Display the initial time
+document.getElementById('timer').innerText = `Time left: ${formatTime(remainingTime)}`;
+
+// Set up the timer interval
+const timerInterval = setInterval(updateTimer, 1000); // Update every second
+
+function updateTimer() {
+    remainingTime--;
+
+    // Display the updated time
+    document.getElementById('timer').innerText = `Time left: ${formatTime(remainingTime)}`;
+
+    // Check if the time has run out
+    if (remainingTime <= 0) {
+        clearInterval(timerInterval); // Stop the timer
+        timeIsUp = true;
+        showLevelFinishScreen(); // Your function to handle time-out (e.g., end the game)
+    }
+}
+
+// Function to format the time as MM:SS
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secondsPart = seconds % 60;
+    return `${padZero(minutes)}:${padZero(secondsPart)}`;
+}
+
+// Function to pad single-digit numbers with a leading zero
+function padZero(number) {
+    return number < 10 ? `0${number}` : number;
+}
 function animate() {
 
     const deltaTime = Math.min( 0.05, clock.getDelta() ) / STEPS_PER_FRAME;
@@ -734,10 +1006,10 @@ function animate() {
     //     blades.rotation.z = fanRotation;
     // }
 
-    
+
 
     renderer.render( scene, camera );
-    
+
     minimapRenderer.render(scene, minicamera);//RENDER SAME SCREEN BUT DIFF CAMERA PERSPECTIVE FOR THE MINIMAP
 
     stats.update();
