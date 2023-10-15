@@ -376,22 +376,29 @@ function targetCreate(posx, posy, posz, rotx, roty, rotz, scalx, scaly, scalz, o
 // ...
 
 // Usage of targetCreate with promises
-let target1, target2;
+let target1, target2, target3;
 
 // Create a new octree for each target
 const targetOctree1 = new Octree();
 const targetOctree2 = new Octree();
+const targetOctree3 = new Octree();
 
-targetCreate(0, 0, 10, 0, 0, 0, 1, 1, 1, targetOctree1)
+targetCreate(0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
         target1 = loadedTarget;
     })
     .catch((error) => {
     });
 
-targetCreate(3, 0, 7, 0, 0, 0, 1, 1, 1, targetOctree2)
+targetCreate(4.75, 3.56, 16.5, 0, Math.PI/2, 0, 1.5, 1.5, 1.5, targetOctree2)
     .then((loadedTarget) => {
         target2 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+targetCreate(8.75, -1.75, 3.5, 0, Math.PI/2, 0, 0.5, 0.5, 0.5, targetOctree3)
+    .then((loadedTarget) => {
+        target3 = loadedTarget;
     })
     .catch((error) => {
     });
@@ -497,6 +504,7 @@ function updateSpheres( deltaTime ) {
         const fanResult = fanOctree.sphereIntersect( sphere.collider );
         const resultTarget1 = targetOctree1.sphereIntersect( sphere.collider );
         const resultTarget2 = targetOctree2.sphereIntersect( sphere.collider );
+        const resultTarget3 = targetOctree3.sphereIntersect( sphere.collider );
 
         if ( result ) {
 
@@ -523,7 +531,18 @@ function updateSpheres( deltaTime ) {
             changeModel(target2)
             sphere.velocity.addScaledVector( resultTarget2.normal, - resultTarget2.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( resultTarget2.normal.multiplyScalar( resultTarget2.depth ) );
-        }        
+        }
+        else if ( resultTarget3 ) {
+            if (target3.modelChanged === false){
+                count++
+                target3.modelChanged = true
+                console.log(count)
+            }
+
+            changeModel(target3)
+            sphere.velocity.addScaledVector( resultTarget3.normal, - resultTarget3.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget3.normal.multiplyScalar( resultTarget3.depth ) );
+        }
         else if ( fanResult ) {
             // Play the collision sound only if it's not already playing
             collisionSound.play();
@@ -630,6 +649,10 @@ fanloader.load( 'fan.glb', ( gltf ) => {
     const assets = {
         blades
     };
+    if(blades){
+
+        blades.position.set(0,80,0)
+    }
     //if (blades) blades.position.y = 5;
     scene.add( gltf.scene );
 
@@ -664,7 +687,7 @@ fanloader.load( 'fan.glb', ( gltf ) => {
 
 const loader = new GLTFLoader().setPath( './models/gltf/' );
 
-loader.load( 'collision-world.glb', ( gltf ) => {
+loader.load( 'constructionMap.glb', ( gltf ) => {
 
     scene.add( gltf.scene );
 
