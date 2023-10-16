@@ -16,10 +16,11 @@ scene.fog = new THREE.Fog( 0x88ccee, 0, 50 );
 
 /* NORMAL CAMERA */
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
+camera.position.set(7.92125, 0,27)
+camera.rotation.set(0, Math.PI, 0); // 180 degrees rotation, facing the opposite direction
 camera.rotation.order = 'YXZ';
 const listener = new AudioListener();
 camera.add(listener);
-
 // Load an audio file (adjust the path to your audio file)
 const audioLoader = new AudioLoader();
 const collisionSound  = new Audio(listener);
@@ -81,7 +82,7 @@ const minicamera = new THREE.OrthographicCamera(left, right, top, bottom, near, 
 // Set the camera's position above the scene
 minicamera.position.set(0, 10, 0); // Adjust the height (10) as needed
 // Rotate the camera to look straight down
-minicamera.rotation.set(-Math.PI/2, 0, 0);
+minicamera.rotation.set(-Math.PI/2, 0, Math.PI);
 
 const fillLight1 = new THREE.HemisphereLight( 0x8dc1de, 0x00668d, 1.5 );
 fillLight1.position.set( 2, 1, 1 );
@@ -170,9 +171,9 @@ for ( let i = 0; i < NUM_SPHERES; i ++ ) {
 
 const worldOctree = new Octree();
 const targetOctree = new Octree();
-const fanOctree = new Octree();
+// const fanOctree = new Octree();
 
-const playerCollider = new Capsule( new THREE.Vector3( 0, 0.35, 0 ), new THREE.Vector3( 0, 1, 0 ), 0.35 );
+const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
 
 const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
@@ -235,7 +236,7 @@ document.body.addEventListener( 'mousemove', ( event ) => {
         // Minimap camera rotation 
         minicamera.rotation.z -= event.movementX / storedMouseSpeed; 
         // Because the camera is set to point down we need to rotate along z axis
-}
+    }
 
 } );
 
@@ -311,20 +312,20 @@ let targetsLeft = 6;
 function throwBall() {
 
     if (ballsLeft > 0) {
-                const sphere = spheres[sphereIdx];
+        const sphere = spheres[sphereIdx];
 
-                camera.getWorldDirection(playerDirection);
+        camera.getWorldDirection(playerDirection);
 
 
-                sphere.collider.center.copy(playerCollider.end).addScaledVector(playerDirection, playerCollider.radius * 1.5);
+        sphere.collider.center.copy(playerCollider.end).addScaledVector(playerDirection, playerCollider.radius * 1.5);
 
         // throw the ball with more force if we hold the button longer, and if we move forward
-                const impulse = 15 + 30 * (1 - Math.exp((mouseTime - performance.now()) * 0.001));
+        const impulse = 15 + 30 * (1 - Math.exp((mouseTime - performance.now()) * 0.001));
 
-                sphere.velocity.copy(playerDirection).multiplyScalar(impulse);
-                sphere.velocity.addScaledVector(playerVelocity, 2);
+        sphere.velocity.copy(playerDirection).multiplyScalar(impulse);
+        sphere.velocity.addScaledVector(playerVelocity, 2);
 
-                sphereIdx = (sphereIdx + 1) % spheres.length;
+        sphereIdx = (sphereIdx + 1) % spheres.length;
 
         // Decrease the balls left count and update the display
                 ballsLeft--;
@@ -470,7 +471,7 @@ function targetCreate(posx, posy, posz, rotx, roty, rotz, scalx, scaly, scalz, o
 // ...
 
 // Usage of targetCreate with promises
-let target1, target2, target3, target4, target5, target6;
+let target1, target2, target3, target4, target5, target6, target7, target8, target9, target10, target11;
 
 // Create a new octree for each target
 const targetOctree1 = new Octree();
@@ -479,20 +480,84 @@ const targetOctree3 = new Octree();
 const targetOctree4 = new Octree();
 const targetOctree5 = new Octree();
 const targetOctree6 = new Octree();
+const targetOctree7 = new Octree();
+const targetOctree8 = new Octree();
+const targetOctree9 = new Octree();
+const targetOctree10 = new Octree();
+const targetOctree11 = new Octree();
 
-targetCreate(0, 0, 10, 0, 0, 0, 1, 1, 1, targetOctree1)
+
+targetCreate(7, 4, -14, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
         target1 = loadedTarget;
     })
     .catch((error) => {
     });
 
-targetCreate(3, 0, 7, 0, 30, 0, 1, 1, 1, targetOctree2)
+targetCreate(4.75, 3.56, 16.5, 0, Math.PI/2, 0, 1.5, 1.5, 1.5, targetOctree2)
     .then((loadedTarget) => {
         target2 = loadedTarget;
     })
     .catch((error) => {
     });
+targetCreate(7.4, -1.25, 4.1, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree3)
+    .then((loadedTarget) => {
+        target3 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+targetCreate(-0.708183, -0.5, -20.3813, 0, 0, 0, 1, 1, 1, targetOctree4)
+    .then((loadedTarget) => {
+        target4 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(-11.2, 3, -34.3, 0, Math.PI/2, 0, 0.75, 0.75, 0.75, targetOctree5)
+    .then((loadedTarget) => {
+        target5 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+targetCreate(-12.5, 0, -9, 0, 0, 0, 1, 1, 1, targetOctree6)
+    .then((loadedTarget) => {
+        target6 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+targetCreate(-5, 2.75, -9, 0, 0, 0, 0.9, 0.9, 0.9, targetOctree7)
+    .then((loadedTarget) => {
+        target7 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(-6.2, 3.5,-32.5, 0, Math.PI/2, 0, 0.8, 0.8, 0.8, targetOctree8)
+    .then((loadedTarget) => {
+        target8 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(16, 3.5, -4.85, 0, Math.PI/2, 0, 1, 1, 1, targetOctree9)
+    .then((loadedTarget) => {
+        target9 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+
+targetCreate(-6.65, -1.35, 9.8, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree10)
+    .then((loadedTarget) => {
+        target10 = loadedTarget;
+    })
+    .catch((error) => {
+    });
+// targetCreate(0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree11)
+//     .then((loadedTarget) => {
+//         target11 = loadedTarget;
+//     })
+//     .catch((error) => {
+//     });
 
 targetCreate(3, 5, 7, 0, 0, 0, 1, 1, 1, targetOctree3)
     .then((loadedTarget) => {
@@ -628,6 +693,11 @@ function updateSpheres( deltaTime ) {
         const resultTarget4 = targetOctree4.sphereIntersect( sphere.collider );
         const resultTarget5 = targetOctree5.sphereIntersect( sphere.collider );
         const resultTarget6 = targetOctree6.sphereIntersect( sphere.collider );
+        const resultTarget7 = targetOctree7.sphereIntersect( sphere.collider );
+        const resultTarget8 = targetOctree8.sphereIntersect( sphere.collider );
+        const resultTarget9 = targetOctree9.sphereIntersect( sphere.collider );
+        const resultTarget10 = targetOctree10.sphereIntersect( sphere.collider );
+        // const resultTarget11 = targetOctree11.sphereIntersect( sphere.collider );
 
         if ( result ) {
 
@@ -755,6 +825,7 @@ function updateSpheres( deltaTime ) {
             sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
 
         }
+        
         else{
             sphere.velocity.y -= GRAVITY * deltaTime;
         }
@@ -838,7 +909,7 @@ function controls( deltaTime ) {
         if ( keyStates[ 'Space' ] ) {
             jumpSound.play();
             playerVelocity.y = 5;
-            
+
 
         }
 
@@ -848,49 +919,53 @@ function controls( deltaTime ) {
 
 let blades;
 
-const fanloader = new GLTFLoader().setPath( './models/gltf/' );
+// const fanloader = new GLTFLoader().setPath( './models/gltf/' );
 
-fanloader.load( 'fan.glb', ( gltf ) => {
-    blades = gltf.scene.getObjectByName('blades');
+// fanloader.load( 'fan.glb', ( gltf ) => {
+//     blades = gltf.scene.getObjectByName('blades');
+//
+//     const assets = {
+//         blades
+//     };
+//     if(blades){
+//
+//         blades.position.set(0,80,0)
+//     }
+//     //if (blades) blades.position.y = 5;
+//     scene.add( gltf.scene );
+//
+//     fanOctree.fromGraphNode( gltf.scene );
+//
+//     gltf.scene.traverse( child => {
+//
+//         if ( child.isMesh ) {
+//
+//             child.castShadow = true;
+//             child.receiveShadow = true;
+//
+//             if ( child.material.map ) {
+//
+//                 child.material.map.anisotropy = 4;
+//
+//             }
+//
+//         }
+//
+//     } );
 
-    const assets = {
-        blades
-    };
-    //if (blades) blades.position.y = 5;
-    scene.add( gltf.scene );
-
-    fanOctree.fromGraphNode( gltf.scene );
-
-    gltf.scene.traverse( child => {
-
-        if ( child.isMesh ) {
-
-            child.castShadow = true;
-            child.receiveShadow = true;
-
-            if ( child.material.map ) {
-
-                child.material.map.anisotropy = 4;
-
-            }
-
-        }
-
-    } );
-
-    const helper = new OctreeHelper( fanOctree );
-    helper.visible = false;
-    scene.add( helper );
-
-    animate();
-
-} );
+//     const helper = new OctreeHelper( fanOctree );
+//     helper.visible = false;
+//     scene.add( helper );
+//
+//     animate();
+//
+// } );
 
 
 
 const loader = new GLTFLoader().setPath( './models/gltf/' );
 
-loader.load( 'collision-world.glb', ( gltf ) => {
+loader.load( 'constructionMap2.glb', ( gltf ) => {
 
     scene.add( gltf.scene );
 
@@ -998,7 +1073,9 @@ function animate() {
 
 
 
+
     renderer.render( scene, camera );
+
 
     minimapRenderer.render(scene, minicamera);//RENDER SAME SCREEN BUT DIFF CAMERA PERSPECTIVE FOR THE MINIMAP
 
