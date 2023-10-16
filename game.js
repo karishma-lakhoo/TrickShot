@@ -846,7 +846,7 @@ let blades;
 
 const loader = new GLTFLoader().setPath( './models/gltf/' );
 
-loader.load( 'constructionMap.glb', ( gltf ) => {
+loader.load( 'constructionMap2.glb', ( gltf ) => {
 
     scene.add( gltf.scene );
 
