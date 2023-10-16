@@ -16,28 +16,61 @@ body {
   
   #balls-left {
     position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 18px;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 5px;
+    top: 1%;
+    left: 1%;
+    font-size: 25px;
+    color: white;
+    transition: 1s;
+    transform: skewX(-15deg);
+    padding: 25px 50px;
     text-align: center;
+    font-family: 'Games', sans-serif;
   }
+
+#targets-left {
+  position: absolute;
+  top: 1%;
+  right: 0.01%;
+  font-size: 25px;
+  color: white;
+  transition: 1s;
+  transform: skewX(-15deg);
+  padding: 25px 50px;
+  text-align: center;
+  font-family: 'Games', sans-serif;
+}
+
 
 #timer {
   position: absolute;
-  bottom: 20px;
+  top: 10%; /* Center vertically */
   left: 80%;
-  transform: translateX(-50%);
-  font-size: 18px;
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 25px;
+  transform: translate(-50%, -50%) ;
+  color: white;
+  background: #6225E6;
+  transition: 2s;
+  box-shadow: 6px 6px 0 black;
   padding: 5px 10px;
-  border-radius: 5px;
   text-align: center;
+  font-family: 'Games', sans-serif;
+
+}
+
+#hud-container {
+  position: absolute;
+  top: 10%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%);
+  color: white;
+  background: rgba(98, 37, 230, 0.9);
+  transition: 2s;
+  padding: 5px 10px;
+  text-align: center;
+  font-family: 'Games', sans-serif;
+  width: 480px;
+  height: 70px;
+  border-radius: 90px;
 }
 
 
@@ -75,4 +108,25 @@ button {
   margin-left:100px;
   align-items: center;
 }
+
+#circular-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120px; /* Adjust the width and height as needed */
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: rgba(98, 37, 230, 0.9);
+}
+
+#image-inside-circle {
+  width: 100%; /* Make the image fill the circular container */
+  height: 100%;
+  object-fit: cover; /* Preserve aspect ratio and cover the container */
+  border-radius: 50%;
+}
+
+
 
