@@ -57,7 +57,7 @@ const minicamera = new THREE.OrthographicCamera(left, right, top, bottom, near, 
 // Set the camera's position above the scene
 minicamera.position.set(0, 10, 0); // Adjust the height (10) as needed
 // Rotate the camera to look straight down
-minicamera.rotation.set(-Math.PI/2, 0, 0);
+minicamera.rotation.set(-Math.PI/2, 0, Math.PI);
 
 const fillLight1 = new THREE.HemisphereLight( 0x8dc1de, 0x00668d, 1.5 );
 fillLight1.position.set( 2, 1, 1 );
