@@ -171,7 +171,7 @@ for ( let i = 0; i < NUM_SPHERES; i ++ ) {
 
 const worldOctree = new Octree();
 const targetOctree = new Octree();
-// const fanOctree = new Octree();
+const fanOctree = new Octree();
 
 const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
 
@@ -559,33 +559,6 @@ targetCreate(-6.65, -1.35, 9.8, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree10)
 //     .catch((error) => {
 //     });
 
-targetCreate(3, 5, 7, 0, 0, 0, 1, 1, 1, targetOctree3)
-    .then((loadedTarget) => {
-        target3 = loadedTarget;
-    })
-    .catch((error) => {
-    });
-
-targetCreate(-8, 0, 5, 0, 0, 0, 1, 1, 1, targetOctree4)
-    .then((loadedTarget) => {
-        target4 = loadedTarget;
-    })
-    .catch((error) => {
-    });
-
-targetCreate(-3, -0.5, -3, 0, 0, 0, 1, 1, 1, targetOctree5)
-    .then((loadedTarget) => {
-        target5 = loadedTarget;
-    })
-    .catch((error) => {
-    });
-
-targetCreate(3, 0, -3, 0, 0, 0, 1, 1, 1, targetOctree6)
-    .then((loadedTarget) => {
-        target6 = loadedTarget;
-    })
-    .catch((error) => {
-    });
 
 
 function changeModel(target){
@@ -816,6 +789,86 @@ function updateSpheres( deltaTime ) {
             sphere.velocity.addScaledVector( resultTarget6.normal, - resultTarget6.normal.dot( sphere.velocity ) * 1.5 );
             sphere.collider.center.add( resultTarget6.normal.multiplyScalar( resultTarget6.depth ) );
         }
+        else if ( resultTarget7 ) {
+            if (target7.modelChanged === false){
+                targetActivate.play();
+                count++
+                targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
+                target7.modelChanged = true
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count)
+                console.log(targetsLeft)
+            }
+
+            changeModel(target7)
+            sphere.velocity.addScaledVector( resultTarget7.normal, - resultTarget7.normal.dot( sphere.velocity ) * 1.5 );
+            sphere.collider.center.add( resultTarget7.normal.multiplyScalar( resultTarget7.depth ) );
+        }
+        else if (resultTarget8) {
+            if (target8.modelChanged === false) {
+                targetActivate.play();
+                count++;
+                targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
+                target8.modelChanged = true;
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count);
+                console.log(targetsLeft);
+            }
+        
+            changeModel(target8);
+            sphere.velocity.addScaledVector(resultTarget8.normal, -resultTarget8.normal.dot(sphere.velocity) * 1.5);
+            sphere.collider.center.add(resultTarget8.normal.multiplyScalar(resultTarget8.depth));
+        }
+        else if (resultTarget9) {
+            if (target9.modelChanged === false) {
+                targetActivate.play();
+                count++;
+                targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
+                target9.modelChanged = true;
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count);
+                console.log(targetsLeft);
+            }
+        
+            changeModel(target9);
+            sphere.velocity.addScaledVector(resultTarget9.normal, -resultTarget9.normal.dot(sphere.velocity) * 1.5);
+            sphere.collider.center.add(resultTarget9.normal.multiplyScalar(resultTarget9.depth));
+        }
+        else if (resultTarget10) {
+            if (target10.modelChanged === false) {
+                targetActivate.play();
+                count++;
+                targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
+                target10.modelChanged = true;
+                if (!levelCompleted && targetsLeft === 0) {
+                    levelCompleted = true;
+                    console.log('Level completed!');
+                    showLevelFinishScreen();
+                }
+                console.log(count);
+                console.log(targetsLeft);
+            }
+        
+            changeModel(target10);
+            sphere.velocity.addScaledVector(resultTarget10.normal, -resultTarget10.normal.dot(sphere.velocity) * 1.5);
+            sphere.collider.center.add(resultTarget10.normal.multiplyScalar(resultTarget10.depth));
+        }
         else if ( fanResult ) {
             // Play the collision sound only if it's not already playing
             collisionSound.play();
@@ -919,47 +972,47 @@ function controls( deltaTime ) {
 
 let blades;
 
-// const fanloader = new GLTFLoader().setPath( './models/gltf/' );
+const fanloader = new GLTFLoader().setPath( './models/gltf/' );
 
-// fanloader.load( 'fan.glb', ( gltf ) => {
-//     blades = gltf.scene.getObjectByName('blades');
-//
-//     const assets = {
-//         blades
-//     };
-//     if(blades){
-//
-//         blades.position.set(0,80,0)
-//     }
-//     //if (blades) blades.position.y = 5;
-//     scene.add( gltf.scene );
-//
-//     fanOctree.fromGraphNode( gltf.scene );
-//
-//     gltf.scene.traverse( child => {
-//
-//         if ( child.isMesh ) {
-//
-//             child.castShadow = true;
-//             child.receiveShadow = true;
-//
-//             if ( child.material.map ) {
-//
-//                 child.material.map.anisotropy = 4;
-//
-//             }
-//
-//         }
-//
-//     } );
+fanloader.load( 'fan.glb', ( gltf ) => {
+    blades = gltf.scene.getObjectByName('blades');
 
-//     const helper = new OctreeHelper( fanOctree );
-//     helper.visible = false;
-//     scene.add( helper );
-//
-//     animate();
-//
-// } );
+    const assets = {
+        blades
+    };
+    if(blades){
+
+        blades.position.set(0,80,0)
+    }
+    //if (blades) blades.position.y = 5;
+    scene.add( gltf.scene );
+
+    fanOctree.fromGraphNode( gltf.scene );
+
+    gltf.scene.traverse( child => {
+
+        if ( child.isMesh ) {
+
+            child.castShadow = true;
+            child.receiveShadow = true;
+
+            if ( child.material.map ) {
+
+                child.material.map.anisotropy = 4;
+
+            }
+
+        }
+
+    } );
+
+    const helper = new OctreeHelper( fanOctree );
+    helper.visible = false;
+    scene.add( helper );
+
+    animate();
+
+} );
 
 
 
