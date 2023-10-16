@@ -328,7 +328,7 @@ function throwBall() {
 
         // Decrease the balls left count and update the display
                 ballsLeft--;
-                document.getElementById('balls-left').innerText = `Balls left: ${ballsLeft}`;
+                document.getElementById('balls-left').innerText = `Balls: ${ballsLeft}`;
         }
 
 }
@@ -655,6 +655,7 @@ function updateSpheres( deltaTime ) {
                 count++
                 target1.modelChanged = true
                 targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
                 if (!levelCompleted && targetsLeft === 0) {
                     levelCompleted = true;
                     showLevelFinishScreen();
@@ -669,6 +670,7 @@ function updateSpheres( deltaTime ) {
                 playTargetActivateSound()
                 count++
                 targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
                 target2.modelChanged = true
                 if (!levelCompleted && targetsLeft === 0) {
                     levelCompleted = true;
@@ -685,14 +687,14 @@ function updateSpheres( deltaTime ) {
                 playTargetActivateSound()
                 count++
                 targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
                 target3.modelChanged = true
                 if (!levelCompleted && targetsLeft === 0) {
                     levelCompleted = true;
                     console.log('Level completed!');
                     showLevelFinishScreen();
                 }
-                console.log(count)
-                console.log(targetsLeft)
+
             }
 
             changeModel(target3)
@@ -704,6 +706,7 @@ function updateSpheres( deltaTime ) {
                 playTargetActivateSound()
                 count++
                 targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
                 target4.modelChanged = true
                 if (!levelCompleted && targetsLeft === 0) {
                     levelCompleted = true;
@@ -723,6 +726,7 @@ function updateSpheres( deltaTime ) {
                 playTargetActivateSound()
                 count++
                 targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
                 target5.modelChanged = true
                 if (!levelCompleted && targetsLeft === 0) {
                     levelCompleted = true;
@@ -742,6 +746,7 @@ function updateSpheres( deltaTime ) {
                 playTargetActivateSound()
                 count++
                 targetsLeft--;
+                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
                 target6.modelChanged = true
                 if (!levelCompleted && targetsLeft === 0) {
                     levelCompleted = true;
