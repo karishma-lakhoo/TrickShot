@@ -616,11 +616,11 @@ let count = 0
 
 
 function updateSpheres( deltaTime ) {
-
+   // const windForce = new THREE.Vector3(0.5, 0, 0);
     spheres.forEach( sphere => {
 
         sphere.collider.center.addScaledVector( sphere.velocity, deltaTime );
-
+       // sphere.velocity.add(windForce);
         const result = worldOctree.sphereIntersect( sphere.collider );
         const fanResult = fanOctree.sphereIntersect( sphere.collider );
         const resultTarget1 = targetOctree1.sphereIntersect( sphere.collider );
