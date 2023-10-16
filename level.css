@@ -18,7 +18,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 60px;
+    padding-top: 30px;
 }
 
 .title {
@@ -58,7 +58,7 @@ body {
 #back-button 
  {
     cursor: pointer;
-    margin-top: 180px;
+    margin-top: 213px;
     transform: translate(-50%, -50%);
     width: 200px;
     padding: 10px 45px; 
