@@ -36,7 +36,6 @@ const audioContext = new (window.AudioContext)();
 const jumpSound  = new Audio(listener);
 const targetActivate = new Audio(listener);
 const levelComplete = new Audio(listener);
-let targetActivateSource = null;
 
 audioLoader.load('music/jump.mp3', (buffer) => {
     jumpSound.setBuffer(buffer);
