@@ -19,6 +19,7 @@ scene.fog = new THREE.Fog( 0x88ccee, 0, 50 );
 /* NORMAL CAMERA */
 const camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 1000 );
 camera.position.set(7.92125, 0,27)
+camera.rotation.set(0, Math.PI, 0); // 180 degrees rotation, facing the opposite direction
 camera.rotation.order = 'YXZ';
 const listener = new AudioListener();
 camera.add(listener);
