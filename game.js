@@ -139,7 +139,7 @@ container.appendChild( stats.domElement );
 const GRAVITY = 9.8;
 let allowPlayerMovement = true;
 
-const NUM_SPHERES = 20;
+const NUM_SPHERES = 25;
 const SPHERE_RADIUS = 0.2;
 
 const STEPS_PER_FRAME = 5;
@@ -306,8 +306,8 @@ function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 
 }
-let ballsLeft = 20;
-let targetsLeft = 6;
+let ballsLeft = 25;
+let targetsLeft = 10;
 
 function throwBall() {
 
@@ -1065,7 +1065,7 @@ function teleportPlayerIfOob() {
 }
 let fanRotation = 0;
 
-const initialTime = 20; // 5 minutes
+const initialTime =120; 
 let remainingTime = initialTime;
 let timeIsUp = false;
 
