@@ -171,7 +171,7 @@ for ( let i = 0; i < NUM_SPHERES; i ++ ) {
 
 const worldOctree = new Octree();
 const targetOctree = new Octree();
-const fanOctree = new Octree();
+//const fanOctree = new Octree();
 
 const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
 
@@ -659,7 +659,7 @@ function updateSpheres( deltaTime ) {
         sphere.collider.center.addScaledVector( sphere.velocity, deltaTime );
        // sphere.velocity.add(windForce);
         const result = worldOctree.sphereIntersect( sphere.collider );
-        const fanResult = fanOctree.sphereIntersect( sphere.collider );
+        //const fanResult = fanOctree.sphereIntersect( sphere.collider );
         const resultTarget1 = targetOctree1.sphereIntersect( sphere.collider );
         const resultTarget2 = targetOctree2.sphereIntersect( sphere.collider );
         const resultTarget3 = targetOctree3.sphereIntersect( sphere.collider );
@@ -869,15 +869,15 @@ function updateSpheres( deltaTime ) {
             sphere.velocity.addScaledVector(resultTarget10.normal, -resultTarget10.normal.dot(sphere.velocity) * 1.5);
             sphere.collider.center.add(resultTarget10.normal.multiplyScalar(resultTarget10.depth));
         }
-        else if ( fanResult ) {
-            // Play the collision sound only if it's not already playing
-            collisionSound.play();
-            console.log('Sphere hit blades');
-            //Complete the bounce off the fan
-            sphere.velocity.addScaledVector( fanResult.normal, - fanResult.normal.dot( sphere.velocity ) * 1.5 );
-            sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
+        // else if ( fanResult ) {
+        //     // Play the collision sound only if it's not already playing
+        //     collisionSound.play();
+        //     console.log('Sphere hit blades');
+        //     //Complete the bounce off the fan
+        //     sphere.velocity.addScaledVector( fanResult.normal, - fanResult.normal.dot( sphere.velocity ) * 1.5 );
+        //     sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
 
-        }
+        // }
         
         else{
             sphere.velocity.y -= GRAVITY * deltaTime;
@@ -970,49 +970,49 @@ function controls( deltaTime ) {
 
 }
 
-let blades;
+// let blades;
 
-const fanloader = new GLTFLoader().setPath( './models/gltf/' );
+// const fanloader = new GLTFLoader().setPath( './models/gltf/' );
 
-fanloader.load( 'fan.glb', ( gltf ) => {
-    blades = gltf.scene.getObjectByName('blades');
+// fanloader.load( 'fan.glb', ( gltf ) => {
+//     blades = gltf.scene.getObjectByName('blades');
 
-    const assets = {
-        blades
-    };
-    if(blades){
+//     const assets = {
+//         blades
+//     };
+//     if(blades){
 
-        blades.position.set(0,80,0)
-    }
-    //if (blades) blades.position.y = 5;
-    scene.add( gltf.scene );
+//         blades.position.set(0,80,0)
+//     }
+//     //if (blades) blades.position.y = 5;
+//     scene.add( gltf.scene );
 
-    fanOctree.fromGraphNode( gltf.scene );
+//     fanOctree.fromGraphNode( gltf.scene );
 
-    gltf.scene.traverse( child => {
+//     gltf.scene.traverse( child => {
 
-        if ( child.isMesh ) {
+//         if ( child.isMesh ) {
 
-            child.castShadow = true;
-            child.receiveShadow = true;
+//             child.castShadow = true;
+//             child.receiveShadow = true;
 
-            if ( child.material.map ) {
+//             if ( child.material.map ) {
 
-                child.material.map.anisotropy = 4;
+//                 child.material.map.anisotropy = 4;
 
-            }
+//             }
 
-        }
+//         }
 
-    } );
+//     } );
 
-    const helper = new OctreeHelper( fanOctree );
-    helper.visible = false;
-    scene.add( helper );
+//     const helper = new OctreeHelper( fanOctree );
+//     helper.visible = false;
+//     scene.add( helper );
 
-    animate();
+//     animate();
 
-} );
+// } );
 
 
 
@@ -1063,7 +1063,7 @@ function teleportPlayerIfOob() {
     }
 
 }
-let fanRotation = 0;
+//let fanRotation = 0;
 
 const initialTime =120; 
 let remainingTime = initialTime;
