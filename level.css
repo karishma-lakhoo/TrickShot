@@ -33,10 +33,11 @@ body {
 
 
 .level-button {
-    width: 200px;
-    height: 200px; /* Adjusted height to create a square shape */
+    width: 220px;
+    height: 220px; /* Adjusted height to create a square shape */
     padding: 20px; /* Increased padding for a square shape */
     margin: 20px;
+    margin-top: 40px;
     text-decoration: none;
     font-family: 'Guava-Candy', sans-serif;
     font-size: 40px;
@@ -58,7 +59,7 @@ body {
 #back-button 
  {
     cursor: pointer;
-    margin-top: 213px;
+    margin-top: 206px;
     transform: translate(-50%, -50%);
     width: 200px;
     padding: 10px 45px; 
