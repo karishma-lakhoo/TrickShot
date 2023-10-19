@@ -35,7 +35,6 @@ audioLoader.load('music/ballcollision.mp3', (buffer) => {
   collisionSound.setVolume(storedSEVolume); // Adjust the volume as needed
 });
 
-const audioContext = new (window.AudioContext)();
 const jumpSound  = new Audio(listener);
 const targetActivate = new Audio(listener);
 const levelComplete = new Audio(listener);
@@ -501,7 +500,6 @@ const targetOctree7 = new Octree();
 const targetOctree8 = new Octree();
 const targetOctree9 = new Octree();
 const targetOctree10 = new Octree();
-const targetOctree11 = new Octree();
 
 
 targetCreate(7, 4, -14, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
@@ -569,12 +567,6 @@ targetCreate(-6.65, -1.35, 9.8, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree10)
     })
     .catch((error) => {
     });
-// targetCreate(0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree11)
-//     .then((loadedTarget) => {
-//         target11 = loadedTarget;
-//     })
-//     .catch((error) => {
-//     });
 
 
 
@@ -687,7 +679,6 @@ function updateSpheres( deltaTime ) {
         const resultTarget8 = targetOctree8.sphereIntersect( sphere.collider );
         const resultTarget9 = targetOctree9.sphereIntersect( sphere.collider );
         const resultTarget10 = targetOctree10.sphereIntersect( sphere.collider );
-        // const resultTarget11 = targetOctree11.sphereIntersect( sphere.collider );
 
         if ( result ) {
 
