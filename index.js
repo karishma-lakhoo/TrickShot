@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
         storedBackgroundVolume = 0.1;
         localStorage.setItem('BackgroundVolume', storedBackgroundVolume);
     }
+
+    let storedFOV = localStorage.getItem('FOV');
+    if (storedFOV === null) {
+        storedFOV = 75;
+        localStorage.setItem('FOV', storedFOV);
+    }
     
 });
 

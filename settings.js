@@ -47,5 +47,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const storedBackgroundVolume = localStorage.getItem('BackgroundVolume') ;
     BackgroundVolumeSlider.value = storedBackgroundVolume;
     BackgroundVolumeValue.textContent = parseInt(storedBackgroundVolume * 100);
+
+    const FOVSlider = document.getElementById('FOV-slider');
+    const FOVValue = document.getElementById('FOV-value');
+
+    FOVSlider.addEventListener('input', function () {
+        const actualFOVValue = FOVSlider.value;  
+        const displayedFOVValue = parseInt(actualFOVValue)-50; 
+        FOVValue.textContent = displayedFOVValue;
+
+        localStorage.setItem('FOV', actualFOVValue);
+    });
+
+    const storedFOV = localStorage.getItem('FOV') ;
+    FOVSlider.value = storedFOV;
+    FOVValue.textContent = parseInt(storedFOV );
 });
 
