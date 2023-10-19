@@ -5,7 +5,7 @@ import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { OctreeHelper } from 'three/examples/jsm/helpers/OctreeHelper.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 import { Audio, AudioLoader, AudioListener } from 'three';
-
+import { playJumpSound,playCollisionSound ,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
 // Create an audio listener and add it to the camera
 
 const clock = new THREE.Clock();
@@ -24,47 +24,9 @@ camera.rotation.order = 'YXZ';
 const listener = new AudioListener();
 camera.add(listener);
 // Load an audio file (adjust the path to your audio file)
-const audioLoader = new AudioLoader();
-const collisionSound  = new Audio(listener);
-let storedSEVolume = localStorage.getItem('SEVolume');
-let storedBackgroundVolume = localStorage.getItem('BackgroundVolume');
 
-audioLoader.load('music/ballcollision.mp3', (buffer) => {
-  collisionSound.setBuffer(buffer);
-  collisionSound.setLoop(false);
-  collisionSound.setVolume(storedSEVolume); // Adjust the volume as needed
-});
 
-const jumpSound  = new Audio(listener);
-const targetActivate = new Audio(listener);
-const levelComplete = new Audio(listener);
-
-audioLoader.load('music/jump.mp3', (buffer) => {
-    jumpSound.setBuffer(buffer);
-    jumpSound.setLoop(false);
-    jumpSound.setVolume(storedSEVolume); // Adjust the volume as needed
-});
-
-audioLoader.load('music/targetActivatesfx.mp3', (buffer) => {
-    targetActivate.setBuffer(buffer);
-    targetActivate.setLoop(false);
-    targetActivate.setVolume(storedSEVolume); // Adjust the volume as needed
-});
-audioLoader.load('music/level-win-6416.mp3', (buffer) => {
-    levelComplete.setBuffer(buffer);
-    levelComplete.setLoop(false);
-    levelComplete.setVolume(storedSEVolume); // Adjust the volume as needed
-});
-
-const backgroundMusic = new Audio(listener);
-
-audioLoader.load('music/neon-gaming-128925.mp3', (buffer) => {
-    backgroundMusic.setBuffer(buffer);
-    backgroundMusic.setLoop(true);
-    backgroundMusic.setVolume(storedBackgroundVolume); // Adjust the volume as needed
-    backgroundMusic.play();
-});
-
+playBackgroundMusic();
 
 /* MINIMAP CAMERA */
 // Define the orthographic camera's properties
@@ -243,9 +205,9 @@ document.body.addEventListener( 'mousemove', ( event ) => {
 
 function showLevelFinishScreen() {
     if (levelCompleted){
-        levelComplete.play();
+        playLevelCompleteSound();
     }
-    backgroundMusic.stop()
+    stopBackgroundMusic();
     const levelFinishScreen = document.getElementById('level-finish');
     levelFinishScreen.style.display = 'block';
     allowPlayerMovement = false;
@@ -687,7 +649,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget1 ) {
             if (target1.modelChanged === false){
-                targetActivate.play();
+                playTargetHitSound();
                 count++
                 target1.modelChanged = true
                 targetsLeft--;
@@ -703,7 +665,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget2 ) {
             if (target2.modelChanged === false){
-                targetActivate.play();
+                playTargetHitSound();
                 count++
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -720,7 +682,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget3 ) {
             if (target3.modelChanged === false){
-                targetActivate.play();
+                playTargetHitSound();
                 count++
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -739,7 +701,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget4 ) {
             if (target4.modelChanged === false){
-                targetActivate.play();
+                playTargetHitSound();
                 count++
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -759,7 +721,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget5 ) {
             if (target5.modelChanged === false){
-                targetActivate.play();
+                playTargetHitSound();
                 count++
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -779,7 +741,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget6 ) {
             if (target6.modelChanged === false){
-                targetActivate.play();
+                playTargetHitSound();
                 count++
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -799,7 +761,7 @@ function updateSpheres( deltaTime ) {
         }
         else if ( resultTarget7 ) {
             if (target7.modelChanged === false){
-                targetActivate.play();
+                playTargetHitSound();
                 count++
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -819,7 +781,7 @@ function updateSpheres( deltaTime ) {
         }
         else if (resultTarget8) {
             if (target8.modelChanged === false) {
-                targetActivate.play();
+                playTargetHitSound();
                 count++;
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -839,7 +801,7 @@ function updateSpheres( deltaTime ) {
         }
         else if (resultTarget9) {
             if (target9.modelChanged === false) {
-                targetActivate.play();
+                playTargetHitSound();
                 count++;
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -859,7 +821,7 @@ function updateSpheres( deltaTime ) {
         }
         else if (resultTarget10) {
             if (target10.modelChanged === false) {
-                targetActivate.play();
+                playTargetHitSound();
                 count++;
                 targetsLeft--;
                 document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
@@ -968,7 +930,7 @@ function controls( deltaTime ) {
     if ( playerOnFloor ) {
 
         if ( keyStates[ 'Space' ] ) {
-            jumpSound.play();
+            playJumpSound();
             playerVelocity.y = 5;
 
 
