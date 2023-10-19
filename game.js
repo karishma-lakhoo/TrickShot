@@ -8,6 +8,7 @@ import { playJumpSound,playCollisionSound ,playTargetHitSound, playLevelComplete
 
 const clock = new THREE.Clock();
 import { scene,camera,renderer,stats } from './logic';
+import { formatTime, updateTimerDisplay } from './timer';
 
 const container = document.getElementById( 'game-container' );
 
@@ -164,7 +165,7 @@ function showLevelFinishScreen() {
     const outerCircle = document.getElementById('circle-outer');
 
     // Check if the time has run out
-    if (timeIsUp || ballsLeft ==0) {
+    if (remainingTime <= 0 || ballsLeft ==0) {
         // If the time is up, hide the "Next Level" button
         nextLevelButton.style.display = 'none';
         endScreenHeading.textContent = 'You Lost';
@@ -977,11 +978,9 @@ function teleportPlayerIfOob() {
 }
 //let fanRotation = 0;
 
-const initialTime =120; 
-let remainingTime = initialTime;
-let timeIsUp = false;
+let remainingTime = 10;
 // Display the initial time
-document.getElementById('timer').innerText = `Time left: ${formatTime(remainingTime)}`;
+updateTimerDisplay(remainingTime);
 
 // Set up the timer interval
 const timerInterval = setInterval(updateTimer, 1000); // Update every second
@@ -990,28 +989,17 @@ function updateTimer() {
     remainingTime--;
 
     // Display the updated time
-    document.getElementById('timer').innerText = `Time left: ${formatTime(remainingTime)}`;
-
+updateTimerDisplay(remainingTime);
     // Check if the time has run out
     if (remainingTime <= 0) {
-        clearInterval(timerInterval); // Stop the timer
-        timeIsUp = true;
         showLevelFinishScreen(); // Your function to handle time-out (e.g., end the game)
     }
 
 }
 
-// Function to format the time as MM:SS
-function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secondsPart = seconds % 60;
-    return `${padZero(minutes)}:${padZero(secondsPart)}`;
-}
 
-// Function to pad single-digit numbers with a leading zero
-function padZero(number) {
-    return number < 10 ? `0${number}` : number;
-}
+
+
 function animate() {
 
     const deltaTime = Math.min( 0.05, clock.getDelta() ) / STEPS_PER_FRAME;
