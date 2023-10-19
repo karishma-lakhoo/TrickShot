@@ -256,15 +256,26 @@ function showLevelFinishScreen() {
 
     const nextLevelButton = document.getElementById('next-level-btn');
     const endScreenHeading = document.getElementById("endScreen-Heading");
+    const crosshair = document.getElementById('crosshair');
+    const innerCircle = document.getElementById('circle-inner');
+    const outerCircle = document.getElementById('circle-outer');
+
     // Check if the time has run out
-    if (timeIsUp) {
+    if (timeIsUp || ballsLeft ==0) {
         // If the time is up, hide the "Next Level" button
         nextLevelButton.style.display = 'none';
         endScreenHeading.textContent = 'You Lost';
+        crosshair.style.display = 'none';
+        innerCircle.style.display = 'none';
+        outerCircle.style.display = 'none';
+
 
     } else {
         // If the time is not up, show the "Next Level" button
         nextLevelButton.style.display = 'block';
+        crosshair.style.display = 'none';
+        innerCircle.style.display = 'none';
+        outerCircle.style.display = 'none';
     }
 }
 
@@ -333,6 +344,10 @@ function throwBall() {
                 ballsLeft--;
                 document.getElementById('balls-left').innerText = `Balls: ${ballsLeft}`;
         }
+        if (ballsLeft === 0) {
+            showLevelFinishScreen();
+        }
+            
 
 }
 
@@ -1070,7 +1085,6 @@ function teleportPlayerIfOob() {
 const initialTime =120; 
 let remainingTime = initialTime;
 let timeIsUp = false;
-
 // Display the initial time
 document.getElementById('timer').innerText = `Time left: ${formatTime(remainingTime)}`;
 
@@ -1089,6 +1103,7 @@ function updateTimer() {
         timeIsUp = true;
         showLevelFinishScreen(); // Your function to handle time-out (e.g., end the game)
     }
+
 }
 
 // Function to format the time as MM:SS
