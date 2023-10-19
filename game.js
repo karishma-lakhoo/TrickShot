@@ -1,90 +1,35 @@
 import * as THREE from 'three';
-import Stats from 'three/examples/jsm/libs/stats.module.js';
+
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { OctreeHelper } from 'three/examples/jsm/helpers/OctreeHelper.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
-import { Audio, AudioLoader, AudioListener } from 'three';
 import { playJumpSound,playCollisionSound ,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
-// Create an audio listener and add it to the camera
 
 const clock = new THREE.Clock();
+import { scene,camera,renderer,stats } from './logic';
 
-const scene = new THREE.Scene();
-scene.background = new THREE.Color( 0x88ccee );
-scene.fog = new THREE.Fog( 0x88ccee, 0, 50 );
+const container = document.getElementById( 'game-container' );
 
-let storedFOV = localStorage.getItem('FOV');
-
-/* NORMAL CAMERA */
-const camera = new THREE.PerspectiveCamera( storedFOV, window.innerWidth / window.innerHeight, 0.1, 1000 );
-camera.position.set(7.92125, 0,27)
-camera.rotation.set(0, Math.PI, 0); // 180 degrees rotation, facing the opposite direction
-camera.rotation.order = 'YXZ';
-const listener = new AudioListener();
-camera.add(listener);
-// Load an audio file (adjust the path to your audio file)
 
 
 playBackgroundMusic();
 
-/* MINIMAP CAMERA */
-// Define the orthographic camera's properties
-// These 4 affect height of camera
+
 const width = window.innerWidth;
 const height = window.innerHeight;
-
 const left = -width / 150;
 const right = width / 150;
 const top = height / 150;
 const bottom = -height / 150;
-
 const near = 0.1;
 const far = 1000;
+
 const minicamera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
-// Set the camera's position above the scene
 minicamera.position.set(0, 10, 0); // Adjust the height (10) as needed
-// Rotate the camera to look straight down
 minicamera.rotation.set(-Math.PI/2, 0, Math.PI);
 
-const fillLight1 = new THREE.HemisphereLight( 0x8dc1de, 0x00668d, 1.5 );
-fillLight1.position.set( 2, 1, 1 );
-scene.add( fillLight1 );
-
-const directionalLight = new THREE.DirectionalLight( 0xffffff, 2.5 );
-directionalLight.position.set( - 5, 25, - 1 );
-directionalLight.castShadow = true;
-directionalLight.shadow.camera.near = 0.01;
-directionalLight.shadow.camera.far = 500;
-directionalLight.shadow.camera.right = 30;
-directionalLight.shadow.camera.left = - 30;
-directionalLight.shadow.camera.top	= 30;
-directionalLight.shadow.camera.bottom = - 30;
-directionalLight.shadow.mapSize.width = 1024;
-directionalLight.shadow.mapSize.height = 1024;
-directionalLight.shadow.radius = 4;
-directionalLight.shadow.bias = - 0.00006;
-scene.add( directionalLight );
-
-
-const container = document.getElementById( 'fps-container' );
 const minimapContainer = document.getElementById('minimap');
-// In your game.js file
-
-
-const renderer = new THREE.WebGLRenderer( { antialias: true } );
-renderer.setPixelRatio( window.devicePixelRatio );
-renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.VSMShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-container.appendChild( renderer.domElement );
-
-// We need to give the minimap its own renderrer
-/* 
-    Merely doing this for line 69: minimapContainer.appendChild( renderer.domElement ); 
-    ont work as it will choose to render the game in this last container only
-*/
 
 const minimapRenderer = new THREE.WebGLRenderer({ antialias: true });
 minimapRenderer.setPixelRatio(window.devicePixelRatio);
@@ -94,10 +39,7 @@ minimapRenderer.shadowMap.type = THREE.VSMShadowMap;
 minimapRenderer.toneMapping = THREE.ACESFilmicToneMapping;
 minimapContainer.appendChild(minimapRenderer.domElement);
 
-const stats = new Stats();
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.top = '0px';
-container.appendChild( stats.domElement );
+
 
 const GRAVITY = 9.8;
 let allowPlayerMovement = true;
