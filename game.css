@@ -130,3 +130,52 @@ button {
 
 
 
+#crosshair {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  box-sizing: border-box;
+  top: 50%; /* Position in the center of the screen */
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the crosshair */
+  pointer-events: none; /* Ensure it doesn't interfere with game interaction */
+  z-index: 1; /* Ensure it's displayed above the game canvas */
+}
+
+#crosshair::before,
+#crosshair::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 2px;
+  background-color: white; /* Adjust color as needed */
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+#crosshair::before {
+  transform: translateX(-50%) translateY(-50%) rotate(90deg);
+}
+
+#circle-outer {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid white; /* Adjust color and thickness as needed */
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#circle-inner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: white; /* Adjust color as needed */
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
