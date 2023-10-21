@@ -12,6 +12,7 @@ import { formatTime, updateTimerDisplay } from './timer';
 import { createSpheres } from './sphere';
 import { loadMap } from './map';
 import { createRedTarget ,changeGreenTarget} from './targets';
+import {teleportPlayerIfOob,getForwardVector, getSideVector} from './player';
 
 const container = document.getElementById( 'game-container' );
 const minimapContainer = document.getElementById('minimap');
@@ -720,26 +721,6 @@ function updateSpheres( deltaTime ) {
 }
 
 
-function getForwardVector() {
-
-    camera.getWorldDirection( playerDirection );
-    playerDirection.y = 0;
-    playerDirection.normalize();
-
-    return playerDirection;
-
-}
-
-function getSideVector() {
-
-    camera.getWorldDirection( playerDirection );
-    playerDirection.y = 0;
-    playerDirection.normalize();
-    playerDirection.cross( camera.up );
-
-    return playerDirection;
-
-}
 
 function controls( deltaTime ) {
 
@@ -791,19 +772,7 @@ function controls( deltaTime ) {
 
 
 
-function teleportPlayerIfOob() {
 
-    if ( camera.position.y <= - 25 ) {
-
-        playerCollider.start.set( 0, 0.35, 0 );
-        playerCollider.end.set( 0, 1, 0 );
-        playerCollider.radius = 0.35;
-        camera.position.copy( playerCollider.end );
-        camera.rotation.set( 0, 0, 0 );
-
-    }
-
-}
 //let fanRotation = 0;
 
 let remainingTime = 10;
