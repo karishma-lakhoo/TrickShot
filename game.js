@@ -10,7 +10,7 @@ import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
 import { createRedTarget ,changeGreenTarget} from './targets';
-import {teleportPlayerIfOob,getForwardVector, getSideVector} from './player';
+import {teleportPlayerIfOob,getForwardVector, getSideVector,playerSphereCollision} from './player';
 
 const container = document.getElementById( 'game-container' );
 
@@ -355,38 +355,6 @@ function updatePlayer( deltaTime ) {
 
 }
 
-function playerSphereCollision( sphere ) {
-
-    const center = vector1.addVectors( playerCollider.start, playerCollider.end ).multiplyScalar( 0.5 );
-
-    const sphere_center = sphere.collider.center;
-
-    const r = playerCollider.radius + sphere.collider.radius;
-    const r2 = r * r;
-
-    // approximation: player = 3 spheres
-
-    for ( const point of [ playerCollider.start, playerCollider.end, center ] ) {
-
-        const d2 = point.distanceToSquared( sphere_center );
-
-        if ( d2 < r2 ) {
-
-            const normal = vector1.subVectors( point, sphere_center ).normalize();
-            const v1 = vector2.copy( normal ).multiplyScalar( normal.dot( playerVelocity ) );
-            const v2 = vector3.copy( normal ).multiplyScalar( normal.dot( sphere.velocity ) );
-
-            playerVelocity.add( v2 ).sub( v1 );
-            sphere.velocity.add( v1 ).sub( v2 );
-
-            const d = ( r - Math.sqrt( d2 ) ) / 2;
-            sphere_center.addScaledVector( normal, - d );
-
-        }
-
-    }
-
-}
 
 
 
@@ -422,203 +390,47 @@ function updateSpheres( deltaTime ) {
         const resultTarget9 = targetOctree9.sphereIntersect( sphere.collider );
         const resultTarget10 = targetOctree10.sphereIntersect( sphere.collider );
 
+        const resultTargets = [
+            resultTarget1, resultTarget2, resultTarget3, resultTarget4, resultTarget5,
+            resultTarget6, resultTarget7, resultTarget8, resultTarget9, resultTarget10
+          ];
+
+          const Targets = [
+              target1, target2, target3, target4, target5,
+              target6, target7, target8, target9, target10
+          ];
+          
+          for (let i = 0; i < 10; i++) {
+              const currentResult = resultTargets[i];
+              const currentTarget = Targets[i];
+          
+              if (currentResult) {
+                  if (currentTarget.modelChanged === false) {
+                      playTargetHitSound();
+                      count++;
+                      targetsLeft--;
+                      document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
+                      currentTarget.modelChanged = true;
+                      if (!levelCompleted && targetsLeft === 0) {
+                          levelCompleted = true;
+                          showLevelFinishScreen();
+                      }
+                      console.log(count);
+                      console.log(targetsLeft);
+                  }
+          
+                  changeGreenTarget(scene,targetOctree, currentTarget);
+                  sphere.velocity.addScaledVector(currentResult.normal, -currentResult.normal.dot(sphere.velocity) * 1.5);
+                  sphere.collider.center.add(currentResult.normal.multiplyScalar(currentResult.depth));
+              }
+          }
+
         if ( result ) {
 
             sphere.velocity.addScaledVector(result.normal, -result.normal.dot(sphere.velocity) * 1.5);
             sphere.collider.center.add(result.normal.multiplyScalar(result.depth));
         }
-        else if ( resultTarget1 ) {
-            if (target1.modelChanged === false){
-                playTargetHitSound();
-                count++
-                target1.modelChanged = true
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    showLevelFinishScreen();
-                }
-            }
-            changeGreenTarget(scene,targetOctree,target1)
-            sphere.velocity.addScaledVector(resultTarget1.normal, -resultTarget1.normal.dot(sphere.velocity) * 1.5);
-            sphere.collider.center.add(resultTarget1.normal.multiplyScalar(resultTarget1.depth));
-        }
-        else if ( resultTarget2 ) {
-            if (target2.modelChanged === false){
-                playTargetHitSound();
-                count++
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target2.modelChanged = true
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    showLevelFinishScreen();
-                }
-            }
-
-            changeGreenTarget(scene,targetOctree,target2)
-            sphere.velocity.addScaledVector( resultTarget2.normal, - resultTarget2.normal.dot( sphere.velocity ) * 1.5 );
-            sphere.collider.center.add( resultTarget2.normal.multiplyScalar( resultTarget2.depth ) );
-        }
-        else if ( resultTarget3 ) {
-            if (target3.modelChanged === false){
-                playTargetHitSound();
-                count++
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target3.modelChanged = true
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-
-            }
-
-            changeGreenTarget(scene,targetOctree,target3)
-            sphere.velocity.addScaledVector( resultTarget3.normal, - resultTarget3.normal.dot( sphere.velocity ) * 1.5 );
-            sphere.collider.center.add( resultTarget3.normal.multiplyScalar( resultTarget3.depth ) );
-        }
-        else if ( resultTarget4 ) {
-            if (target4.modelChanged === false){
-                playTargetHitSound();
-                count++
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target4.modelChanged = true
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-                console.log(count)
-                console.log(targetsLeft)
-            }
-
-            changeGreenTarget(scene,targetOctree,target4)
-            sphere.velocity.addScaledVector( resultTarget4.normal, - resultTarget4.normal.dot( sphere.velocity ) * 1.5 );
-            sphere.collider.center.add( resultTarget4.normal.multiplyScalar( resultTarget4.depth ) );
-        }
-        else if ( resultTarget5 ) {
-            if (target5.modelChanged === false){
-                playTargetHitSound();
-                count++
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target5.modelChanged = true
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-                console.log(count)
-                console.log(targetsLeft)
-            }
-
-            changeGreenTarget(scene,targetOctree,target5)
-            sphere.velocity.addScaledVector( resultTarget5.normal, - resultTarget5.normal.dot( sphere.velocity ) * 1.5 );
-            sphere.collider.center.add( resultTarget5.normal.multiplyScalar( resultTarget5.depth ) );
-        }
-        else if ( resultTarget6 ) {
-            if (target6.modelChanged === false){
-                playTargetHitSound();
-                count++
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target6.modelChanged = true
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-                console.log(count)
-                console.log(targetsLeft)
-            }
-
-            changeGreenTarget(scene,targetOctree,target6)
-            sphere.velocity.addScaledVector( resultTarget6.normal, - resultTarget6.normal.dot( sphere.velocity ) * 1.5 );
-            sphere.collider.center.add( resultTarget6.normal.multiplyScalar( resultTarget6.depth ) );
-        }
-        else if ( resultTarget7 ) {
-            if (target7.modelChanged === false){
-                playTargetHitSound();
-                count++
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target7.modelChanged = true
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-                console.log(count)
-                console.log(targetsLeft)
-            }
-
-            changeGreenTarget(scene,targetOctree,target7)
-            sphere.velocity.addScaledVector( resultTarget7.normal, - resultTarget7.normal.dot( sphere.velocity ) * 1.5 );
-            sphere.collider.center.add( resultTarget7.normal.multiplyScalar( resultTarget7.depth ) );
-        }
-        else if (resultTarget8) {
-            if (target8.modelChanged === false) {
-                playTargetHitSound();
-                count++;
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target8.modelChanged = true;
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-                console.log(count);
-                console.log(targetsLeft);
-            }
-        
-            changeGreenTarget(scene,targetOctree,target8);
-            sphere.velocity.addScaledVector(resultTarget8.normal, -resultTarget8.normal.dot(sphere.velocity) * 1.5);
-            sphere.collider.center.add(resultTarget8.normal.multiplyScalar(resultTarget8.depth));
-        }
-        else if (resultTarget9) {
-            if (target9.modelChanged === false) {
-                playTargetHitSound();
-                count++;
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target9.modelChanged = true;
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-                console.log(count);
-                console.log(targetsLeft);
-            }
-        
-            changeGreenTarget(scene,targetOctree,target9);
-            sphere.velocity.addScaledVector(resultTarget9.normal, -resultTarget9.normal.dot(sphere.velocity) * 1.5);
-            sphere.collider.center.add(resultTarget9.normal.multiplyScalar(resultTarget9.depth));
-        }
-        else if (resultTarget10) {
-            if (target10.modelChanged === false) {
-                playTargetHitSound();
-                count++;
-                targetsLeft--;
-                document.getElementById('targets-left').innerText = `Targets: ${targetsLeft}`;
-                target10.modelChanged = true;
-                if (!levelCompleted && targetsLeft === 0) {
-                    levelCompleted = true;
-                    console.log('Level completed!');
-                    showLevelFinishScreen();
-                }
-                console.log(count);
-                console.log(targetsLeft);
-            }
-        
-            changeGreenTarget(scene,targetOctree,target10);
-            sphere.velocity.addScaledVector(resultTarget10.normal, -resultTarget10.normal.dot(sphere.velocity) * 1.5);
-            sphere.collider.center.add(resultTarget10.normal.multiplyScalar(resultTarget10.depth));
-        }
+       
         // else if ( fanResult ) {
         //     // Play the collision sound only if it's not already playing
         //     collisionSound.play();
@@ -638,7 +450,7 @@ function updateSpheres( deltaTime ) {
         const damping = Math.exp( - 1.5 * deltaTime ) - 1;
         sphere.velocity.addScaledVector( sphere.velocity, damping );
 
-        playerSphereCollision( sphere );
+        playerSphereCollision( sphere,playerCollider,playerVelocity,vector1,vector2,vector3 );
 
     } );
 
