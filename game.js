@@ -665,25 +665,25 @@ function controls( deltaTime ) {
 
     if ( keyStates[ 'KeyW' ] ) {
 
-        playerVelocity.add( getForwardVector().multiplyScalar( speedDelta ) );
+        playerVelocity.add( getForwardVector(camera,playerDirection).multiplyScalar( speedDelta ) );
 
     }
 
     if ( keyStates[ 'KeyS' ] ) {
 
-        playerVelocity.add( getForwardVector().multiplyScalar( - speedDelta ) );
+        playerVelocity.add( getForwardVector(camera,playerDirection).multiplyScalar( - speedDelta ) );
 
     }
 
     if ( keyStates[ 'KeyA' ] ) {
 
-        playerVelocity.add( getSideVector().multiplyScalar( - speedDelta ) );
+        playerVelocity.add( getSideVector(camera,playerDirection).multiplyScalar( - speedDelta ) );
 
     }
 
     if ( keyStates[ 'KeyD' ] ) {
 
-        playerVelocity.add( getSideVector().multiplyScalar( speedDelta ) );
+        playerVelocity.add( getSideVector(camera,playerDirection).multiplyScalar( speedDelta ) );
 
     }
 
@@ -743,7 +743,7 @@ function animate() {
 
         updateSpheres( deltaTime );
 
-        teleportPlayerIfOob();
+        teleportPlayerIfOob(camera,playerCollider,playerDirection);
 
 
     }

@@ -1,12 +1,4 @@
-import * as THREE from 'three';
-import { Capsule } from 'three/examples/jsm/math/Capsule.js';
-import { camera } from './gamelogic.js';
-
-const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
-const playerDirection = new THREE.Vector3();
-
-
-function teleportPlayerIfOob() {
+function teleportPlayerIfOob(camera,playerCollider,playerDirection) {
 
     if ( camera.position.y <= - 25 ) {
 
@@ -19,7 +11,7 @@ function teleportPlayerIfOob() {
     }
 }
 
-function getForwardVector() {
+function getForwardVector(camera,playerDirection) {
 
     camera.getWorldDirection( playerDirection );
     playerDirection.y = 0;
@@ -29,7 +21,7 @@ function getForwardVector() {
 
 }
 
-function getSideVector() {
+function getSideVector(camera,playerDirection) {
 
     camera.getWorldDirection( playerDirection );
     playerDirection.y = 0;
