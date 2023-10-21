@@ -6,7 +6,7 @@ import { playJumpSound,playCollisionSound ,playTargetHitSound, playLevelComplete
 
 const clock = new THREE.Clock();
 import { scene,camera,renderer,stats } from './gamelogic';
-import  updateTimerDisplay } from './timer';
+import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
 import { createRedTarget ,changeGreenTarget} from './targets';
