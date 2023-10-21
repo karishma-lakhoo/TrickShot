@@ -17,7 +17,7 @@ const minimapContainer = document.getElementById('minimap');
 
 playBackgroundMusic();
 
-let glbMap = 'constructionMap.glb';
+let glbMap = 'constructionMap2.glb';
 const worldOctree = new Octree();
 loadMap(glbMap,scene,worldOctree);
 
