@@ -1,3 +1,9 @@
+import * as THREE from 'three';
+
+const vector1 = new THREE.Vector3();
+const vector2 = new THREE.Vector3();
+const vector3 = new THREE.Vector3();
+
 function teleportPlayerIfOob(camera,playerCollider,playerDirection) {
 
     if ( camera.position.y <= - 25 ) {
@@ -32,7 +38,7 @@ function getSideVector(camera,playerDirection) {
 
 }
 
-function playerSphereCollision( sphere,playerCollider,playerVelocity,vector1,vector2,vector3 ) {
+function playerSphereCollision( sphere,playerCollider,playerVelocity ) {
 
     const center = vector1.addVectors( playerCollider.start, playerCollider.end ).multiplyScalar( 0.5 );
 

@@ -1,10 +1,8 @@
 import * as THREE from 'three';
-
 import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
-import { playJumpSound,playCollisionSound ,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
 
-const clock = new THREE.Clock();
+import { playJumpSound,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
 import { scene,camera,renderer,stats,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
@@ -13,16 +11,43 @@ import { createRedTarget ,changeGreenTarget} from './targets';
 import {teleportPlayerIfOob,getForwardVector, getSideVector,playerSphereCollision} from './player';
 
 const container = document.getElementById( 'game-container' );
+const nextLevelButton = document.getElementById('next-level-btn');
+const endScreenHeading = document.getElementById("endScreen-Heading");
+const crosshair = document.getElementById('crosshair');
+const innerCircle = document.getElementById('circle-inner');
+const outerCircle = document.getElementById('circle-outer');
+const levelFinishScreen = document.getElementById('level-finish');
+const restartButton = document.getElementById('restart-btn');
+const exitButton = document.getElementById('exit-btn');
 
 playBackgroundMusic();
+
+const clock = new THREE.Clock();
+let remainingTime = 50;
+
+updateTimerDisplay(remainingTime); // Display the initial time
+
+const timerInterval = setInterval(updateTimer, 1000); // Update every second
+
+function updateTimer() {
+    remainingTime--;
+
+updateTimerDisplay(remainingTime);    // Display the updated time
+
+    if (remainingTime <= 0) {
+        showLevelFinishScreen(); 
+    }
+
+}
 
 let glbMap = 'constructionMap2.glb';
 const worldOctree = new Octree();
 loadMap(glbMap,scene,worldOctree,animate);
 
-
+let targetsLeft = 10;
 let target1, target2, target3, target4, target5, target6, target7, target8, target9, target10;
 
+const targetOctree = new Octree();
 const targetOctree1 = new Octree();
 const targetOctree2 = new Octree();
 const targetOctree3 = new Octree();
@@ -33,7 +58,6 @@ const targetOctree7 = new Octree();
 const targetOctree8 = new Octree();
 const targetOctree9 = new Octree();
 const targetOctree10 = new Octree();
-
 
 createRedTarget(scene,7, 4, -14, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
@@ -101,44 +125,22 @@ createRedTarget(scene,-6.65, -1.35, 9.8, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetO
     .catch((error) => {
     });
 
-
-
-
-
-
-
-
-const GRAVITY = 9.8;
-let allowPlayerMovement = true;
-
 const NUM_SPHERES = 25;
-
-const STEPS_PER_FRAME = 5;
-
-
-
+let ballsLeft = 25;
 const spheres = [];   
-
 let sphereIdx = 0;
-
 createSpheres(scene, NUM_SPHERES, spheres );
 
-const targetOctree = new Octree();
-//const fanOctree = new Octree();
-
+let playerOnFloor = false;
+let allowPlayerMovement = true;
 const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
-
 const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
 
-let playerOnFloor = false;
 let mouseTime = 0;
-
 const keyStates = {};
 
-const vector1 = new THREE.Vector3();
-const vector2 = new THREE.Vector3();
-const vector3 = new THREE.Vector3();
+
 
 document.addEventListener( 'keydown', ( event ) => {
 
@@ -198,18 +200,13 @@ function showLevelFinishScreen() {
         playLevelCompleteSound();
     }
     stopBackgroundMusic();
-    const levelFinishScreen = document.getElementById('level-finish');
     levelFinishScreen.style.display = 'block';
     allowPlayerMovement = false;
     document.exitPointerLock();
 
     clearInterval(timerInterval);
 
-    const nextLevelButton = document.getElementById('next-level-btn');
-    const endScreenHeading = document.getElementById("endScreen-Heading");
-    const crosshair = document.getElementById('crosshair');
-    const innerCircle = document.getElementById('circle-inner');
-    const outerCircle = document.getElementById('circle-outer');
+
 
     // Check if the time has run out
     if (remainingTime <= 0 || ballsLeft ==0) {
@@ -233,9 +230,7 @@ function showLevelFinishScreen() {
 let levelCompleted = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-    const restartButton = document.getElementById('restart-btn');
-    const nextLevelButton = document.getElementById('next-level-btn');
-    const exitButton = document.getElementById('exit-btn');
+
 
     // Add event listeners to buttons
     restartButton.addEventListener('click', () => {
@@ -260,8 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-let ballsLeft = 25;
-let targetsLeft = 10;
+
 
 function throwBall() {
 
@@ -335,7 +329,7 @@ function updatePlayer( deltaTime ) {
 
     if ( ! playerOnFloor ) {
 
-        playerVelocity.y -= GRAVITY * deltaTime;
+        playerVelocity.y -= 9.8 * deltaTime;
 
         // small air resistance
         damping *= 0.1;
@@ -430,19 +424,9 @@ function updateSpheres( deltaTime ) {
             sphere.velocity.addScaledVector(result.normal, -result.normal.dot(sphere.velocity) * 1.5);
             sphere.collider.center.add(result.normal.multiplyScalar(result.depth));
         }
-       
-        // else if ( fanResult ) {
-        //     // Play the collision sound only if it's not already playing
-        //     collisionSound.play();
-        //     console.log('Sphere hit blades');
-        //     //Complete the bounce off the fan
-        //     sphere.velocity.addScaledVector( fanResult.normal, - fanResult.normal.dot( sphere.velocity ) * 1.5 );
-        //     sphere.collider.center.add( fanResult.normal.multiplyScalar( fanResult.depth ) );
-
-        // }
         
         else{
-            sphere.velocity.y -= GRAVITY * deltaTime;
+            sphere.velocity.y -= 9.8 * deltaTime;
         }
 
 
@@ -450,7 +434,7 @@ function updateSpheres( deltaTime ) {
         const damping = Math.exp( - 1.5 * deltaTime ) - 1;
         sphere.velocity.addScaledVector( sphere.velocity, damping );
 
-        playerSphereCollision( sphere,playerCollider,playerVelocity,vector1,vector2,vector3 );
+        playerSphereCollision( sphere,playerCollider,playerVelocity );
 
     } );
 
@@ -512,42 +496,13 @@ function controls( deltaTime ) {
 
 }
 
-
-
-
-
-
-//let fanRotation = 0;
-
-let remainingTime = 50;
-// Display the initial time
-updateTimerDisplay(remainingTime);
-
-// Set up the timer interval
-const timerInterval = setInterval(updateTimer, 1000); // Update every second
-
-function updateTimer() {
-    remainingTime--;
-
-    // Display the updated time
-updateTimerDisplay(remainingTime);
-    // Check if the time has run out
-    if (remainingTime <= 0) {
-        showLevelFinishScreen(); // Your function to handle time-out (e.g., end the game)
-    }
-
-}
-
-
-
-
 function animate() {
 
-    const deltaTime = Math.min( 0.05, clock.getDelta() ) / STEPS_PER_FRAME;
+    const deltaTime = Math.min( 0.05, clock.getDelta() ) / 5;
     // we look for collisions in substeps to mitigate the risk of
     // an object traversing another too quickly for detection.
 
-    for ( let i = 0; i < STEPS_PER_FRAME; i ++ ) {
+    for ( let i = 0; i < 5; i ++ ) {
 
         controls( deltaTime );
 
@@ -560,14 +515,6 @@ function animate() {
 
     }
 
-    // if (blades) {
-    //     fanRotation += 0.003; // Adjust the rotation speed as needed
-    //     blades.rotation.z = fanRotation;
-    // }
-
-
-
-
     renderer.render( scene, camera );
     onWindowResize();
 
@@ -578,6 +525,3 @@ function animate() {
     requestAnimationFrame( animate );
 
 }
-
-
-export {animate}
