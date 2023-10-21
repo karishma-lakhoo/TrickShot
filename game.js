@@ -5,7 +5,7 @@ import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 import { playJumpSound,playCollisionSound ,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
 
 const clock = new THREE.Clock();
-import { scene,camera,renderer,stats } from './gamelogic';
+import { scene,camera,renderer,stats,onWindowResize } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
@@ -281,16 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-window.addEventListener( 'resize', onWindowResize );
-
-function onWindowResize() {
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-}
 let ballsLeft = 25;
 let targetsLeft = 10;
 
@@ -738,7 +728,7 @@ function controls( deltaTime ) {
 
 //let fanRotation = 0;
 
-let remainingTime = 10;
+let remainingTime = 50;
 // Display the initial time
 updateTimerDisplay(remainingTime);
 
@@ -788,7 +778,7 @@ function animate() {
 
 
     renderer.render( scene, camera );
-
+    onWindowResize();
 
     minimapRenderer.render(scene, minicamera);//RENDER SAME SCREEN BUT DIFF CAMERA PERSPECTIVE FOR THE MINIMAP
 

@@ -52,4 +52,13 @@ stats.domElement.style.position = 'absolute';
 stats.domElement.style.top = '0px';
 container.appendChild( stats.domElement );
 
-export { scene,camera,renderer,stats };
+function onWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// Attach the event listener to the window
+window.addEventListener('resize', onWindowResize);
+
+export { scene,camera,renderer,stats, onWindowResize};
