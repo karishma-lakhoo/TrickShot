@@ -1,8 +1,7 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OctreeHelper } from 'three/examples/jsm/helpers/OctreeHelper.js';
-import { animate } from './game.js';
 
-function loadMap(glbMap,scene,worldOctree){
+function loadMap(glbMap,scene,worldOctree,animate){
     
 const loader = new GLTFLoader().setPath( './models/gltf/' );
 

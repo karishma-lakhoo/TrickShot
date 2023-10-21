@@ -18,7 +18,7 @@ playBackgroundMusic();
 
 let glbMap = 'constructionMap2.glb';
 const worldOctree = new Octree();
-loadMap(glbMap,scene,worldOctree);
+loadMap(glbMap,scene,worldOctree,animate);
 
 
 let target1, target2, target3, target4, target5, target6, target7, target8, target9, target10;
