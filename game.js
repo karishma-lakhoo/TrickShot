@@ -5,7 +5,7 @@ import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 import { playJumpSound,playCollisionSound ,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
 
 const clock = new THREE.Clock();
-import { scene,camera,renderer,stats,onWindowResize } from './gamelogic';
+import { scene,camera,renderer,stats,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
@@ -13,7 +13,6 @@ import { createRedTarget ,changeGreenTarget} from './targets';
 import {teleportPlayerIfOob,getForwardVector, getSideVector} from './player';
 
 const container = document.getElementById( 'game-container' );
-const minimapContainer = document.getElementById('minimap');
 
 playBackgroundMusic();
 
@@ -105,27 +104,7 @@ createRedTarget(scene,-6.65, -1.35, 9.8, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetO
 
 
 
-const width = window.innerWidth;
-const height = window.innerHeight;
-const left = -width / 150;
-const right = width / 150;
-const top = height / 150;
-const bottom = -height / 150;
-const near = 0.1;
-const far = 1000;
 
-const minicamera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
-minicamera.position.set(0, 10, 0); // Adjust the height (10) as needed
-minicamera.rotation.set(-Math.PI/2, 0, Math.PI);
-
-
-const minimapRenderer = new THREE.WebGLRenderer({ antialias: true });
-minimapRenderer.setPixelRatio(window.devicePixelRatio);
-minimapRenderer.setSize(minimapContainer.clientWidth, minimapContainer.clientHeight); //COPIES GAME SIZE TO THE CONTAINER SIZE FOR FULL DISPLAY
-minimapRenderer.shadowMap.enabled = true;
-minimapRenderer.shadowMap.type = THREE.VSMShadowMap;
-minimapRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-minimapContainer.appendChild(minimapRenderer.domElement);
 
 
 

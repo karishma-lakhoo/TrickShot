@@ -3,7 +3,16 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 let storedFOV = localStorage.getItem('FOV');
 const container = document.getElementById( 'game-container' );
+const minimapContainer = document.getElementById('minimap');
 
+const width = window.innerWidth;
+const height = window.innerHeight;
+const left = -width / 150;
+const right = width / 150;
+const top = height / 150;
+const bottom = -height / 150;
+const near = 0.1;
+const far = 1000;
 
 //Scene
 const scene = new THREE.Scene();
@@ -61,4 +70,17 @@ function onWindowResize() {
 // Attach the event listener to the window
 window.addEventListener('resize', onWindowResize);
 
-export { scene,camera,renderer,stats, onWindowResize};
+
+const minicamera = new THREE.OrthographicCamera(left, right, top, bottom, near, far);
+minicamera.position.set(0, 10, 0); // Adjust the height (10) as needed
+minicamera.rotation.set(-Math.PI/2, 0, Math.PI);
+
+const minimapRenderer = new THREE.WebGLRenderer({ antialias: true });
+minimapRenderer.setPixelRatio(window.devicePixelRatio);
+minimapRenderer.setSize(300, 200); //COPIES GAME SIZE TO THE CONTAINER SIZE FOR FULL DISPLAY
+minimapRenderer.shadowMap.enabled = true;
+minimapRenderer.shadowMap.type = THREE.VSMShadowMap;
+minimapRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+minimapContainer.appendChild(minimapRenderer.domElement);
+
+export { scene,camera,renderer,stats, onWindowResize, minicamera, minimapRenderer};
