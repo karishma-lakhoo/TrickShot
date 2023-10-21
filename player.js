@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
-import { camera } from './logic.js';
+import { camera } from './gamelogic.js';
 
 const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
 const playerDirection = new THREE.Vector3();
