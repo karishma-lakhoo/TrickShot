@@ -24,14 +24,19 @@ const resumeButton = document.getElementById('resume-btn');
 playBackgroundMusic();
 
 const clock = new THREE.Clock();
-let remainingTime = 50; // Change the time here
-
+let initialTime = 50; // Change the time here
+let remainingTime = initialTime; // Remaining time is initially the same as the initial time
 updateTimerDisplay(remainingTime); // Display the initial time
 
 const timerInterval = setInterval(updateTimer, 1000); // Update every second
 
+
 function updateTimer() {
 
+    if (remainingTime === initialTime) {
+        let overlay = document.getElementById('loadingOverlay'); // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
+        overlay.style.display = 'none'; // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
+    }
     if (!paused){
         remainingTime--;
 
