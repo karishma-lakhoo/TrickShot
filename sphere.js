@@ -5,7 +5,9 @@ const vector1 = new THREE.Vector3();
 const vector2 = new THREE.Vector3();
 const vector3 = new THREE.Vector3();
 const sphereGeometry = new THREE.IcosahedronGeometry( SPHERE_RADIUS, 5 );
-const sphereMaterial = new THREE.MeshLambertMaterial( { color: 0xdede8d } );
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load('textures/ballTexture.jpg');
+const sphereMaterial = new THREE.MeshLambertMaterial( { map: texture } );
 sphereMaterial.side = THREE.DoubleSide;
 
 function createSpheres(scene, NUM_SPHERES, spheres ) {
