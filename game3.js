@@ -277,6 +277,7 @@ function showLevelFinishScreen() {
 
     }
     else {
+        endScreenHeading.textContent = 'Level 3 Complete';
         nextLevelButton.style.display = 'none';
         resumeButton.style.display = 'none';
         crosshair.style.display = 'none';
