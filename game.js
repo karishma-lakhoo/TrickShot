@@ -19,20 +19,25 @@ const outerCircle = document.getElementById('circle-outer');
 const levelFinishScreen = document.getElementById('level-finish');
 const restartButton = document.getElementById('restart-btn');
 const exitButton = document.getElementById('exit-btn');
+const resumeButton = document.getElementById('resume-btn');
 
 playBackgroundMusic();
 
 const clock = new THREE.Clock();
-let remainingTime = 50;
+let remainingTime = 50; // Change the time here
 
 updateTimerDisplay(remainingTime); // Display the initial time
 
 const timerInterval = setInterval(updateTimer, 1000); // Update every second
 
 function updateTimer() {
-    remainingTime--;
 
-updateTimerDisplay(remainingTime);    // Display the updated time
+    if (!paused){
+        remainingTime--;
+
+        updateTimerDisplay(remainingTime);
+    }
+ // Display the updated time
 
     if (remainingTime <= 0) {
         showLevelFinishScreen(); 
@@ -40,13 +45,16 @@ updateTimerDisplay(remainingTime);    // Display the updated time
 
 }
 
-let glbMap = 'constructionMap2.glb';
+let glbMap = 'Map1.glb'; //Change Map here
 const worldOctree = new Octree();
 loadMap(glbMap,scene,worldOctree,animate);
 
-let targetsLeft = 10;
-let target1, target2, target3, target4, target5, target6, target7, target8, target9, target10;
+let targetsLeft = 10; //Change number of targets here
+let target1, target2, target3, target4, target5, target6, target7, target8, target9, target10; //Update based on targets 
 
+/**
+ * Update here as well based on targets 
+ */
 const targetOctree = new Octree();
 const targetOctree1 = new Octree();
 const targetOctree2 = new Octree();
@@ -59,6 +67,9 @@ const targetOctree8 = new Octree();
 const targetOctree9 = new Octree();
 const targetOctree10 = new Octree();
 
+/**
+ * Update here as well based on targets 
+ */
 createRedTarget(scene,7, 4, -14, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
         target1 = loadedTarget;
@@ -125,22 +136,25 @@ createRedTarget(scene,-6.65, -1.35, 9.8, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetO
     .catch((error) => {
     });
 
-const NUM_SPHERES = 25;
-let ballsLeft = 25;
+
+const NUM_SPHERES = 25; //Change number of spheres here
+let ballsLeft = 25; //Update based on number of spheres
 const spheres = [];   
 let sphereIdx = 0;
 createSpheres(scene, NUM_SPHERES, spheres );
 
-let playerOnFloor = false;
-let allowPlayerMovement = true;
+
 const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
 const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
-
-let mouseTime = 0;
+let playerOnFloor = false;
+let allowPlayerMovement = true;
+let paused = false;
+let levelCompleted = false;
 const keyStates = {};
-
-
+let storedMouseSpeed = localStorage.getItem('MouseSpeed');
+let mouseTime = 0;
+let count = 0
 
 document.addEventListener( 'keydown', ( event ) => {
 
@@ -167,33 +181,76 @@ container.addEventListener( 'mousedown', () => {
 
 document.addEventListener( 'mouseup', () => {
     if (!allowPlayerMovement) {
-        return; // If player movement is not allowed, exit the function
+        return; 
     }
 
     if ( document.pointerLockElement !== null ) throwBall();
 
 } );
-let storedMouseSpeed = localStorage.getItem('MouseSpeed');
 
 document.body.addEventListener( 'mousemove', ( event ) => {
 
     if (!allowPlayerMovement) {
-        return; // If player movement is not allowed, exit the function
+        return;
     }
 
     if (document.pointerLockElement === document.body) {
         // Limit how far down the camera can look (adjust the values as needed)
-        // Normal FPS camera
         camera.rotation.x -= event.movementY / storedMouseSpeed; //mouse speed default is 500
-        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x)); // Clamp the rotation
+        camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x)); 
         camera.rotation.y -= event.movementX / storedMouseSpeed; //mouse speed default is 500
 
         // Minimap camera rotation 
         minicamera.rotation.z -= event.movementX / storedMouseSpeed; 
-        // Because the camera is set to point down we need to rotate along z axis
     }
 
 } );
+
+function controls( deltaTime ) {
+
+    if (!allowPlayerMovement) {
+        return;
+    }
+
+    const speedDelta = deltaTime * ( playerOnFloor ? 25 : 4 );
+
+    if ( keyStates[ 'KeyW' ] ) {
+
+        playerVelocity.add( getForwardVector(camera,playerDirection).multiplyScalar( speedDelta ) );
+
+    }
+
+    if ( keyStates[ 'KeyS' ] ) {
+
+        playerVelocity.add( getForwardVector(camera,playerDirection).multiplyScalar( - speedDelta ) );
+
+    }
+
+    if ( keyStates[ 'KeyA' ] ) {
+
+        playerVelocity.add( getSideVector(camera,playerDirection).multiplyScalar( - speedDelta ) );
+
+    }
+
+    if ( keyStates[ 'KeyD' ] ) {
+
+        playerVelocity.add( getSideVector(camera,playerDirection).multiplyScalar( speedDelta ) );
+
+    }
+    if ( keyStates[ 'KeyP' ] ) {
+        showPauseScreen();
+    }
+
+    if ( playerOnFloor ) {
+
+        if ( keyStates[ 'Space' ] ) {
+            playJumpSound();
+            playerVelocity.y = 5;
+        }
+
+    }
+
+}
 
 function showLevelFinishScreen() {
     if (levelCompleted){
@@ -206,56 +263,72 @@ function showLevelFinishScreen() {
 
     clearInterval(timerInterval);
 
-
-
-    // Check if the time has run out
     if (remainingTime <= 0 || ballsLeft ==0) {
-        // If the time is up, hide the "Next Level" button
         nextLevelButton.style.display = 'none';
+        resumeButton.style.display = 'none';
         endScreenHeading.textContent = 'You Lost';
         crosshair.style.display = 'none';
         innerCircle.style.display = 'none';
         outerCircle.style.display = 'none';
 
-
-    } else {
-        // If the time is not up, show the "Next Level" button
+    }
+    else {
         nextLevelButton.style.display = 'block';
+        resumeButton.style.display = 'none';
         crosshair.style.display = 'none';
         innerCircle.style.display = 'none';
         outerCircle.style.display = 'none';
     }
 }
 
-let levelCompleted = false;
+function showPauseScreen() {
+        stopBackgroundMusic();
+        levelFinishScreen.style.display = 'block';
+        allowPlayerMovement = false;
+        document.exitPointerLock();
+        paused = true;
+
+        nextLevelButton.style.display = 'none';
+        endScreenHeading.textContent = 'Game Paused';
+        crosshair.style.display = 'none';
+        innerCircle.style.display = 'none';
+        outerCircle.style.display = 'none';
+}
+
+
+function hideLevelFinishScreen() {
+    crosshair.style.display = 'block';
+    innerCircle.style.display = 'block';
+    outerCircle.style.display = 'block';
+    levelFinishScreen.style.display = 'none';
+    allowPlayerMovement = true;
+    document.body.requestPointerLock();
+    playBackgroundMusic();
+    paused = false;
+
+}
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
 
-
-    // Add event listeners to buttons
     restartButton.addEventListener('click', () => {
-        // Handle restart button click
         window.location.href = 'game.html';
-        // console.log('Restart button clicked');
     });
 
     nextLevelButton.addEventListener('click', () => {
-        // Handle next level button click
-        console.log('Next Level button clicked');
+        window.location.href = 'game2.html';
     });
 
     exitButton.addEventListener('click', () => {
-        // Handle exit button click
         window.location.href = 'menu.html';
     });
 
-    // Call the function to show the level finish screen (you can call it when the level is completed)
-    // showLevelFinishScreen();
+    resumeButton.addEventListener('click', () => {
+        hideLevelFinishScreen();
+    });
+
 });
-
-
-
-
 
 function throwBall() {
 
@@ -275,7 +348,6 @@ function throwBall() {
 
         sphereIdx = (sphereIdx + 1) % spheres.length;
 
-        // Decrease the balls left count and update the display
                 ballsLeft--;
                 document.getElementById('balls-left').innerText = `Balls: ${ballsLeft}`;
         }
@@ -283,7 +355,6 @@ function throwBall() {
             showLevelFinishScreen();
         }
             
-
 }
 
 function playerCollisions() {
@@ -331,7 +402,6 @@ function updatePlayer( deltaTime ) {
 
         playerVelocity.y -= 9.8 * deltaTime;
 
-        // small air resistance
         damping *= 0.1;
 
     }
@@ -349,22 +419,9 @@ function updatePlayer( deltaTime ) {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-let count = 0
-
-
+/**
+ * Update this function as well based on targets 
+ */
 function updateSpheres( deltaTime ) {
    // const windForce = new THREE.Vector3(0.5, 0, 0);
     spheres.forEach( sphere => {
@@ -372,7 +429,6 @@ function updateSpheres( deltaTime ) {
         sphere.collider.center.addScaledVector( sphere.velocity, deltaTime );
        // sphere.velocity.add(windForce);
         const result = worldOctree.sphereIntersect( sphere.collider );
-        //const fanResult = fanOctree.sphereIntersect( sphere.collider );
         const resultTarget1 = targetOctree1.sphereIntersect( sphere.collider );
         const resultTarget2 = targetOctree2.sphereIntersect( sphere.collider );
         const resultTarget3 = targetOctree3.sphereIntersect( sphere.collider );
@@ -409,8 +465,6 @@ function updateSpheres( deltaTime ) {
                           levelCompleted = true;
                           showLevelFinishScreen();
                       }
-                      console.log(count);
-                      console.log(targetsLeft);
                   }
           
                   changeGreenTarget(scene,targetOctree, currentTarget);
@@ -429,8 +483,6 @@ function updateSpheres( deltaTime ) {
             sphere.velocity.y -= 9.8 * deltaTime;
         }
 
-
-
         const damping = Math.exp( - 1.5 * deltaTime ) - 1;
         sphere.velocity.addScaledVector( sphere.velocity, damping );
 
@@ -442,55 +494,6 @@ function updateSpheres( deltaTime ) {
     for ( const sphere of spheres ) {
 
         sphere.mesh.position.copy( sphere.collider.center );
-        // customTarget.checkCollision(sphere.collider);
-
-    }
-
-}
-
-
-
-function controls( deltaTime ) {
-
-    if (!allowPlayerMovement) {
-        return; // If player movement is not allowed, exit the function
-    }
-
-    // gives a bit of air control
-    const speedDelta = deltaTime * ( playerOnFloor ? 25 : 4 );
-
-    if ( keyStates[ 'KeyW' ] ) {
-
-        playerVelocity.add( getForwardVector(camera,playerDirection).multiplyScalar( speedDelta ) );
-
-    }
-
-    if ( keyStates[ 'KeyS' ] ) {
-
-        playerVelocity.add( getForwardVector(camera,playerDirection).multiplyScalar( - speedDelta ) );
-
-    }
-
-    if ( keyStates[ 'KeyA' ] ) {
-
-        playerVelocity.add( getSideVector(camera,playerDirection).multiplyScalar( - speedDelta ) );
-
-    }
-
-    if ( keyStates[ 'KeyD' ] ) {
-
-        playerVelocity.add( getSideVector(camera,playerDirection).multiplyScalar( speedDelta ) );
-
-    }
-
-    if ( playerOnFloor ) {
-
-        if ( keyStates[ 'Space' ] ) {
-            playJumpSound();
-            playerVelocity.y = 5;
-
-
-        }
 
     }
 
@@ -499,29 +502,20 @@ function controls( deltaTime ) {
 function animate() {
 
     const deltaTime = Math.min( 0.05, clock.getDelta() ) / 5;
-    // we look for collisions in substeps to mitigate the risk of
-    // an object traversing another too quickly for detection.
 
-    for ( let i = 0; i < 5; i ++ ) {
-
-        controls( deltaTime );
-
-        updatePlayer( deltaTime );
-
-        updateSpheres( deltaTime );
-
-        teleportPlayerIfOob(camera,playerCollider,playerDirection);
-
-
+    if(!paused){
+        for ( let i = 0; i < 5; i ++ ) {
+            controls( deltaTime );
+            updatePlayer( deltaTime );
+            updateSpheres( deltaTime );
+            teleportPlayerIfOob(camera,playerCollider,playerDirection);
+    
+        }
     }
 
     renderer.render( scene, camera );
+    minimapRenderer.render(scene, minicamera)
     onWindowResize();
-
-    minimapRenderer.render(scene, minicamera);//RENDER SAME SCREEN BUT DIFF CAMERA PERSPECTIVE FOR THE MINIMAP
-
     stats.update();
-
     requestAnimationFrame( animate );
-
 }
