@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Game</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="game.css">
+    <link type="text/css" rel="stylesheet" href="minimap.css"> <!-- FOR MINI MAP -->
+    <link href="https://fonts.cdnfonts.com/css/games" rel="stylesheet">
+</head>
+<body>
+<div id="game-container"></div> <!-- Add this div for the main game -->
+<div id="minimap"></div> <!-- Add this div for the minimap -->
+<div id="timer"></div>
+<div id="crosshair"></div>
+<div id="circle-inner"></div>
+<div id="circle-outer"></div>
+<div id="hud-container">
+    <div id="balls-left">Balls: 25</div>
+    <div id="circular-container">
+        <img src="./images/Target_Image.png" alt="Your Image" id="image-inside-circle">
+    </div>
+    <div id="targets-left">Targets:10</div>
+</div>
+<div id="level-finish" style="display: none;">
+    <h1 id = "endScreen-Heading">Level 1 Complete</h1>
+    <button id="resume-btn">Resume</button>
+    <button id="restart-btn">Restart</button>
+    <button id="next-level-btn">Next Level</button>
+    <button id="exit-btn">Exit to Menu</button>
+</div>
+
+
+<script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+
+<script type="module" src="game3.js"></script>
+
+</body>
+</html>
