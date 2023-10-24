@@ -51,7 +51,7 @@ function updateTimer() {
 
 }
 
-let glbMap = 'Map1.glb'; //Change Map here
+let glbMap = 'Map0.glb'; //Change Map here
 const worldOctree = new Octree();
 loadMap(glbMap,scene,worldOctree,animate);
 
@@ -76,66 +76,66 @@ const targetOctree10 = new Octree();
 /**
  * Update here as well based on targets 
  */
-createRedTarget(scene,7, 4, -14, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
+createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
         target1 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,4.75, 3.56, 16.5, 0, Math.PI/2, 0, 1.5, 1.5, 1.5, targetOctree2)
+createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 1.5, 1.5, 1.5, targetOctree2)
     .then((loadedTarget) => {
         target2 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,7.4, -1.25, 4.1, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree3)
+createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree3)
     .then((loadedTarget) => {
         target3 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,-0.708183, -0.5, -20.3813, 0, 0, 0, 1, 1, 1, targetOctree4)
+createRedTarget(scene,0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree4)
     .then((loadedTarget) => {
         target4 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,-11.2, 3, -34.3, 0, Math.PI/2, 0, 0.75, 0.75, 0.75, targetOctree5)
+createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.75, 0.75, 0.75, targetOctree5)
     .then((loadedTarget) => {
         target5 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,-12.5, 0, -9, 0, 0, 0, 1, 1, 1, targetOctree6)
+createRedTarget(scene,0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree6)
     .then((loadedTarget) => {
         target6 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,-5, 2.75, -9, 0, 0, 0, 0.9, 0.9, 0.9, targetOctree7)
+createRedTarget(scene,0, 0, 0, 0, 0, 0, 0.9, 0.9, 0.9, targetOctree7)
     .then((loadedTarget) => {
         target7 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,-6.2, 3.5,-32.5, 0, Math.PI/2, 0, 0.8, 0.8, 0.8, targetOctree8)
+createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.8, 0.8, 0.8, targetOctree8)
     .then((loadedTarget) => {
         target8 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,16, 3.5, -4.85, 0, Math.PI/2, 0, 1, 1, 1, targetOctree9)
+createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 1, 1, 1, targetOctree9)
     .then((loadedTarget) => {
         target9 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,-6.65, -1.35, 9.8, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree10)
+createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree10)
     .then((loadedTarget) => {
         target10 = loadedTarget;
     })
@@ -150,7 +150,7 @@ let sphereIdx = 0;
 createSpheres(scene, NUM_SPHERES, spheres );
 
 
-const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
+const playerCollider = new Capsule( new THREE.Vector3( -1, 3, -5 ), new THREE.Vector3( -1, 4, -5 ), 0.35 );
 const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
 let playerOnFloor = false;
