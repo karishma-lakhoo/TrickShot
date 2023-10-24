@@ -34,6 +34,7 @@ const timerInterval = setInterval(updateTimer, 1000); // Update every second
 function updateTimer() {
     
     if (remainingTime === initialTime) {
+        document.body.requestPointerLock();
         let overlay = document.getElementById('loadingOverlay'); // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
         overlay.style.display = 'none'; // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
     }
