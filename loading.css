@@ -19,7 +19,7 @@
     flex-direction: column; /* stack children vertically */
     justify-content: center;
     align-items: center;
-    background-color: #000000; /* or any desired background color */
+    background-color: #202A44E6; /* or any desired background color */
     color: purple;
     position: absolute;
     top: 0;
@@ -91,7 +91,7 @@
 .bouncing-ball {
     width: 25px;
     height: 25px;
-    background-color: #d5f373;
+    background-color: #7910e2;
     border-radius: 50%;
     animation: bounce 4s infinite;
     position: absolute;
@@ -125,8 +125,7 @@
     margin: 0; /* Remove default margins */
     padding-left: 30px; /* To accommodate the bullet point and provide some space */
     bottom: 70%; /* Position from the bottom of the screen. Adjust as needed */
-    background-color: rgba(0, 0, 0, 0.6); /* Slight black transparent background for readability */
-    border-radius: 5px; /* Slightly rounded corners */
+    font-family: 'Games', sans-serif;
 }
 .info2 {
     position: absolute;
@@ -138,8 +137,8 @@
     margin: 0; /* Remove default margins */
     padding-left: 30px; /* To accommodate the bullet point and provide some space */
     bottom: 60%; /* Position from the bottom of the screen. Adjust as needed */
-    background-color: rgba(0, 0, 0, 0.6); /* Slight black transparent background for readability */
-    border-radius: 5px; /* Slightly rounded corners */
+    font-family: 'Games', sans-serif;
+
 }
 .info3 {
     position: absolute;
@@ -151,18 +150,17 @@
     margin: 0; /* Remove default margins */
     padding-left: 30px; /* To accommodate the bullet point and provide some space */
     bottom: 50%; /* Position from the bottom of the screen. Adjust as needed */
-    background-color: rgba(0, 0, 0, 0.6); /* Slight black transparent background for readability */
-    border-radius: 5px; /* Slightly rounded corners */
+    font-family: 'Games', sans-serif;
 }
 
 .hint-text {
     position: absolute;
     font-size: 24px; /* Adjust the font size as needed */
     color: #7910e2;  /* Light gray color for the hint text */
-    margin-top: 20px; /* Space it out from the above elements */
     font-style: italic; /* Make it italic for emphasis */
     text-align: center; /* Center-align the text */
-    bottom: 35%;
+    bottom: 39%;
+    font-family: 'Poppins', sans-serif;
 }
 
 
@@ -170,5 +168,7 @@
     bottom: 15%; /* Position from the bottom of the screen. Adjust as needed */
     font-size: 120px; /* A bit larger to emphasize */
     font-weight: bold; /* Bold for emphasis */
-    font-family: 'Playpen Sans', serif;
+    font-family: 'Games', serif;
+    letter-spacing: 5px;
+    padding-bottom: 90px;
 }
