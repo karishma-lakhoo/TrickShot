@@ -530,7 +530,10 @@ function updateSpheres( deltaTime ) {
 }
 
 const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ map: new THREE.VideoTexture(document.getElementById('video')) });
+const video = document.getElementById('video');
+video.pause();
+const texture = new THREE.VideoTexture(video);
+const material = new THREE.MeshBasicMaterial({ map: texture });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 cube.position.x = -7.3;
@@ -539,9 +542,24 @@ cube.position.y = -0.5;
 cube.scale.x = 20
 cube.scale.y = 4
 
+const playRadius = 10;
+
 function animate() {
 
     const deltaTime = Math.min( 0.05, clock.getDelta() ) / 5;
+
+    const distance = new THREE.Vector2(camera.position.x - cube.position.x, camera.position.z - cube.position.z).length();
+
+    if (distance < playRadius) {
+        // Play the video
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            texture.needsUpdate = true;
+            video.play();
+        }
+    } else {
+        // Pause the video
+        video.pause();
+    }
 
     if(!paused){
         for ( let i = 0; i < 5; i ++ ) {
@@ -553,9 +571,9 @@ function animate() {
         }
     }
 
-    if (document.getElementById('video').readyState === document.getElementById('video').HAVE_ENOUGH_DATA) {
-        material.map.needsUpdate = true;
-    }
+    // if (document.getElementById('video').readyState === document.getElementById('video').HAVE_ENOUGH_DATA) {
+    //     material.map.needsUpdate = true;
+    // }
 
     renderer.render( scene, camera );
     minimapRenderer.render(scene, minicamera)

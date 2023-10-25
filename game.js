@@ -270,7 +270,7 @@ function showLevelFinishScreen() {
 
     setTimeout(() => {
         expandingCircle.classList.add("expand");
-    }, 2000);
+    }, 1000);
 
     if (levelCompleted){
         playLevelCompleteSound();
