@@ -73,66 +73,66 @@ const targetOctree10 = new Octree();
 /**
  * Update here as well based on targets 
  */
-createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
+createRedTarget(scene,16.7, 0, -15.4, 0, Math.PI/2, 0, 1, 1, 1, targetOctree1)
     .then((loadedTarget) => {
         target1 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 1.5, 1.5, 1.5, targetOctree2)
+createRedTarget(scene,-3.43, -0.62, -20.29, 0, Math.PI/2, 0, 1, 1, 1, targetOctree2)
     .then((loadedTarget) => {
         target2 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree3)
+createRedTarget(scene,-12.026, -0.62, 3.3, 0, 0, 0, 0.9, 0.9, 0.9, targetOctree3)
     .then((loadedTarget) => {
         target3 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree4)
+createRedTarget(scene,16.2, 0, -2.38, 0, 0, 0, 1, 1, 1, targetOctree4)
     .then((loadedTarget) => {
         target4 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.75, 0.75, 0.75, targetOctree5)
+createRedTarget(scene,6.7288, -1.323, 12.95, 0, Math.PI/2, 0, 1, 1, 1, targetOctree5)
     .then((loadedTarget) => {
         target5 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,0, 0, 0, 0, 0, 0, 1, 1, 1, targetOctree6)
+createRedTarget(scene,6.45, -0.6202, -7.4107, 0, Math.PI/2, 0, 1, 1, 1, targetOctree6)
     .then((loadedTarget) => {
         target6 = loadedTarget;
     })
     .catch((error) => {
     });
-createRedTarget(scene,0, 0, 0, 0, 0, 0, 0.9, 0.9, 0.9, targetOctree7)
+createRedTarget(scene,-12.55, -0.62, -9.8018, 0, 0, 0, 1, 1, 1, targetOctree7)
     .then((loadedTarget) => {
         target7 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.8, 0.8, 0.8, targetOctree8)
+createRedTarget(scene,-11.73, 0.1486, -16.35, 0, Math.PI/2, 0, 1, 1, 1, targetOctree8)
     .then((loadedTarget) => {
         target8 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 1, 1, 1, targetOctree9)
+createRedTarget(scene,-4.83, -1.3, -10.31, 0, Math.PI/2, 0, 0.8, 0.8, 0.8, targetOctree9)
     .then((loadedTarget) => {
         target9 = loadedTarget;
     })
     .catch((error) => {
     });
 
-createRedTarget(scene,0, 0, 0, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree10)
+createRedTarget(scene,-1.009, 0, 13.5, 0, Math.PI/2, 0, 0.9, 0.9, 0.9, targetOctree10)
     .then((loadedTarget) => {
         target10 = loadedTarget;
     })
