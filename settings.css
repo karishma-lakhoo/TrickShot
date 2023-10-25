@@ -1,34 +1,28 @@
-@font-face {
-    font-family: 'Guava-Candy';
-    src: url('fonts/Guava-Candy.ttf') format('truetype');
-    /* Include additional formats if you have them */
-}
-
 body {
-    background: linear-gradient(to bottom, #ee7ed6, #ffffff);
+    background:  #202A44E6;
     background-size: cover;
     background-attachment: fixed;
     text-align: center;
     margin: 0;
-    padding: 0;
     color: white;
 }
 
 .settings-container {
     display: flex;
     flex-direction: column;
-    padding-top: 30px;
+    padding-top: 10px;
     align-items: center;
 
 }
 
 .title {
-    font-family: 'Guava-Candy', sans-serif;
-    font-size: 80px;
+    font-family: 'Games', sans-serif;
+    font-size: 105px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: 5px;
-    -webkit-text-fill-color: #f9a856;
-    -webkit-text-stroke: 1px white;
+    -webkit-text-fill-color: #ffffff;
+    padding: 0;
+    margin-bottom: 30px; /* Add this line to remove margin at the bottom */
 }
 
 
@@ -38,20 +32,19 @@ body {
     padding-right: 60px;
     padding-top: 20px;
     padding-bottom: 50px;
-    background: #91e16a;
+    /*background: #91e16a;*/
     border-radius: 10px;
     color: #fff;
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+    /*box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);*/
 
 }
 
 h2 {
-    padding-top: 30px;
-    font-family: 'Guava-Candy', sans-serif;
-    font-size: 30px;
-    margin: 0 0 10px;
-    -webkit-text-fill-color: rgb(238, 123, 180);
-    -webkit-text-stroke: 0.1px white;
+    font-family: 'Games', sans-serif;
+    font-size: 33px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 3px;
+    -webkit-text-fill-color: rgb(255, 210, 66, 0.8);
 }
 
 .slider-container {
@@ -63,14 +56,14 @@ span {
     display: flex; /* Add this */
     align-items: center; /* Add this */
     justify-content: center; /* Add this */
-    background: rgb(250, 247, 66);
-    -webkit-text-fill-color: rgb(0, 0, 0);
+    background:rgb(255, 210, 66, 0.8);
+    -webkit-text-fill-color: #ffffff;
     border-radius: 50%;
     width: 40px;
     height: 40px;
     font-size: 20px;
     margin-left: 20px; /* Adjust this value to control the spacing between the slider and the value */
-    font-family: 'Guava-Candy', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 
@@ -88,9 +81,9 @@ input[type="range"]::-webkit-slider-thumb {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #ee7ed6;
+    background: rgba(0, 0, 0, 0.55);
     
-    border: 2px solid #000000;
+    /*border: 1px solid #000000;*/
     border-radius: 50%;
     cursor: pointer;
 }
@@ -106,22 +99,24 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 
 
-#back-button 
- {
+#back-button
+{
     cursor: pointer;
 
-    margin-top: 132px;
+    margin-top: 67px;
     transform: translate(-50%, -50%);
     width: 200px;
-    padding: 10px 45px; 
+    padding: 10px 45px;
     text-decoration: none;
     font-family: 'Poppins', sans-serif;
-    font-size: 20px; 
+    font-size: 20px;
     color: rgb(0, 0, 0);
-    background: #b5ecfe;
+    background: rgb(255, 210, 66, 0.8);
     transition: 1s;
     box-shadow: 6px 6px 0 black;
     transform: skewX(-15deg);
+    -webkit-text-fill-color: #ffffff;
+
 }
 
 

@@ -1,48 +1,43 @@
-
-@font-face {
-    font-family: 'Guava-Candy';
-    src: url('fonts/Guava-Candy.ttf') format('truetype');
-    /* Include additional formats if you have them */
-}
-
 body {
-    background: linear-gradient(to bottom, #ee7ed6, #ffffff);
+    background:  #202A44E6;
     background-size: cover;
     background-attachment: fixed;
     text-align: center;
     margin: 0;
-    padding: 0;
     color: white;
 }
 
 .about-container {
     display: flex;
     flex-direction: column;
-    padding-top: 30px;
+    padding-top: 10px;
     align-items: center;
 
 }
 
 .title {
-    font-family: 'Guava-Candy', sans-serif;
-    font-size: 80px;
+    font-family: 'Games', sans-serif;
+    font-size: 110px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: 5px;
-    -webkit-text-fill-color: #f9a856;
-    -webkit-text-stroke: 1px white;
+    -webkit-text-fill-color: #ffffff;
+    padding: 0;
+    margin-bottom: 0; /* Add this line to remove margin at the bottom */
+
 }
 h3  {
-    font-family: 'Guava-Candy', sans-serif;
-    font-size: 20px;
+    font-family: 'Games', sans-serif;
+    font-size: 33px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: 5px;
-    -webkit-text-fill-color: rgb(250, 247, 66);
+    -webkit-text-fill-color: rgb(255, 210, 66, 0.8);
+
 }
 
 p {
     font-family: 'Poppins', sans-serif;
     font-size: 17px;
-    -webkit-text-fill-color: rgb(0, 0, 0);
+    -webkit-text-fill-color: #ffffff;
 }
 
 
@@ -51,10 +46,10 @@ p {
     padding-left: 60px;
     padding-right: 60px;
     padding-top: 20px;
-    background: #91e16a;
-    border-radius: 10px;
+    /*background: #25e675;*/
+    /*border-radius: 10px;*/
     color: #fff;
-    box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);
+    /*box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.5);*/
 
 }
 
@@ -65,15 +60,17 @@ p {
     margin-top: 67px;
     transform: translate(-50%, -50%);
     width: 200px;
-    padding: 10px 45px; 
+    padding: 10px 45px;
     text-decoration: none;
     font-family: 'Poppins', sans-serif;
     font-size: 20px; 
     color: rgb(0, 0, 0);
-    background: #b5ecfe;
+    background: rgb(255, 210, 66, 0.8);
     transition: 1s;
     box-shadow: 6px 6px 0 black;
     transform: skewX(-15deg);
+    -webkit-text-fill-color: #ffffff;
+
 }
 
 

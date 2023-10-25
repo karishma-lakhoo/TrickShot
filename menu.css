@@ -58,12 +58,12 @@ h1 {
 #about-button,
 #level-button {
     width: 200px;
-    padding: 10px 45px; /* Adjust padding as needed */
+    padding: 10px 45px;
     text-decoration: none;
     font-family: 'Poppins', sans-serif;
     font-size: 20px; /* Adjust the font size as needed */
     color: white;
-    background: #25e675;
+    background: rgb(255, 210, 66, 0.80);
     transition: 1s;
     box-shadow: 6px 6px 0 black;
     transform: skewX(-15deg);
@@ -106,7 +106,7 @@ h1 {
 }
 #play-button:hover {
     transition: 0.5s;
-    box-shadow: 10px 10px 0 #FBC638;
+    box-shadow: 10px 10px 0 rgb(255, 210, 66, 0.80);
 }
 
 #play-button span:nth-child(2) {
@@ -120,7 +120,7 @@ h1 {
 }
 
 span {
-    transform: skewX(15deg);
+    transform: skewX(-10deg);
 }
 
 span:nth-child(2) {
@@ -175,9 +175,9 @@ path.two {
     padding: 10px ;
     border-radius: 10px;
 	border: #555 solid 1px;
-    background-color:rgba(245, 0, 143, 0.7) ;
+    background-color:rgba(255, 210, 66, 0.80) ;
 	box-shadow: 	
-	inset 8px 8px 15px rgba(245, 0, 143, 0.7),
+	inset 8px 8px 15px rgb(255, 210, 66, 0.80),
 	inset 10px 10px 10px rgba(126, 121, 121, 0.3);
     justify-content: space-between;
     align-items: center;
@@ -239,6 +239,6 @@ font-size: 13px;
 .switch-toggle input[type="checkbox"]:checked + label::before {
     left: 45%;
     content: '';
-    background-color: #1eaed2;
+    background-color: #ffffff;
 
 }

@@ -1,16 +1,9 @@
-@font-face {
-    font-family: 'Guava-Candy';
-    src: url('fonts/Guava-Candy.ttf') format('truetype');
-    /* Include additional formats if you have them */
-}
-
 body {
-    background: linear-gradient(to bottom, #ee7ed6, #ffffff);
+    background:  #202A44E6;
     background-size: cover;
     background-attachment: fixed;
     text-align: center;
     margin: 0;
-    padding: 0;
     color: white;
 }
 
@@ -18,17 +11,17 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 30px;
+    padding-top: 10px;
 }
 
 .title {
-    font-family: 'Guava-Candy', sans-serif;
-    font-size: 80px;
-    margin-bottom: 100px; /* Adjusted margin to move the title up */
+    font-family: 'Games', sans-serif;
+    font-size: 105px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     letter-spacing: 5px;
-    -webkit-text-fill-color: #f9a856;
-    -webkit-text-stroke: 1px white;
+    -webkit-text-fill-color: #ffffff;
+    padding: 0;
+    margin-bottom: 60px; /* Add this line to remove margin at the bottom */
 }
 
 
@@ -39,10 +32,10 @@ body {
     margin: 20px;
     margin-top: 40px;
     text-decoration: none;
-    font-family: 'Guava-Candy', sans-serif;
+    font-family: 'Games', sans-serif;
     font-size: 40px;
-    color: rgb(250, 247, 66);
-    background: #91e16a;
+    -webkit-text-fill-color: #ffffff;
+    background: rgba(32, 42, 68, 0.9);
     border: none;
     border-radius: 10px; /* Adjusted border-radius for a slightly rounded square look */
     cursor: pointer;
@@ -53,24 +46,27 @@ body {
 
 .level-button:hover {
     transform:  scale(1.1);
-    background: #91e16a;
+    background: rgba(32, 42, 68, 0.9);
 }
 
-#back-button 
- {
+#back-button
+{
     cursor: pointer;
-    margin-top: 206px;
+
+    margin-top: 67px;
     transform: translate(-50%, -50%);
     width: 200px;
-    padding: 10px 45px; 
+    padding: 10px 45px;
     text-decoration: none;
     font-family: 'Poppins', sans-serif;
-    font-size: 20px; 
+    font-size: 20px;
     color: rgb(0, 0, 0);
-    background: #b5ecfe;
+    background: rgb(255, 210, 66, 0.8);
     transition: 1s;
     box-shadow: 6px 6px 0 black;
     transform: skewX(-15deg);
+    -webkit-text-fill-color: #ffffff;
+
 }
 
 
