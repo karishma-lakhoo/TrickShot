@@ -55,12 +55,6 @@ renderer.shadowMap.type = THREE.VSMShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 container.appendChild( renderer.domElement );
 
-//FPS
-const stats = new Stats();
-stats.domElement.style.position = 'absolute';
-stats.domElement.style.top = '0px';
-container.appendChild( stats.domElement );
-
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -83,4 +77,25 @@ minimapRenderer.shadowMap.type = THREE.VSMShadowMap;
 minimapRenderer.toneMapping = THREE.ACESFilmicToneMapping;
 minimapContainer.appendChild(minimapRenderer.domElement);
 
-export { scene,camera,renderer,stats, onWindowResize, minicamera, minimapRenderer};
+function updateMiniCameraPosition(playerCollider) {
+    const playerPosition = playerCollider.end;
+    const minPosition = new THREE.Vector3(-2, 20, -34.595107629588924);
+    const maxPosition = new THREE.Vector3(6, 20, 34.595107629588924);
+
+
+    // Limit the minicamera's position
+    minicamera.position.copy(playerPosition);
+    minicamera.position.clamp(minPosition, maxPosition);
+
+
+    playerPositionIndicator.position.copy(playerPosition);
+}
+
+const playerPositionIndicator = new THREE.Mesh(
+    new THREE.CircleGeometry(0.25, 32), // You can adjust the size of the dot
+    new THREE.MeshBasicMaterial({ color: 0x000000 })
+);
+playerPositionIndicator.rotation.x = -Math.PI / 2; // Lay the dot flat
+scene.add(playerPositionIndicator);
+
+export { scene,camera,renderer, onWindowResize, minicamera, minimapRenderer, updateMiniCameraPosition};

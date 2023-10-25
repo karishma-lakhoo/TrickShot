@@ -3,7 +3,7 @@ import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 
 import { playJumpSound,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
-import { scene,camera,renderer,stats,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
+import { scene,camera,renderer,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
@@ -20,6 +20,11 @@ const levelFinishScreen = document.getElementById('level-finish');
 const restartButton = document.getElementById('restart-btn');
 const exitButton = document.getElementById('exit-btn');
 const resumeButton = document.getElementById('resume-btn');
+let hudContainer = document.getElementById('hud-container');
+let hudElements = document.querySelectorAll('#balls-left, #targets-left');
+const expandingCircle = document.getElementById("expanding-circle");
+let pauseElement = document.getElementById('pause-box');
+pauseElement.style.display = 'none';
 
 playBackgroundMusic();
 
@@ -204,7 +209,7 @@ document.body.addEventListener( 'mousemove', ( event ) => {
         camera.rotation.y -= event.movementX / storedMouseSpeed; //mouse speed default is 500
 
         // Minimap camera rotation 
-        minicamera.rotation.z -= event.movementX / storedMouseSpeed; 
+        // minicamera.rotation.z -= event.movementX / storedMouseSpeed;
     }
 
 } );
@@ -257,28 +262,30 @@ function controls( deltaTime ) {
 
 function showLevelFinishScreen() {
 
-    let hudContainer = document.getElementById('hud-container');
     hudContainer.style.width = '20px'; // Adjust the width as needed
 
-    let hudElements = document.querySelectorAll('#balls-left, #targets-left');
     hudElements.forEach(element => {
         element.style.opacity = '0'; // Adjust the opacity as needed
     });
 
-    const expandingCircle = document.getElementById("expanding-circle");
-    expandingCircle.classList.add("expand");
+    setTimeout(() => {
+        expandingCircle.classList.add("expand");
+    }, 2000);
 
     if (levelCompleted){
         playLevelCompleteSound();
     }
     stopBackgroundMusic();
     levelFinishScreen.style.display = 'block';
+    setTimeout(() => {
+        levelFinishScreen.style.opacity = '1';
+    }, 1000);
     allowPlayerMovement = false;
     document.exitPointerLock();
 
     clearInterval(timerInterval);
 
-    if (remainingTime <= 0 || ballsLeft ==0) {
+    if (remainingTime <= 0 || ballsLeft ===0) {
         nextLevelButton.style.display = 'none';
         resumeButton.style.display = 'none';
         endScreenHeading.textContent = 'You Lost';
@@ -300,6 +307,8 @@ function showLevelFinishScreen() {
 function showPauseScreen() {
         stopBackgroundMusic();
         levelFinishScreen.style.display = 'block';
+    levelFinishScreen.style.opacity = '1';
+        pauseElement.style.display = 'block';
         allowPlayerMovement = false;
         document.exitPointerLock();
         paused = true;
@@ -313,6 +322,8 @@ function showPauseScreen() {
 
 
 function hideLevelFinishScreen() {
+    pauseElement.style.display = 'none';
+    levelFinishScreen.style.opacity = '0';
     crosshair.style.display = 'block';
     innerCircle.style.display = 'block';
     outerCircle.style.display = 'block';
@@ -532,6 +543,5 @@ function animate() {
     renderer.render( scene, camera );
     minimapRenderer.render(scene, minicamera)
     onWindowResize();
-    stats.update();
     requestAnimationFrame( animate );
 }

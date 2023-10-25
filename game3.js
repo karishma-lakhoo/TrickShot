@@ -3,7 +3,7 @@ import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 
 import { playJumpSound,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
-import { scene,camera,renderer,stats,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
+import { scene,camera,renderer,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
@@ -20,6 +20,9 @@ const levelFinishScreen = document.getElementById('level-finish');
 const restartButton = document.getElementById('restart-btn');
 const exitButton = document.getElementById('exit-btn');
 const resumeButton = document.getElementById('resume-btn');
+let pauseElement = document.getElementById('pause-box');
+pauseElement.style.display = 'none';
+
 
 playBackgroundMusic();
 
@@ -33,6 +36,7 @@ const timerInterval = setInterval(updateTimer, 1000); // Update every second
 function updateTimer() {
 
     if (remainingTime === initialTime) {
+        document.body.requestPointerLock();
         let overlay = document.getElementById('loadingOverlay'); // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
         overlay.style.display = 'none'; // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
     }
@@ -267,19 +271,24 @@ function showLevelFinishScreen() {
     });
 
     const expandingCircle = document.getElementById("expanding-circle");
-    expandingCircle.classList.add("expand");
+    setTimeout(() => {
+        expandingCircle.classList.add("expand");
+    }, 1000);
 
     if (levelCompleted){
         playLevelCompleteSound();
     }
     stopBackgroundMusic();
     levelFinishScreen.style.display = 'block';
+    setTimeout(() => {
+        levelFinishScreen.style.opacity = '1';
+    }, 1000);
     allowPlayerMovement = false;
     document.exitPointerLock();
 
     clearInterval(timerInterval);
 
-    if (remainingTime <= 0 || ballsLeft ==0) {
+    if (remainingTime <= 0 || ballsLeft ===0) {
         nextLevelButton.style.display = 'none';
         resumeButton.style.display = 'none';
         endScreenHeading.textContent = 'You Lost';
@@ -301,6 +310,8 @@ function showLevelFinishScreen() {
 function showPauseScreen() {
     stopBackgroundMusic();
     levelFinishScreen.style.display = 'block';
+    levelFinishScreen.style.opacity = '1';
+    pauseElement.style.display = 'block';
     allowPlayerMovement = false;
     document.exitPointerLock();
     paused = true;
@@ -314,6 +325,8 @@ function showPauseScreen() {
 
 
 function hideLevelFinishScreen() {
+    pauseElement.style.display = 'none';
+    levelFinishScreen.style.opacity = '0';
     crosshair.style.display = 'block';
     innerCircle.style.display = 'block';
     outerCircle.style.display = 'block';
@@ -516,6 +529,16 @@ function updateSpheres( deltaTime ) {
 
 }
 
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshBasicMaterial({ map: new THREE.VideoTexture(document.getElementById('video')) });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+cube.position.x = -7.3;
+cube.position.z = -8;
+cube.position.y = -0.5;
+cube.scale.x = 20
+cube.scale.y = 4
+
 function animate() {
 
     const deltaTime = Math.min( 0.05, clock.getDelta() ) / 5;
@@ -530,9 +553,12 @@ function animate() {
         }
     }
 
+    if (document.getElementById('video').readyState === document.getElementById('video').HAVE_ENOUGH_DATA) {
+        material.map.needsUpdate = true;
+    }
+
     renderer.render( scene, camera );
     minimapRenderer.render(scene, minicamera)
     onWindowResize();
-    stats.update();
     requestAnimationFrame( animate );
 }

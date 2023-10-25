@@ -40,6 +40,10 @@ body {
   font-family: 'Games', sans-serif;
 }
 
+#minimap {
+  border: 2px solid white;
+}
+
 
 #timer {
   position: absolute;
@@ -74,6 +78,7 @@ body {
   z-index: 5;
 }
 
+
 .hud-width-transition {
   width: 20px; /* Set the width you want the HUD to transition to */
 }
@@ -101,6 +106,19 @@ body {
   opacity: 1;
 }
 
+#pause-box {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1080vw;
+  height: 1920vh;
+  border-radius: 50%;
+  background-color: rgba(32, 42, 68, 0.9);
+}
+
+
+
 #level-finish {
   font-family: 'Games', sans-serif;
   position: absolute;
@@ -108,18 +126,15 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  /*background-color: rgba(175, 174, 174, 0.9);*/
   padding: 20px;
   border-radius: 10px;
-  /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);*/
+  transition: opacity 3s;
+  opacity: 0;
   height: 400px;
   width: 400px;
   z-index: 10;
 }
 
-#level-finish-transition {
-
-}
 
 button:hover {
   transform: skewX(-15deg) scale(1.2);
