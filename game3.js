@@ -148,7 +148,7 @@ let sphereIdx = 0;
 createSpheres(scene, NUM_SPHERES, spheres );
 
 
-const playerCollider = new Capsule( new THREE.Vector3( -10, 3, -40 ), new THREE.Vector3( -10, 4, -40 ), 0.35 );
+const playerCollider = new Capsule( new THREE.Vector3( -16, 3, -40 ), new THREE.Vector3( -16, 4, -40 ), 0.35 );
 const playerVelocity = new THREE.Vector3();
 const playerDirection = new THREE.Vector3();
 let playerOnFloor = false;
