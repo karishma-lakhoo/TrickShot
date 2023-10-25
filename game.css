@@ -49,7 +49,7 @@ body {
   transform: translate(-50%, -50%) ;
   color: white;
   background: #6225E6;
-  transition: 2s;
+  transition: 7s;
   box-shadow: 6px 6px 0 black;
   padding: 5px 10px;
   text-align: center;
@@ -64,16 +64,42 @@ body {
   transform: translate(-50%, -50%);
   color: white;
   background: rgba(98, 37, 230, 0.9);
-  transition: 2s;
+  transition: width 2s; /* Change transition property to only affect width and set duration to 1 second */
   padding: 5px 10px;
   text-align: center;
   font-family: 'Games', sans-serif;
   width: 480px;
   height: 70px;
   border-radius: 90px;
+  z-index: 5;
 }
 
+.hud-width-transition {
+  width: 20px; /* Set the width you want the HUD to transition to */
+}
 
+#expanding-circle {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(32, 42, 68, 0.9);  transition: width 5s, height 5s;
+  z-index: 1; /* Make sure it's above other elements */
+}
+
+#expanding-circle.expand {
+  width: 1080vw; /* Expand to full viewport width */
+  height: 1920vh; /* Expand to full viewport height */
+}
+
+#balls-left,
+#targets-left {
+  transition: opacity 1s; /* Adding opacity transition to individual elements */
+  opacity: 1;
+}
 
 #level-finish {
   font-family: 'Games', sans-serif;
@@ -82,12 +108,17 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  background-color: rgba(175, 174, 174, 0.9);
+  /*background-color: rgba(175, 174, 174, 0.9);*/
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);*/
   height: 400px;
   width: 400px;
+  z-index: 10;
+}
+
+#level-finish-transition {
+
 }
 
 button:hover {
@@ -103,7 +134,7 @@ button {
   font-family: 'Poppins', sans-serif;
   font-size: 20px; /* Adjust the font size as needed */
   color: white;
-  background: #6225E6;
+  background: rgb(255, 210, 66, 0.8);
   transition: 1s;
   box-shadow: 6px 6px 0 black;
   transform: skewX(-15deg);

@@ -32,23 +32,20 @@ updateTimerDisplay(remainingTime); // Display the initial time
 const timerInterval = setInterval(updateTimer, 1000); // Update every second
 
 function updateTimer() {
-    
     if (remainingTime === initialTime) {
         document.body.requestPointerLock();
-        let overlay = document.getElementById('loadingOverlay'); // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
-        overlay.style.display = 'none'; // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
+        let overlay = document.getElementById('loadingOverlay');
+        overlay.style.display = 'none';
     }
-    if (!paused){
+
+    if (!paused) {
         remainingTime--;
-
         updateTimerDisplay(remainingTime);
-    }
- // Display the updated time
 
-    if (remainingTime <= 0) {
-        showLevelFinishScreen(); 
+        if (remainingTime <= 0) {
+            showLevelFinishScreen();
+        }
     }
-
 }
 
 let glbMap = 'Map0.glb'; //Change Map here
@@ -259,6 +256,18 @@ function controls( deltaTime ) {
 }
 
 function showLevelFinishScreen() {
+
+    let hudContainer = document.getElementById('hud-container');
+    hudContainer.style.width = '20px'; // Adjust the width as needed
+
+    let hudElements = document.querySelectorAll('#balls-left, #targets-left');
+    hudElements.forEach(element => {
+        element.style.opacity = '0'; // Adjust the opacity as needed
+    });
+
+    const expandingCircle = document.getElementById("expanding-circle");
+    expandingCircle.classList.add("expand");
+
     if (levelCompleted){
         playLevelCompleteSound();
     }

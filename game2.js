@@ -258,6 +258,17 @@ function controls( deltaTime ) {
 }
 
 function showLevelFinishScreen() {
+
+    let hudContainer = document.getElementById('hud-container');
+    hudContainer.style.width = '20px'; // Adjust the width as needed
+
+    let hudElements = document.querySelectorAll('#balls-left, #targets-left');
+    hudElements.forEach(element => {
+        element.style.opacity = '0'; // Adjust the opacity as needed
+    });
+
+    const expandingCircle = document.getElementById("expanding-circle");
+    expandingCircle.classList.add("expand");
     if (levelCompleted){
         playLevelCompleteSound();
     }
