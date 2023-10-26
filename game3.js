@@ -2,13 +2,15 @@ import * as THREE from 'three';
 import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 
-import { playJumpSound,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
+import { playJumpSound,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic, playWind, stopWind} from './audio';
 import { scene,camera,renderer,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
 import { createRedTarget ,changeGreenTarget} from './targets';
 import {teleportPlayerIfOob,getForwardVector, getSideVector,playerSphereCollision} from './player';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import {OctreeHelper} from "three/addons/helpers/OctreeHelper";
 
 const container = document.getElementById( 'game-container' );
 const nextLevelButton = document.getElementById('next-level-btn');
@@ -25,6 +27,39 @@ pauseElement.style.display = 'none';
 
 
 playBackgroundMusic();
+playWind();
+function loadGLBModelAndCreateOctree() {
+    const loader = new GLTFLoader();
+    loader.load('./models/gltf/rick000.glb', (gltf) => {
+        // Create a group for your GLB model
+        const model = gltf.scene; // Assuming your model is the root of the GLTF scene
+        model.position.set(-5.66,-2.23,-10.15);
+
+        // Create an Octree for your model
+        const modelOctree = new Octree();
+        modelOctree.fromGraphNode(model);
+        model.traverse((child) => {
+            if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+                if (child.material.map) {
+                    child.material.map.anisotropy = 4;
+                }
+            }
+        });
+
+        const helper = new OctreeHelper(modelOctree);
+        helper.visible = false;
+        scene.add(helper);
+
+        // Add the model group to the scene
+        scene.add(model);
+    });
+}
+
+// Call the function to load the GLB model and create its Octree
+loadGLBModelAndCreateOctree();
+
 
 const clock = new THREE.Clock();
 let initialTime = 50; // Change the time here
@@ -279,6 +314,7 @@ function showLevelFinishScreen() {
         playLevelCompleteSound();
     }
     stopBackgroundMusic();
+    stopWind();
     levelFinishScreen.style.display = 'block';
     setTimeout(() => {
         levelFinishScreen.style.opacity = '1';
@@ -309,6 +345,7 @@ function showLevelFinishScreen() {
 
 function showPauseScreen() {
     stopBackgroundMusic();
+    stopWind();
     levelFinishScreen.style.display = 'block';
     levelFinishScreen.style.opacity = '1';
     pauseElement.style.display = 'block';
@@ -334,6 +371,7 @@ function hideLevelFinishScreen() {
     allowPlayerMovement = true;
     document.body.requestPointerLock();
     playBackgroundMusic();
+    playWind();
     paused = false;
 
 }

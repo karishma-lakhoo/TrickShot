@@ -73,4 +73,23 @@ function stopBackgroundMusic() {
 }
 
 
-export {playJumpSound, playCollisionSound,playTargetHitSound, playLevelCompleteSound , playBackgroundMusic, stopBackgroundMusic};
+//Background Music
+let wind;
+function playWind() {
+    wind = new Audio(listener); // Store it in the module-level variable
+    audioLoader.load('music/wind.mp3', (buffer) => {
+        wind.setBuffer(buffer);
+        wind.setLoop(true);
+        wind.setVolume(0.4);
+        wind.play();
+    });
+}
+
+function stopWind() {
+    if (wind) {
+        wind.stop();
+    }
+}
+
+
+export {playJumpSound, playCollisionSound,playTargetHitSound, playLevelCompleteSound , playBackgroundMusic, stopBackgroundMusic, playWind, stopWind};
