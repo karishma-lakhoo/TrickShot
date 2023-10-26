@@ -56,7 +56,7 @@ function updateTimer() {
     }
 
 }
-
+let isMapLoaded = false;
 let glbMap = 'map2Finalglass.glb'; //Change Map here
 const worldOctree = new Octree();
 loadMap(glbMap,scene,worldOctree,animate);
@@ -557,10 +557,9 @@ const playRadiusZ = 8;  // Z-axis extent of the rectangular region
 function animate() {
 
     const deltaTime = Math.min(0.05, clock.getDelta()) / 5;
-
-    // Add a delay of 5 seconds (5000 milliseconds)
-    setTimeout(function () {
-        console.log("h");
+    if(!isMapLoaded){
+        // If the map is loaded, set the flag to true
+        isMapLoaded = true;
         const distanceX = Math.abs(camera.position.x - cube.position.x);
         const distanceY = Math.abs(camera.position.y - cube.position.y);
         const distanceZ = Math.abs(camera.position.z - cube.position.z);
@@ -575,7 +574,8 @@ function animate() {
             // Pause the video
             video.pause();
         }
-    }, 3000); // 5000 milliseconds = 5 seconds
+    }
+
 
     if(!paused){
         for ( let i = 0; i < 5; i ++ ) {
