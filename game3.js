@@ -542,15 +542,20 @@ cube.position.y = -0.5;
 cube.scale.x = 20
 cube.scale.y = 4
 
-const playRadius = 10;
+const playRadiusX = 10;  // X-axis extent of the rectangular region
+const playRadiusY = 1;  // Y-axis extent of the rectangular region
+const playRadiusZ = 8;  // Z-axis extent of the rectangular region
+
 
 function animate() {
 
-    const deltaTime = Math.min( 0.05, clock.getDelta() ) / 5;
+    const deltaTime = Math.min(0.05, clock.getDelta()) / 5;
 
-    const distance = new THREE.Vector2(camera.position.x - cube.position.x, camera.position.z - cube.position.z).length();
+    const distanceX = Math.abs(camera.position.x - cube.position.x);
+    const distanceY = Math.abs(camera.position.y - cube.position.y);
+    const distanceZ = Math.abs(camera.position.z - cube.position.z);
 
-    if (distance < playRadius) {
+    if (distanceX < playRadiusX && distanceY < playRadiusY && distanceZ < playRadiusZ) {
         // Play the video
         if (video.readyState === video.HAVE_ENOUGH_DATA) {
             texture.needsUpdate = true;
