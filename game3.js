@@ -28,37 +28,6 @@ pauseElement.style.display = 'none';
 
 playBackgroundMusic();
 playWind();
-function loadGLBModelAndCreateOctree() {
-    const loader = new GLTFLoader();
-    loader.load('./models/gltf/rick000.glb', (gltf) => {
-        // Create a group for your GLB model
-        const model = gltf.scene; // Assuming your model is the root of the GLTF scene
-        model.position.set(-5.66,-2.23,-10.15);
-
-        // Create an Octree for your model
-        const modelOctree = new Octree();
-        modelOctree.fromGraphNode(model);
-        model.traverse((child) => {
-            if (child.isMesh) {
-                child.castShadow = true;
-                child.receiveShadow = true;
-                if (child.material.map) {
-                    child.material.map.anisotropy = 4;
-                }
-            }
-        });
-
-        const helper = new OctreeHelper(modelOctree);
-        helper.visible = false;
-        scene.add(helper);
-
-        // Add the model group to the scene
-        scene.add(model);
-    });
-}
-
-// Call the function to load the GLB model and create its Octree
-loadGLBModelAndCreateOctree();
 
 
 const clock = new THREE.Clock();
@@ -589,20 +558,24 @@ function animate() {
 
     const deltaTime = Math.min(0.05, clock.getDelta()) / 5;
 
-    const distanceX = Math.abs(camera.position.x - cube.position.x);
-    const distanceY = Math.abs(camera.position.y - cube.position.y);
-    const distanceZ = Math.abs(camera.position.z - cube.position.z);
+    // Add a delay of 5 seconds (5000 milliseconds)
+    setTimeout(function () {
+        console.log("h");
+        const distanceX = Math.abs(camera.position.x - cube.position.x);
+        const distanceY = Math.abs(camera.position.y - cube.position.y);
+        const distanceZ = Math.abs(camera.position.z - cube.position.z);
 
-    if (distanceX < playRadiusX && distanceY < playRadiusY && distanceZ < playRadiusZ) {
-        // Play the video
-        if (video.readyState === video.HAVE_ENOUGH_DATA) {
-            texture.needsUpdate = true;
-            video.play();
+        if (distanceX < playRadiusX && distanceY < playRadiusY && distanceZ < playRadiusZ) {
+            // Play the video
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                texture.needsUpdate = true;
+                video.play();
+            }
+        } else {
+            // Pause the video
+            video.pause();
         }
-    } else {
-        // Pause the video
-        video.pause();
-    }
+    }, 3000); // 5000 milliseconds = 5 seconds
 
     if(!paused){
         for ( let i = 0; i < 5; i ++ ) {
