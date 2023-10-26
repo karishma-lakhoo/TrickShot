@@ -9,9 +9,6 @@ import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
 import { createRedTarget ,changeGreenTarget} from './targets';
 import {teleportPlayerIfOob,getForwardVector, getSideVector,playerSphereCollision} from './player';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import {OctreeHelper} from "three/addons/helpers/OctreeHelper";
-
 const container = document.getElementById( 'game-container' );
 const nextLevelButton = document.getElementById('next-level-btn');
 const endScreenHeading = document.getElementById("endScreen-Heading");
@@ -24,6 +21,8 @@ const exitButton = document.getElementById('exit-btn');
 const resumeButton = document.getElementById('resume-btn');
 let pauseElement = document.getElementById('pause-box');
 pauseElement.style.display = 'none';
+const achieve = document.getElementById('circular-container2');
+const thanks = document.getElementById('thanks-Heading');
 
 
 playBackgroundMusic();
@@ -31,18 +30,18 @@ playWind();
 
 
 const clock = new THREE.Clock();
-let initialTime = 50; // Change the time here
-let remainingTime = initialTime; // Remaining time is initially the same as the initial time
-updateTimerDisplay(remainingTime); // Display the initial time
+let initialTime = 50;
+let remainingTime = initialTime;
+updateTimerDisplay(remainingTime);
 
-const timerInterval = setInterval(updateTimer, 1000); // Update every second
+const timerInterval = setInterval(updateTimer, 1000);
 
 function updateTimer() {
 
     if (remainingTime === initialTime) {
         document.body.requestPointerLock();
-        let overlay = document.getElementById('loadingOverlay'); // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
-        overlay.style.display = 'none'; // THE LOADING SCREEN IS REMOVED WHEN THE TIMER STARTS
+        let overlay = document.getElementById('loadingOverlay');
+        overlay.style.display = 'none';
     }
     if (!paused){
         remainingTime--;
@@ -56,13 +55,14 @@ function updateTimer() {
     }
 
 }
-let isMapLoaded = false;
-let glbMap = 'map2Finalglass.glb'; //Change Map here
+
+let glbMap = 'map2Finalglass.glb';
 const worldOctree = new Octree();
 loadMap(glbMap,scene,worldOctree,animate);
 
-let targetsLeft = 10; //Change number of targets here
-let target1, target2, target3, target4, target5, target6, target7, target8, target9, target10; //Update based on targets
+let targetsLeft = 10;
+let target1, target2, target3, target4, target5, target6, target7, target8, target9, target10;
+
 
 /**
  * Update here as well based on targets
@@ -149,8 +149,8 @@ createRedTarget(scene,-14.931,  3.1677, -15.95, 0, Math.PI/2, 0, 1, 1, 1, target
     });
 
 
-const NUM_SPHERES = 25; //Change number of spheres here
-let ballsLeft = 25; //Update based on number of spheres
+const NUM_SPHERES = 25;
+let ballsLeft = 25;
 const spheres = [];
 let sphereIdx = 0;
 createSpheres(scene, NUM_SPHERES, spheres );
@@ -182,7 +182,7 @@ document.addEventListener( 'keyup', ( event ) => {
 
 container.addEventListener( 'mousedown', () => {
     if (!allowPlayerMovement) {
-        return; // If player movement is not allowed, exit the function
+        return;
     }
 
     document.body.requestPointerLock();
@@ -207,10 +207,10 @@ document.body.addEventListener( 'mousemove', ( event ) => {
     }
 
     if (document.pointerLockElement === document.body) {
-        // Limit how far down the camera can look (adjust the values as needed)
-        camera.rotation.x -= event.movementY / storedMouseSpeed; //mouse speed default is 500
+
+        camera.rotation.x -= event.movementY / storedMouseSpeed;
         camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
-        camera.rotation.y -= event.movementX / storedMouseSpeed; //mouse speed default is 500
+        camera.rotation.y -= event.movementX / storedMouseSpeed;
 
         // Minimap camera rotation
         minicamera.rotation.z -= event.movementX / storedMouseSpeed;
@@ -267,11 +267,11 @@ function controls( deltaTime ) {
 function showLevelFinishScreen() {
 
     let hudContainer = document.getElementById('hud-container');
-    hudContainer.style.width = '20px'; // Adjust the width as needed
+    hudContainer.style.width = '20px';
 
     let hudElements = document.querySelectorAll('#balls-left, #targets-left');
     hudElements.forEach(element => {
-        element.style.opacity = '0'; // Adjust the opacity as needed
+        element.style.opacity = '0';
     });
 
     const expandingCircle = document.getElementById("expanding-circle");
@@ -304,6 +304,7 @@ function showLevelFinishScreen() {
     }
     else {
         endScreenHeading.textContent = 'Level 3 Complete';
+        thanks.style.display = "block"
         nextLevelButton.style.display = 'none';
         resumeButton.style.display = 'none';
         crosshair.style.display = 'none';
@@ -377,7 +378,7 @@ function throwBall() {
 
         sphere.collider.center.copy(playerCollider.end).addScaledVector(playerDirection, playerCollider.radius * 1.5);
 
-        // throw the ball with more force if we hold the button longer, and if we move forward
+
         const impulse = 15 + 30 * (1 - Math.exp((mouseTime - performance.now()) * 0.001));
 
         sphere.velocity.copy(playerDirection).multiplyScalar(impulse);
@@ -450,9 +451,9 @@ function updatePlayer( deltaTime ) {
 
     playerCollisions();
 
-    camera.position.copy( playerCollider.end );//MOVING CAMERA MAINSCREEN
+    camera.position.copy( playerCollider.end );
 
-    minicamera.position.copy( playerCollider.end );//MOVING PLAYER ON MINIMAP
+    minicamera.position.copy( playerCollider.end );
 
 }
 
@@ -548,33 +549,87 @@ cube.position.z = -8;
 cube.position.y = -0.5;
 cube.scale.x = 20
 cube.scale.y = 4
+let achievement = false;
+let achievementDisplayed = false;
 
 const playRadiusX = 10;  // X-axis extent of the rectangular region
 const playRadiusY = 1;  // Y-axis extent of the rectangular region
 const playRadiusZ = 8;  // Z-axis extent of the rectangular region
 
+const particleGeometry = new THREE.BufferGeometry();
+const particleMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    vertexShader: `
+        void main() {
+            gl_PointSize = 2.0;  // Set the overall size of the point
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x * 2.0, position.y, position.z, 1.0);
+        }
+    `,
+    fragmentShader: `
+        void main() {
+            gl_FragColor = vec4(1, 1, 1, 0.5);
+        }
+    `,
+});
+
+
+const particles = new THREE.Points(particleGeometry, particleMaterial);
+scene.add(particles);
+
+// Set up particles data
+const particleCount = 1000;
+const particlePositions = new Float32Array(particleCount * 3);
+
+const xRange = [-50, 50]; // Adjust the X range as needed
+const zRange = [-50, 50];
+
+for (let i = 0; i < particleCount * 3; i += 3) {
+    // Randomize initial positions
+    particlePositions[i] = Math.random() * (xRange[1] - xRange[0]) + xRange[0]; // X
+    particlePositions[i + 1] = Math.random() * 10 - 5; // Y
+    particlePositions[i + 2] = Math.random() * (zRange[1] - zRange[0]) + zRange[0]; // Z
+}
+
+particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+const mapBoundaryX = 20; // Adjust these values based on the size of your map
 
 function animate() {
 
     const deltaTime = Math.min(0.05, clock.getDelta()) / 5;
-    if(!isMapLoaded){
-        // If the map is loaded, set the flag to true
-        isMapLoaded = true;
-        const distanceX = Math.abs(camera.position.x - cube.position.x);
-        const distanceY = Math.abs(camera.position.y - cube.position.y);
-        const distanceZ = Math.abs(camera.position.z - cube.position.z);
 
-        if (distanceX < playRadiusX && distanceY < playRadiusY && distanceZ < playRadiusZ) {
-            // Play the video
-            if (video.readyState === video.HAVE_ENOUGH_DATA) {
-                texture.needsUpdate = true;
-                video.play();
-            }
-        } else {
-            // Pause the video
-            video.pause();
+
+    const distanceX = Math.abs(camera.position.x - cube.position.x);
+    const distanceY = Math.abs(camera.position.y - cube.position.y);
+    const distanceZ = Math.abs(camera.position.z - cube.position.z);
+
+    if (distanceX < playRadiusX && distanceY < playRadiusY && distanceZ < playRadiusZ) {
+        // Play the video
+
+        achievement = true;
+
+        if (achievement && !achievementDisplayed) {
+            achieve.style.display = 'block';
+            achieve.classList.add('circular-opacity-transition'); // Add the class for opacity transition
+            setTimeout(function() {
+                achieve.style.opacity = '1';
+            }, 500);
+
+            setTimeout(function() {
+                achieve.style.opacity = '0';
+                achievementDisplayed = true;
+            }, 4000);
         }
+
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            texture.needsUpdate = true;
+            video.play();
+        }
+    } else {
+        // Pause the video
+        video.pause();
     }
+
 
 
     if(!paused){
@@ -587,9 +642,16 @@ function animate() {
         }
     }
 
-    // if (document.getElementById('video').readyState === document.getElementById('video').HAVE_ENOUGH_DATA) {
-    //     material.map.needsUpdate = true;
-    // }
+    for (let i = 0; i < particleCount * 3; i += 3) {
+        particlePositions[i] += 0.07;
+
+        if (particlePositions[i] > mapBoundaryX) {
+            particlePositions[i] = -mapBoundaryX;
+        }
+
+    }
+
+    particleGeometry.attributes.position.needsUpdate = true;
 
     renderer.render( scene, camera );
     minimapRenderer.render(scene, minicamera)

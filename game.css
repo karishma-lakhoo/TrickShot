@@ -170,6 +170,29 @@ button {
   background-color: rgba(98, 37, 230, 0.9);
 }
 
+
+#circular-container2 {
+  position: absolute;
+  top: 90%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%);
+  color: white;
+  background: rgba(98, 37, 230, 0.9);
+  transition: opacity 5s;
+  opacity: 0;
+  padding: 5px 10px;
+  text-align: center;
+  font-family: 'Games', sans-serif;
+  width: 480px;
+  height: 70px;
+  border-radius: 90px;
+  z-index: 5;
+}
+
+.circular-opacity-transition {
+    opacity: 1
+}
+
 #image-inside-circle {
   width: 100%; /* Make the image fill the circular container */
   height: 100%;
@@ -177,7 +200,10 @@ button {
   border-radius: 50%;
 }
 
-
+#msg {
+  margin-top: 17px;
+  font-size: 30px;
+}
 
 #crosshair {
   position: absolute;

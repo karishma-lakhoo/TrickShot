@@ -17,8 +17,7 @@
         <div class="bouncing-ball"></div>
         <div class="center-line"></div>
         <p class="info">Hit all the targets within the time limit to beat the level.</p>
-        <p class="info2">Missing a target decreases time by 10 seconds</p>
-        <p class="info3">Hitting a target increases time by 10 seconds</p>
+        <p class="info2">Exploration of this map grants a reward</p>
         <p class="hint-text">Hint: Loading hint...</p>
         <p class="good-luck">Good luck</p>
     </div>
@@ -43,6 +42,8 @@
     </div>
     <div id="targets-left">Targets:10</div>
 </div>
+
+
 <div id="level-finish" style="display: none;">
     <h1 id = "endScreen-Heading" style="color: white">Level 3 Complete</h1>
     <button id="next-level-btn">Next Level</button>
@@ -50,11 +51,14 @@
     <button id="restart-btn">Restart</button>
     <button id="exit-btn">Exit to Menu</button>
     <div>
-        <h2 id = "thanks-Heading" style="color: white; margin-top: 80px; font-size: 40px; letter-spacing: 2px">Thanks for playing</h2>
+        <h2 id = "thanks-Heading" style="display: none; color: white; margin-top: 80px; font-size: 40px; letter-spacing: 2px">Thanks for playing</h2>
     </div>
 
 </div>
 
+<div id="circular-container2" style="display: none;">
+    <div id = "msg" style="color: white">Achievement: Get RickRolled!</div>
+</div>
 
 
 <script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
