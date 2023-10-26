@@ -80,7 +80,7 @@ function playWind() {
     audioLoader.load('music/wind.mp3', (buffer) => {
         wind.setBuffer(buffer);
         wind.setLoop(true);
-        wind.setVolume(0.4);
+        wind.setVolume(0.2);
         wind.play();
     });
 }
