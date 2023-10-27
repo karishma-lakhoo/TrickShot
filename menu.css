@@ -44,7 +44,7 @@ h1 {
     width: 20%;
     height: 200vh;
     left: 100px; /* Adjust as needed */
-    top: 0; /* Adjust as needed */
+    top: 0 ; /* Adjust as needed */
 }
 
 .menu-buttons .icon-button  {
