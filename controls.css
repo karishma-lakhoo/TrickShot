@@ -32,7 +32,7 @@ body {
     width: 40%;
     padding-left: 60px;
     padding-right: 60px;
-    padding-top: 40px;
+    padding-top: 80px;
     padding-bottom: 50px;
     /*background: #91e16a;*/
     /*border-radius: 10px;*/
@@ -68,19 +68,22 @@ strong {
 #back-button
 {
     cursor: pointer;
-
     margin-top: 67px;
+    position: fixed;
+    top: 80%;
+    left: 45%;
     transform: translate(-50%, -50%);
     width: 200px;
-    padding: 10px 45px;
+    padding: 10px 45px; 
     text-decoration: none;
     font-family: 'Poppins', sans-serif;
-    font-size: 20px;
+    font-size: 20px; 
     color: rgb(0, 0, 0);
     background: rgb(255, 210, 66, 0.8);
     transition: 1s;
     box-shadow: 6px 6px 0 black;
     transform: skewX(-15deg);
+    align-items: center;
     -webkit-text-fill-color: #ffffff;
 
 }
