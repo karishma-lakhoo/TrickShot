@@ -208,8 +208,6 @@ document.body.addEventListener( 'mousemove', ( event ) => {
         camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x)); 
         camera.rotation.y -= event.movementX / storedMouseSpeed; //mouse speed default is 500
 
-        // Minimap camera rotation 
-        // minicamera.rotation.z -= event.movementX / storedMouseSpeed;
     }
 
 } );

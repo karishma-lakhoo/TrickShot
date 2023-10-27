@@ -9,6 +9,7 @@ import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
 import { createRedTarget ,changeGreenTarget} from './targets';
 import {teleportPlayerIfOob,getForwardVector, getSideVector,playerSphereCollision} from './player';
+
 const container = document.getElementById( 'game-container' );
 const nextLevelButton = document.getElementById('next-level-btn');
 const endScreenHeading = document.getElementById("endScreen-Heading");

@@ -3,15 +3,7 @@ import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 
 import { playJumpSound,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
-import {
-    scene,
-    camera,
-    renderer,
-    onWindowResize,
-    minicamera,
-    minimapRenderer,
-    updateMiniCameraPosition
-} from './gamelogic';
+import {scene,camera,renderer,onWindowResize,minicamera,minimapRenderer,updateMiniCameraPosition } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
@@ -215,8 +207,6 @@ document.body.addEventListener( 'mousemove', ( event ) => {
         camera.rotation.x -= event.movementY / storedMouseSpeed; //mouse speed default is 500
         camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
         camera.rotation.y -= event.movementX / storedMouseSpeed; //mouse speed default is 500
-
-        // Minimap camera rotation
 
     }
 
