@@ -77,18 +77,40 @@ minimapRenderer.shadowMap.type = THREE.VSMShadowMap;
 minimapRenderer.toneMapping = THREE.ACESFilmicToneMapping;
 minimapContainer.appendChild(minimapRenderer.domElement);
 
-function updateMiniCameraPosition(playerCollider) {
+function updateMiniCameraPosition(playerCollider,glbMap) {
     const playerPosition = playerCollider.end;
-    const minPosition = new THREE.Vector3(-2, 20, -34.595107629588924);
-    const maxPosition = new THREE.Vector3(6, 20, 34.595107629588924);
+
+    if (glbMap === 'Map0.glb'){   
+        const minPosition = new THREE.Vector3(-6.9178376268862323, 20, -21.058522034039836);
+        const maxPosition = new THREE.Vector3(11.737853070526139, 20, 13.788041788497298);
+
+        minicamera.position.copy(playerPosition);
+        minicamera.position.clamp(minPosition, maxPosition);
+
+        playerPositionIndicator.position.copy(playerPosition);
+    }
+    else if (glbMap === 'Map1.glb'){
+        const minPosition = new THREE.Vector3(-7, 20, -39.595107629588924);
+        const maxPosition = new THREE.Vector3(11, 20, 39.595107629588924);
+
+        minicamera.position.copy(playerPosition);
+        minicamera.position.clamp(minPosition, maxPosition);
+
+        playerPositionIndicator.position.copy(playerPosition);
+    }
+    else if (glbMap === 'map2Finalglass.glb'){
+        const minPosition = new THREE.Vector3(-11, 20, -43.595107629588924);
+        const maxPosition = new THREE.Vector3(7, 20, 39.595107629588924);
+
+        minicamera.position.copy(playerPosition);
+        minicamera.position.clamp(minPosition, maxPosition);
+
+        playerPositionIndicator.position.copy(playerPosition);
+    }
 
 
-    // Limit the minicamera's position
-    minicamera.position.copy(playerPosition);
-    minicamera.position.clamp(minPosition, maxPosition);
 
 
-    playerPositionIndicator.position.copy(playerPosition);
 }
 
 const playerPositionIndicator = new THREE.Mesh(

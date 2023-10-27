@@ -3,7 +3,7 @@ import { Octree } from 'three/examples/jsm/math/Octree.js';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 
 import { playJumpSound,playTargetHitSound, playLevelCompleteSound,playBackgroundMusic,stopBackgroundMusic} from './audio';
-import { scene,camera,renderer,onWindowResize, minicamera, minimapRenderer } from './gamelogic';
+import { scene,camera,renderer,onWindowResize, minicamera, minimapRenderer,updateMiniCameraPosition } from './gamelogic';
 import  {updateTimerDisplay } from './timer';
 import { createSpheres,spheresCollisions } from './sphere';
 import { loadMap } from './map';
@@ -441,6 +441,8 @@ function updatePlayer( deltaTime ) {
     camera.position.copy( playerCollider.end );//MOVING CAMERA MAINSCREEN
 
     minicamera.position.copy( playerCollider.end );//MOVING PLAYER ON MINIMAP
+    console.log('Player position:', playerCollider.end);
+
 
 }
 
@@ -534,7 +536,8 @@ function animate() {
             updatePlayer( deltaTime );
             updateSpheres( deltaTime );
             teleportPlayerIfOob(camera,playerCollider,playerDirection);
-    
+            updateMiniCameraPosition(playerCollider,glbMap);
+
         }
     }
 

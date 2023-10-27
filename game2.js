@@ -543,7 +543,7 @@ function animate() {
             updatePlayer( deltaTime );
             updateSpheres( deltaTime );
             teleportPlayerIfOob(camera,playerCollider,playerDirection);
-            updateMiniCameraPosition(playerCollider);
+            updateMiniCameraPosition(playerCollider,glbMap);
         }
     }
 
