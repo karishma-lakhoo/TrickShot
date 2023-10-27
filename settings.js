@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     FOVSlider.addEventListener('input', function () {
         const actualFOVValue = FOVSlider.value;  
-        const displayedFOVValue = parseInt(actualFOVValue)-50; 
+        const displayedFOVValue = parseInt(actualFOVValue-50); 
         FOVValue.textContent = displayedFOVValue;
 
         localStorage.setItem('FOV', actualFOVValue);
@@ -61,6 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const storedFOV = localStorage.getItem('FOV') ;
     FOVSlider.value = storedFOV;
-    FOVValue.textContent = parseInt(storedFOV );
+    FOVValue.textContent = parseInt(storedFOV -50);
 });
 
