@@ -442,7 +442,6 @@ function updatePlayer( deltaTime ) {
     camera.position.copy( playerCollider.end );//MOVING CAMERA MAINSCREEN
 
     minicamera.position.copy( playerCollider.end );//MOVING PLAYER ON MINIMAP
-    console.log('Player position:', playerCollider.end);
 
 
 }
