@@ -291,16 +291,7 @@ function showLevelFinishScreen() {
 
     clearInterval(timerInterval);
 
-    if (remainingTime <= 0 || ballsLeft ===0) {
-        nextLevelButton.style.display = 'none';
-        resumeButton.style.display = 'none';
-        endScreenHeading.textContent = 'You Lost';
-        crosshair.style.display = 'none';
-        innerCircle.style.display = 'none';
-        outerCircle.style.display = 'none';
-
-    }
-    else {
+    if (levelCompleted) {
         endScreenHeading.textContent = 'Level 3 Complete';
         thanks.style.display = "block"
         nextLevelButton.style.display = 'none';
@@ -309,6 +300,15 @@ function showLevelFinishScreen() {
         innerCircle.style.display = 'none';
         outerCircle.style.display = 'none';
     }
+    else if (remainingTime <= 0 || ballsLeft ===0) {
+        nextLevelButton.style.display = 'none';
+        resumeButton.style.display = 'none';
+        endScreenHeading.textContent = 'You Lost';
+        crosshair.style.display = 'none';
+        innerCircle.style.display = 'none';
+        outerCircle.style.display = 'none';
+    }
+
 }
 
 function showPauseScreen() {

@@ -283,7 +283,16 @@ function showLevelFinishScreen() {
 
     clearInterval(timerInterval);
 
-    if (remainingTime <= 0 || ballsLeft ===0) {
+
+    if (levelCompleted) {
+        endScreenHeading.textContent = 'Level 1 Complete';
+        nextLevelButton.style.display = 'block';
+        resumeButton.style.display = 'none';
+        crosshair.style.display = 'none';
+        innerCircle.style.display = 'none';
+        outerCircle.style.display = 'none';
+    }
+    else if (remainingTime <= 0 || ballsLeft ===0) {
         nextLevelButton.style.display = 'none';
         resumeButton.style.display = 'none';
         endScreenHeading.textContent = 'You Lost';
@@ -291,14 +300,6 @@ function showLevelFinishScreen() {
         innerCircle.style.display = 'none';
         outerCircle.style.display = 'none';
 
-    }
-    else {
-        endScreenHeading.textContent = 'Level 1 Complete';
-        nextLevelButton.style.display = 'block';
-        resumeButton.style.display = 'none';
-        crosshair.style.display = 'none';
-        innerCircle.style.display = 'none';
-        outerCircle.style.display = 'none';
     }
 }
 
