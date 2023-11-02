@@ -1,13 +1,11 @@
-# Obstacle-Course
+# TrickShot
 
-```
-npm install --save three
-```
+This is a TrickShot game created using ThreeJS where the player has to hit targets within a certain time limit.
 
-```
-npm install --save-dev vite
-```
+## How to install
 
-```
-npx vite
-```
+1. Clone the repo
+
+2. ```npm install``` in the terminal directory
+
+3. ```npx vite``` in the terminal directory
