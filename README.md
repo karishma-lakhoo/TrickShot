@@ -12,4 +12,6 @@ This is a TrickShot game created using ThreeJS where the player has to hit targe
 
 ## Gameplay Footage
 
-https://github.com/FiveJS-Junkies/TrickShot/assets/76743643/10d9dea7-3624-4b4d-bbfd-78052ccb9916
+
+https://github.com/karishma-lakhoo/TrickShot/assets/65980113/20bd9e45-f85b-4c48-82fa-7e7690523251
+
