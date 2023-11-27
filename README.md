@@ -14,5 +14,6 @@ This is a TrickShot game created using ThreeJS where the player has to hit targe
 
 https://github.com/karishma-lakhoo/TrickShot/assets/65980113/20bd9e45-f85b-4c48-82fa-7e7690523251
 
-## Explaination
+## Game Making Process
+
 https://youtu.be/yl2L-BR0NvU
